@@ -1,0 +1,12 @@
+version: "3"
+ 
+services:
+  app:
+    build:
+      context: ./django
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./django:/django"
+    command:
+      sh -c "python manage.py runserver 0.0.0.0:8000"
