@@ -1,13 +1,7 @@
-## set envs
-#### (./django/.env)
-```
-DEBUG=True
-SECRET_KEY='*********'
-```
 ## docker-compose
 ```
-docker-compose build
-docker-compose up
+make build
+make up
 ```
 
 http://localhost:8000
