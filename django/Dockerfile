@@ -12,14 +12,7 @@ RUN mkdir /django
 
 # コンテナ上の作業するディレクトリを変更
 WORKDIR /django
-<<<<<<< HEAD
 
-# ローカルのdjangoディレクトリをコンテナにコピー
-COPY . /django
-
-=======
- 
->>>>>>> 41b809289b5f344f0d9eee6e1be7d3d01ec27e08
 # アプリケーションを実行するためのユーザを作成する
 RUN adduser --disabled-password --gecos "" user
 
