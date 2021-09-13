@@ -13,9 +13,6 @@ RUN mkdir /django
 # コンテナ上の作業するディレクトリを変更
 WORKDIR /django
  
-# ローカルのdjangoディレクトリをコンテナにコピー
-COPY . /django
-
 # アプリケーションを実行するためのユーザを作成する
 RUN adduser --disabled-password --gecos "" user
  
@@ -26,3 +23,6 @@ ENV PATH $PATH:/home/user/.local/bin
 
 # requirements.txtに従ってパッケージを一括でインストール
 RUN pip install -r /requirements.txt
+
+# ローカルのdjangoディレクトリをコンテナにコピー
+COPY . /django

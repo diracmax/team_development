@@ -1,7 +1,6 @@
-## docker-compose
+## docker-compose by make
 ```
-make build
-make up
+make
 ```
 
 http://localhost:8000
