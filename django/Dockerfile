@@ -1,28 +1,17 @@
-# ベースとするDockerイメージを指定
 FROM python:3.8-buster
 
-# リアルタイムでログを見れるように環境変数を指定
 ENV PYTHONUNBUFFERD 1
- 
-# ローカルのrequirements.txtをコンテナにコピー
-COPY ./requirements.txt /requirements.txt
+ENV PYTHONDONTWRITEBYTECODE 1
 
-# Djangoプロジェクトを置くディレクトリをコンテナ上に作成
-RUN mkdir /django
- 
-# コンテナ上の作業するディレクトリを変更
 WORKDIR /django
- 
-# アプリケーションを実行するためのユーザを作成する
-RUN adduser --disabled-password --gecos "" user
- 
-# ユーザをrootから変更
-USER user
 
+RUN adduser --disabled-password --gecos "" user
+
+USER user
 ENV PATH $PATH:/home/user/.local/bin
 
-# requirements.txtに従ってパッケージを一括でインストール
+
+COPY ./requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
 
-# ローカルのdjangoディレクトリをコンテナにコピー
 COPY . /django
