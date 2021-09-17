@@ -1,17 +1,22 @@
 # docker commands
 up:
-	make migrations
+	python django/manage.py makemigrations
+	python django/manage.py migrate
+	docker-compose -f django/docker-compose.yml up --build
 	make migrate
-	docker-compose up --build
 
 build:
-	docker-compose build
+	docker-compose -f django/docker-compose.yml build
+
+re:
+	make down
+	make
 
 stop:
-	docker-compose stop
+	docker-compose -f django/docker-compose.yml stop
 
 down:
-	docker-compose down --rmi all --volumes --remove-orphans
+	docker-compose -f django/docker-compose.yml down --rmi all --volumes --remove-orphans
 
 clean:
 	make cprune
@@ -24,14 +29,14 @@ cprune:
 	docker container prune
 
 ps:
-	docker-compose ps
+	docker-compose -f django/docker-compose.yml ps
 
 app:
-	docker-compose exec app bash
+	docker-compose -f django/docker-compose.yml exec app bash
 
-# django commands
-migrations:
-	python django/manage.py makemigrations
+test:
+	docker-compose -f django/docker-compose.yml exec app python manage.py test
 
 migrate:
-	python django/manage.py migrate
+	docker-compose -f django/docker-compose.yml exec app python manage.py makemigrations
+	docker-compose -f django/docker-compose.yml exec app python manage.py migrate
