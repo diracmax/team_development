@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ customuser.username }} | seekiee{% endblock %}
+{% block contents %}
+<div class="form-content">
+  <h1>{{ customuser.username }}</h1>
+  <p class="mt-5"><img src="{% if customuser.thumbnail %}{{ customuser.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-photo"></p>
+  <p class="mt-5">{% if customuser.description %}{{ customuser.description | linebreaks }}{% else %}本文はありません。{% endif %}</p>
+</div>
+{% endblock %}
