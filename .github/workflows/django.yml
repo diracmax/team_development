@@ -27,4 +27,4 @@ jobs:
         pip install -r django/requirements.txt
     - name: Run Tests
       run: |
-        python django/manage.py test
+        cd django && python manage.py test
