@@ -1,0 +1,15 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block title %}ユーザー登録 | seekiee{% endblock %}
+{% block contents %}
+<div class="form-content">
+  <h1 class="mb-4">ユーザー登録</h1>
+  <form method="post" action="{% url 'account_signup' %}">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+     <button class="btn btn-dark btn-block" type="submit">登録する</button>
+  </form>
+</div>
+{% endblock %}
