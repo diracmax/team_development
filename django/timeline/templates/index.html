@@ -26,7 +26,7 @@
 </div>
 
 {% for post in object_list %}
-<div class="card mb-5 text-left">
+  <div class="card mb-5 text-left">
   <div class="card-body">
     <div class="row">
       <div class="col-1">
@@ -51,11 +51,16 @@
     </form>
     {% endif %}
   </div>
+  
+  <a href="{% url 'timeline:detail' post.id %}">
   {% if post.post_photo %}
   <img class="card-img-bottom" src="{{ post.post_photo.url }}" alt="Card image cap">
   {% endif %}
+  </a>
+
 </div>
 {% endfor %}
+
 
 <nav>
   <ul class="pagination justify-content-center">

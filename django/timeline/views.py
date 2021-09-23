@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from .models import Post, Like
 from django.http.response import JsonResponse
 
+
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'index.html'
     paginate_by = 10
@@ -14,6 +15,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         posts = Post.objects.order_by('-created_at')
         return posts
+
 
 class CreateView(LoginRequiredMixin, generic.CreateView):
     form_class = PostForm
@@ -28,6 +30,7 @@ class CreateView(LoginRequiredMixin, generic.CreateView):
         messages.warning(self.request, '投稿が失敗しました。')
         return redirect('timeline:index')
 
+
 class DeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Post
     success_url = reverse_lazy('timeline:index')
@@ -38,20 +41,29 @@ class DeleteView(LoginRequiredMixin, generic.DeleteView):
             messages.success(self.request, '削除しました。')
             return super().delete(request, *args, **kwargs)
 
+
 class LikeView(LoginRequiredMixin, generic.View):
     model = Like
 
     def post(self, request):
         post_id = request.POST.get('id')
         post = Post.objects.get(id=post_id)
-        like = Like(user=self.request.user,post=post)
+        like = Like(user=self.request.user, post=post)
         like.save()
         like_count = Like.objects.filter(post=post).count()
-        data = {'message': 'ほめました',
+        data = {'message': 'いいねしました',
                 'like_count': like_count}
         return JsonResponse(data)
 
+
+class PostDetail(LoginRequiredMixin, generic.DetailView):
+    model = Post
+    template_name = 'detail.html'
+
+
+    
 index = IndexView.as_view()
 create = CreateView.as_view()
 delete = DeleteView.as_view()
 like = LikeView.as_view()
+detail = PostDetail.as_view()
