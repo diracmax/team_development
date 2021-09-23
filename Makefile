@@ -1,7 +1,7 @@
 # docker commands
 up:
-	python django/manage.py makemigrations
-	python django/manage.py migrate
+	python3 django/manage.py makemigrations
+	python3 django/manage.py migrate
 	docker-compose -f django/docker-compose.yml up --build
 	make migrate
 

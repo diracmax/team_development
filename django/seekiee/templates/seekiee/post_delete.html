@@ -1,0 +1,21 @@
+{% extends 'seekiee/base.html' %}
+
+{% block title %}投稿削除{% endblock %}
+
+      {% block contents %}
+      <br>
+      <div class="container">
+        <div class="row">
+          <div class="col offset-3">
+            <form method="POST">
+              <br>
+              <p>削除してもいいですか?</p>
+              {% csrf_token %}
+              <button class="btn btn-primary my-2"
+                      type="submit">削除</button>
+              <a href="{% url 'seekiee:post_detail' object.pk %}"
+                 class="btn btn-secondary my-2">キャンセル</a>
+          </dv>
+        </dv>
+      </dv>
+      {% endblock %}

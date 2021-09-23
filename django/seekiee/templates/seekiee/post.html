@@ -1,0 +1,39 @@
+{% extends 'seekiee/base.html' %}
+{% block title %}Post{% endblock %}
+{% block contents %}
+<!-- Bootstrapのグリッドシステム -->
+<br>
+<div class="container">
+<!-- 行を配置 -->
+<div class="row">
+	<!-- 列の左右に余白offset-2を入れる -->
+	<div class="col offset-2">
+	<!-- ファイルをアップロードする場合は
+			enctype="multipart/form-data"が必要 -->
+	<form method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		<table>
+		<tr>
+			<th>カテゴリ</th>
+			<td>{{ form.category }}</td>
+		</tr>
+		<tr>
+			<th>タイトル</th>
+			<td>{{ form.title }}</td>
+		</tr>
+		<tr>
+			<th>コメント</th>
+			<td>{{ form.comment }}</td>
+		</tr>
+		<tr>
+			<th>画像</th>
+			<td>{{ form.image }}</td>
+		</tr>
+		</table>
+		<hr>
+		<button type="submit">投稿する</button>
+	</form>
+	</dv>
+</dv>
+</dv>
+{% endblock %}

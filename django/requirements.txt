@@ -14,6 +14,7 @@ django-allauth==0.44.0
 django-appconf==1.0.4
 django-bootstrap4==2.3.1
 django-imagekit==4.0.2
+django-cleanup==5.2.0
 idna==2.10
 importlib-metadata==2.1.1
 oauthlib==3.1.0

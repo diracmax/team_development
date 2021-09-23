@@ -1,0 +1,35 @@
+{% if is_paginated %}
+<ul class="pagination" style="justify-content:center">
+	{% if page_obj.has_previous %}
+	<li class="page-item">
+		<a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="前へ">
+			<span aria-hidden="true">&laquo;</span>
+		</a>
+	</li>
+	{% endif %}
+	{% for num in paginator.page_range %}
+		{% if page_obj.number == num %}
+		<li class="page-item" active>
+			<span class="page-link">{{ num }}</span>
+		</li>
+		{% else %}
+		<li class="page-item">
+			<a class="page-link" href="?page={{ num }}">{{ num }}</a>
+		</li>
+		{% endif %}
+	{% endfor %}
+	{% if page_obj.has_next %}
+		<li class="page-item">
+			<a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="次へ">
+				<span aria-hidden="true">&raquo;</span>
+			</a>
+		</li>
+	{% endif %}
+</ul>
+{% else %}
+<ul class="pagination" style="justify-content:center">
+	<li class="page-item">
+		<a class="page-link" href="?page=1">1</a>
+	</li>
+</ul>
+{% endif %}

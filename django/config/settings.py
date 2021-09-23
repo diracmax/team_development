@@ -42,10 +42,12 @@ INSTALLED_APPS = [
 
     'accounts.apps.AccountsConfig',
     'timeline.apps.TimelineConfig',
+    'seekiee.apps.SeekieeConfig',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'bootstrap4',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [

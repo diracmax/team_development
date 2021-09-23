@@ -1,0 +1,23 @@
+{% extends 'seekiee/base.html' %}
+
+{% block title %}投稿詳細{% endblock %}
+
+{% block contents %}
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col offset-3">
+      <h2>{{ object.title }}</h2>
+      <p>{{ object.comment }}</p>
+      <br>
+      <p>{{ object.posted_at }}に投稿</p>
+      <p><img src="{{ object.image.url }}"></img></p>
+      {% if request.user == object.user %}
+        <form method="POST">
+          <a href="{% url 'seekiee:post_delete' object.pk %}" class="btn btn-primary my-2">削除する</a>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

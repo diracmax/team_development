@@ -1,0 +1,24 @@
+{% extends 'seekiee/base.html' %}
+
+{% block title %}過去の投稿{% endblock %}
+
+{% block contents %}
+{% if user.is_authenticated %}
+<br>
+<div style="text-align: center;">
+  <h4>{{ user.username }}さんの過去の投稿</h4>
+  {% if object_list.count == 0 %}
+    <p>{{ user.username }}さんの投稿はありません。</p>
+  {% else %}
+    <p>投稿<strong>{{ object_list.count }}</strong>件</p>
+  {% endif %}
+  <a href="{% url 'seekiee:post' %}">投稿する</a>
+</div>
+<hr>
+{% endif %}
+
+{% include "seekiee/list.html" %}
+
+{% include "seekiee/pagination.html" %}
+
+{% endblock %}
