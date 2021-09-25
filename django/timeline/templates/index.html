@@ -42,6 +42,7 @@
         いいね
     </button>
     <span class="badge badge-info" id="like-count-{{ post.id }}">{% if post.get_like %}{{ post.get_like | length }}{% endif %}</span>
+
     {% if post.author.id == user.id %}
     <form method="post" action="{% url 'timeline:delete' post.id %}" class="d-inline">
       {% csrf_token %}
@@ -49,7 +50,13 @@
         削除
       </button>
     </form>
+    {% else %}
+    <button class="btn btn-link p-0 {% if user in post.get_applicant %}disabled post-applied text-secondary{% else %}post-apply text-dark{% endif %}" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
+      応募
+    </button>
+    <span class="badge badge-info" id="apply-count-{{ post.id }}">{% if post.get_applicant %}{{ post.get_applicant | length }}{% endif %}</span>
     {% endif %}
+
   </div>
   
   <a href="{% url 'timeline:detail' post.id %}">

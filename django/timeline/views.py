@@ -4,7 +4,8 @@ from .forms import PostForm
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from .models import Post, Like
+from .models import Post, Like, Apply
+from accounts.models import CustomUser
 from django.http.response import JsonResponse
 
 
@@ -55,15 +56,47 @@ class LikeView(LoginRequiredMixin, generic.View):
                 'like_count': like_count}
         return JsonResponse(data)
 
+class ApplyView(LoginRequiredMixin, generic.View):
+    model = Apply
+
+    def post(self, request):
+        post_id = request.POST.get('id')
+        post = Post.objects.get(id=post_id)
+        apply = Apply(user=self.request.user, post=post)
+        apply.save()
+        apply_count = Apply.objects.filter(post=post).count()
+        data = {'message': '応募しました',
+                'apply_count': apply_count}
+        return JsonResponse(data)
+
+class AcceptApplicationView(LoginRequiredMixin, generic.View):
+    model = Apply
+
+    def post(self, request, post_id, user_id):
+        post = Post.objects.get(id=post_id)
+        user = CustomUser.objects.get(id=user_id)
+
+        print(user, flush=True)
+        print(post, flush=True)
+        return redirect(request.META['HTTP_REFERER'])
+
+        post = Post.objects.get(id=post_id)
+        if self.request.user == post.author:
+            application = Apply.objects.filter(post=post, user=self.request.user)
+            application.is_member = True
+            application.save()
+
+        return
 
 class PostDetail(LoginRequiredMixin, generic.DetailView):
     model = Post
     template_name = 'detail.html'
 
 
-    
 index = IndexView.as_view()
 create = CreateView.as_view()
 delete = DeleteView.as_view()
 like = LikeView.as_view()
+apply = ApplyView.as_view()
 detail = PostDetail.as_view()
+accept = AcceptApplicationView.as_view()

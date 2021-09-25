@@ -82,6 +82,7 @@ $.ajaxSetup({
     }
   }
 });
+
 $(document).on("click", ".post-like", function () {
   var id = $(this).data('id');
   $.ajax({
@@ -99,5 +100,24 @@ $(document).on("click", ".post-like", function () {
     }
   });
 });
+
+$(document).on("click", ".post-apply", function () {
+  var id = $(this).data('id');
+  $.ajax({
+    type: "post",
+    url: "/apply/",
+    data: {
+      id: id,
+      csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+    },
+    success: function (data) {
+      $("#post-apply-" + id).removeClass("post-apply text-dark").addClass("post-applied disabled text-secondary");
+      var apply_count = data["apply_count"]
+      $("#apply-count-" + id).html(apply_count);
+      alert(data["message"])
+    }
+  });
+});
+
 </script>
 </html>
