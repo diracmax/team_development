@@ -51,7 +51,7 @@
       </button>
     </form>
     {% else %}
-    <button class="btn btn-link p-0 {% if user in post.get_applicant %}disabled post-applied text-secondary{% else %}post-apply text-dark{% endif %}" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
+    <button class="btn btn-link p-0 {% if user in post.get_applicant or user in post.get_member %}disabled post-applied text-secondary{% else %}post-apply text-dark{% endif %}" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
       応募
     </button>
     <span class="badge badge-info" id="apply-count-{{ post.id }}">{% if post.get_applicant %}{{ post.get_applicant | length }}{% endif %}</span>

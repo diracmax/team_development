@@ -75,18 +75,13 @@ class AcceptApplicationView(LoginRequiredMixin, generic.View):
     def post(self, request, post_id, user_id):
         post = Post.objects.get(id=post_id)
         user = CustomUser.objects.get(id=user_id)
-
-        print(user, flush=True)
-        print(post, flush=True)
-        return redirect(request.META['HTTP_REFERER'])
-
-        post = Post.objects.get(id=post_id)
+        
         if self.request.user == post.author:
-            application = Apply.objects.filter(post=post, user=self.request.user)
+            application = Apply.objects.get(post=post, user=user)
             application.is_member = True
             application.save()
 
-        return
+        return redirect(request.META['HTTP_REFERER'])
 
 class PostDetail(LoginRequiredMixin, generic.DetailView):
     model = Post
