@@ -21,9 +21,10 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: docker-compose 
+    - name: Install Dependencies
       run: |
-        make
+        python -m pip install --upgrade pip
+        pip install -r django/requirements.txt
     - name: Run Tests
       run: |
-        make test
+        cd django && python manage.py test
