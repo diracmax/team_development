@@ -90,7 +90,7 @@ class AcceptApplicationView(LoginRequiredMixin, generic.View):
 
         if self.request.user == post.author:
             application = Apply.objects.get(post=post, user=user)
-            application.is_member = True
+            application.is_member = not application.is_member
             application.save()
 
         return redirect(request.META['HTTP_REFERER'])
