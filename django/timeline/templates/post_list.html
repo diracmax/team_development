@@ -1,33 +1,4 @@
-{% extends 'base.html' %}
 {% load static %}
-{% block title %}トップページ | seekiee{% endblock %}
-{% block contents %}
-<div class="card mb-5 text-left">
-  <div class="card-body">
-    <div class="row">
-      <div class="col-2">
-        <img src="{% if user.thumbnail %}{{ user.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo">
-      </div>
-      <div class="col-10">
-        <form method="post" action="{% url 'timeline:create' %}" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="form-group">
-            <textarea class="form-control" id="exampleFormControlTextarea1"  name="text" rows="3" placeholder="今度のYahooハッカソンに参加したい！"></textarea>
-          </div>
-          <div class="form-group mt-1">
-            <label for="file">画像アップロード</label>
-            <input type="file" class="form-control-file" id="exampleFormControlFile1" name="photo">
-          </div>
-          <button class="btn btn-dark btn-block" type="submit">投稿</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- {% include "post_list.html" %} -->
-
 {% for post in object_list %}
   <div class="card mb-5 text-left">
   <div class="card-body">
@@ -53,23 +24,15 @@
         削除
       </button>
     </form>
-    {% elif not post.is_recruited %}
-    <p>現在募集していません</p>
     {% else %}
-      {% if user in post.get_applicant or user in post.get_member %}
-      <button class="btn btn-link p-0 post-apply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
-        取り下げ
-      </button>
-      {% else %}
-      <button class="btn btn-link p-0 post-disapply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
-        応募
-      </button>
-      {% endif %}
-      <span class="badge badge-info" id="apply-count-{{ post.id }}">{% if post.get_applicant %}{{ post.get_apply_number }}{% endif %}</span>
+    <button class="btn btn-link p-0 {% if user in post.get_applicant or user in post.get_member %}disabled post-applied text-secondary{% else %}post-apply text-dark{% endif %}" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
+      応募
+    </button>
+    <span class="badge badge-info" id="apply-count-{{ post.id }}">{% if post.get_applicant %}{{ post.get_applicant | length }}{% endif %}</span>
     {% endif %}
 
   </div>
-
+  
   <a href="{% url 'timeline:detail' post.id %}">
   {% if post.post_photo %}
   <img class="card-img-bottom" src="{{ post.post_photo.url }}" alt="Card image cap">
@@ -109,5 +72,3 @@
   {% endif %}
   </ul>
 </nav>
-
-{% endblock %}
