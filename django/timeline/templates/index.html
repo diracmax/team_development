@@ -2,112 +2,12 @@
 {% load static %}
 {% block title %}トップページ | seekiee{% endblock %}
 {% block contents %}
-<div class="card mb-5 text-left">
-  <div class="card-body">
-    <div class="row">
-      <div class="col-2">
-        <img src="{% if user.thumbnail %}{{ user.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo">
-      </div>
-      <div class="col-10">
-        <form method="post" action="{% url 'timeline:create' %}" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="form-group">
-            <textarea class="form-control" id="exampleFormControlTextarea1"  name="text" rows="3" placeholder="今度のYahooハッカソンに参加したい！"></textarea>
-          </div>
-          <div class="form-group mt-1">
-            <label for="file">画像アップロード</label>
-            <input type="file" class="form-control-file" id="exampleFormControlFile1" name="photo">
-          </div>
-          <button class="btn btn-dark btn-block" type="submit">投稿</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 
 
-<!-- {% include "post_list.html" %} -->
 
-{% for post in object_list %}
-  <div class="card mb-5 text-left">
-  <div class="card-body">
-    <div class="row">
-      <div class="col-1">
-        <a href="{% url 'accounts:detail' post.author.id %}"><img src="{% if post.author.thumbnail %}{{ post.author.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
-      </div>
-      <div class="col-10 ml-3">
-        <a href="{% url 'accounts:detail' post.author.id %}" class="text-secondary">{{ post.author }}</a><br>
-        <small class="text-muted">{{ post.created_at | date:"n月j日 H時i分" }}</small>
-      </div>
-    </div>
-    <p class="card-text mt-2">{{ post.text | linebreaks }}</p>
-    <button class="btn btn-link p-0 {% if user in post.get_like %}disabled post-liked text-secondary{% else %}post-like text-dark{% endif %}" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
-        いいね
-    </button>
-    <span class="badge badge-info" id="like-count-{{ post.id }}">{% if post.get_like %}{{ post.get_like | length }}{% endif %}</span>
+{% include "create_post.html" %}
+{% include "post_list.html" %}
+{% include "pagination.html" %}
 
-    {% if post.author.id == user.id %}
-    <form method="post" action="{% url 'timeline:delete' post.id %}" class="d-inline">
-      {% csrf_token %}
-      <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("この投稿を本当に削除しますか？");'>
-        削除
-      </button>
-    </form>
-    {% elif not post.is_recruited %}
-    <p>現在募集していません</p>
-    {% else %}
-      {% if user in post.get_applicant or user in post.get_member %}
-      <button class="btn btn-link p-0 post-apply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
-        取り下げ
-      </button>
-      {% else %}
-      <button class="btn btn-link p-0 post-disapply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
-        応募
-      </button>
-      {% endif %}
-      <span class="badge badge-info" id="apply-count-{{ post.id }}">{% if post.get_applicant %}{{ post.get_apply_number }}{% endif %}</span>
-    {% endif %}
-
-  </div>
-
-  <a href="{% url 'timeline:detail' post.id %}">
-  {% if post.post_photo %}
-  <img class="card-img-bottom" src="{{ post.post_photo.url }}" alt="Card image cap">
-  {% endif %}
-  </a>
-
-</div>
-{% endfor %}
-
-
-<nav>
-  <ul class="pagination justify-content-center">
-  {% if page_obj.has_previous %}
-    <li class="page-item">
-      <a class="page-link text-dark" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">&laquo;</a>
-    </li>
-  {% else %}
-    <li class="page-item disabled"><span class="page-link">
-      &laquo;</span></a>
-    </li>
-  {% endif %}
-  {% for i in page_obj.paginator.page_range %}
-  {% if page_obj.number == i %}
-    <li class="page-item disabled"><span class="page-link">{{ i }}</span></li>
-  {% else %}
-    <li class="page-item"><a class="page-link text-dark" href="?page={{ i }}">{{ i }}</a></li>
-  {% endif %}
-  {% endfor %}
-  {% if page_obj.has_next %}
-    <li class="page-item">
-      <a class="page-link text-dark" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
-    </li>
-  {% else %}
-    <li class="page-item disabled">
-      <span class="page-link">&raquo;</span>
-    </li>
-  {% endif %}
-  </ul>
-</nav>
 
 {% endblock %}

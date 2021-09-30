@@ -1,4 +1,6 @@
 {% load static %}
+
+
 {% for post in object_list %}
   <div class="card mb-5 text-left">
   <div class="card-body">
@@ -24,15 +26,23 @@
         削除
       </button>
     </form>
+    {% elif not post.is_recruited %}
+    <p>現在募集していません</p>
     {% else %}
-    <button class="btn btn-link p-0 {% if user in post.get_applicant or user in post.get_member %}disabled post-applied text-secondary{% else %}post-apply text-dark{% endif %}" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
-      応募
-    </button>
-    <span class="badge badge-info" id="apply-count-{{ post.id }}">{% if post.get_applicant %}{{ post.get_applicant | length }}{% endif %}</span>
+      {% if user in post.get_applicant or user in post.get_member %}
+      <button class="btn btn-link p-0 post-apply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
+        取り下げ
+      </button>
+      {% else %}
+      <button class="btn btn-link p-0 post-disapply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
+        応募
+      </button>
+      {% endif %}
+      <span class="badge badge-info" id="apply-count-{{ post.id }}">{% if post.get_applicant %}{{ post.get_apply_number }}{% endif %}</span>
     {% endif %}
 
   </div>
-  
+
   <a href="{% url 'timeline:detail' post.id %}">
   {% if post.post_photo %}
   <img class="card-img-bottom" src="{{ post.post_photo.url }}" alt="Card image cap">
@@ -42,33 +52,3 @@
 </div>
 {% endfor %}
 
-
-<nav>
-  <ul class="pagination justify-content-center">
-  {% if page_obj.has_previous %}
-    <li class="page-item">
-      <a class="page-link text-dark" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">&laquo;</a>
-    </li>
-  {% else %}
-    <li class="page-item disabled"><span class="page-link">
-      &laquo;</span></a>
-    </li>
-  {% endif %}
-  {% for i in page_obj.paginator.page_range %}
-  {% if page_obj.number == i %}
-    <li class="page-item disabled"><span class="page-link">{{ i }}</span></li>
-  {% else %}
-    <li class="page-item"><a class="page-link text-dark" href="?page={{ i }}">{{ i }}</a></li>
-  {% endif %}
-  {% endfor %}
-  {% if page_obj.has_next %}
-    <li class="page-item">
-      <a class="page-link text-dark" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
-    </li>
-  {% else %}
-    <li class="page-item disabled">
-      <span class="page-link">&raquo;</span>
-    </li>
-  {% endif %}
-  </ul>
-</nav>
