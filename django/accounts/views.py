@@ -1,6 +1,7 @@
 from .models import CustomUser
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
+from django.shortcuts import redirect
 from .forms import ProfileForm
 from django.contrib.messages.views import SuccessMessageMixin
 from timeline.models import Post, Apply
@@ -62,5 +63,17 @@ class PostList(LoginRequiredMixin, generic.ListView):
         raise ValueError("invarid url")
             
 
+class QuitView(LoginRequiredMixin, generic.View):
+    model = CustomUser
+
+    def post(self, request):
+        record = CustomUser.objects.get(id=request.user.id)
+        record.is_active = False
+        record.save()
+        return redirect('timeline:index')
+
+
+
 edit = ProfileEdit.as_view()
 detail = ProfileDetail.as_view()
+quit = QuitView.as_view()

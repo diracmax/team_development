@@ -11,4 +11,5 @@ urlpatterns = [
     path('like/', views.like, name='like'),
     path('apply/', views.apply, name='apply'),
     path('accept/<int:post_id>/<int:user_id>/', views.accept, name='accept'),
+    path('update/<int:pk>/', views.update, name='update'),
 ]
