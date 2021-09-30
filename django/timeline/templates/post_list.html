@@ -1,14 +1,4 @@
-{% extends 'base.html' %}
 {% load static %}
-{% block title %}{{title}} | seekiee{% endblock %}
-{% block contents %}
-
-<a href="{% url 'accounts:detail' view.kwargs.pk %}" class="btn btn-link p-0">{{name}}</a>
-{% for key, value in QUERY_DICT.items %}
-<span> / </span>
-<a href="{% url 'accounts:posts' view.kwargs.pk key %}" class="btn btn-link p-0">{{value}}</a>
-{% endfor %}
-
 {% for post in object_list %}
   <div class="card mb-5 text-left">
   <div class="card-body">
@@ -82,4 +72,3 @@
   {% endif %}
   </ul>
 </nav>
-{% endblock %}

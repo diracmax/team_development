@@ -31,7 +31,7 @@ class ProfileDetail(LoginRequiredMixin, generic.DetailView):
         return context
 
 class PostList(LoginRequiredMixin, generic.ListView):
-    template_name = 'account/postlist.html'
+    template_name = 'account/related_posts.html'
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
