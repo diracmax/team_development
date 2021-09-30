@@ -13,7 +13,7 @@
 <h1>メンバー is {{object.get_member}}</h1>
 
 {% if post.author.id == user.id %}
-
+メンバー
 {% for user in object.get_member %}
     <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
       {% csrf_token %}
@@ -23,6 +23,7 @@
     </form>
 {% endfor %}
 
+応募者
 {% for user in object.get_applicant %}
     <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
       {% csrf_token %}
