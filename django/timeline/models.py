@@ -22,6 +22,8 @@ class Post(models.Model):
 		members = Apply.objects.filter(post=self)
 		return [member.user for member in members if member.is_member == True]
 
+	def get_apply_number(self):
+		return len(self.get_applicant()) + len(self.get_member())
 
 class Like(models.Model):
 	user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)

@@ -56,18 +56,30 @@ class LikeView(LoginRequiredMixin, generic.View):
                 'like_count': like_count}
         return JsonResponse(data)
 
+
 class ApplyView(LoginRequiredMixin, generic.View):
     model = Apply
 
     def post(self, request):
         post_id = request.POST.get('id')
         post = Post.objects.get(id=post_id)
-        apply = Apply(user=self.request.user, post=post)
-        apply.save()
-        apply_count = Apply.objects.filter(post=post).count()
-        data = {'message': '応募しました',
-                'apply_count': apply_count}
-        return JsonResponse(data)
+
+        try:
+            # if it already exists, it violates unique constraints
+            apply = Apply(user=self.request.user, post=post)
+            apply.save()
+            apply_count = Apply.objects.filter(post=post).count()
+            data = {'message': '応募しました',
+                    'apply_count': apply_count}
+            return JsonResponse(data)
+        except:
+            apply = Apply.objects.get(user=self.request.user, post=post)
+            apply.delete()
+            apply_count = Apply.objects.filter(post=post).count()
+            data = {'message': '応募を取り下げました',
+                    'apply_count': apply_count}
+            return JsonResponse(data)
+
 
 class AcceptApplicationView(LoginRequiredMixin, generic.View):
     model = Apply
@@ -75,13 +87,14 @@ class AcceptApplicationView(LoginRequiredMixin, generic.View):
     def post(self, request, post_id, user_id):
         post = Post.objects.get(id=post_id)
         user = CustomUser.objects.get(id=user_id)
-        
+
         if self.request.user == post.author:
             application = Apply.objects.get(post=post, user=user)
-            application.is_member = True
+            application.is_member = not application.is_member
             application.save()
 
         return redirect(request.META['HTTP_REFERER'])
+
 
 class PostDetail(LoginRequiredMixin, generic.DetailView):
     model = Post

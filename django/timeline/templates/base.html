@@ -61,6 +61,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 </body>
 <script>
+// cookie
 $.ajaxSetup({
   beforeSend: function (xhr, settings) {
     function getCookie(name) {
@@ -82,7 +83,7 @@ $.ajaxSetup({
     }
   }
 });
-
+// like
 $(document).on("click", ".post-like", function () {
   var id = $(this).data('id');
   $.ajax({
@@ -100,7 +101,7 @@ $(document).on("click", ".post-like", function () {
     }
   });
 });
-
+// apply
 $(document).on("click", ".post-apply", function () {
   var id = $(this).data('id');
   $.ajax({
@@ -111,7 +112,26 @@ $(document).on("click", ".post-apply", function () {
       csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
     },
     success: function (data) {
-      $("#post-apply-" + id).removeClass("post-apply text-dark").addClass("post-applied disabled text-secondary");
+      $("#post-apply-" + id).removeClass("post-apply").addClass("post-disapply");
+      $("#post-apply-" + id).html("応募")
+      var apply_count = data["apply_count"]
+      $("#apply-count-" + id).html(apply_count);
+      alert(data["message"])
+    }
+  });
+});
+$(document).on("click", ".post-disapply", function () {
+  var id = $(this).data('id');
+  $.ajax({
+    type: "post",
+    url: "/apply/",
+    data: {
+      id: id,
+      csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+    },
+    success: function (data) {
+      $("#post-apply-" + id).removeClass("post-disapply").addClass("post-apply");
+      $("#post-apply-" + id).html("取り下げ")
       var apply_count = data["apply_count"]
       $("#apply-count-" + id).html(apply_count);
       alert(data["message"])
