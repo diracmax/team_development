@@ -42,10 +42,13 @@ INSTALLED_APPS = [
 
     'accounts.apps.AccountsConfig',
     'timeline.apps.TimelineConfig',
+    'django_cleanup.apps.CleanupConfig',
+    
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'bootstrap4',
+
 ]
 
 MIDDLEWARE = [
