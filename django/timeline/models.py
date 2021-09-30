@@ -8,12 +8,12 @@ class Post(models.Model):
 	photo = models.ImageField(verbose_name='写真', upload_to='images/', default="images/default.jpeg")
 	post_photo = ImageSpecField(source='photo',processors=[ResizeToFit(1080, 1080)],format='JPEG',options={'quality':60})
 	created_at = models.DateTimeField(auto_now_add=True, blank=True)
-
+	is_recruited = models.BooleanField(verbose_name='募集中', default=True)
 
 	def get_like(self):
 		likes = Like.objects.filter(post=self)
 		return [like.user for like in likes]
-	
+
 	def get_applicant(self):
 		members = Apply.objects.filter(post=self)
 		return [member.user for member in members if member.is_member == False]

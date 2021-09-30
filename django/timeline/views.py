@@ -75,7 +75,7 @@ class AcceptApplicationView(LoginRequiredMixin, generic.View):
     def post(self, request, post_id, user_id):
         post = Post.objects.get(id=post_id)
         user = CustomUser.objects.get(id=user_id)
-        
+
         if self.request.user == post.author:
             application = Apply.objects.get(post=post, user=user)
             application.is_member = True
@@ -88,6 +88,13 @@ class PostDetail(LoginRequiredMixin, generic.DetailView):
     template_name = 'detail.html'
 
 
+class UpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Post
+    fields = ('text', 'photo', 'is_recruited')
+    template_name = 'update.html'
+    success_url = reverse_lazy('timeline:index')
+
+
 index = IndexView.as_view()
 create = CreateView.as_view()
 delete = DeleteView.as_view()
@@ -95,3 +102,4 @@ like = LikeView.as_view()
 apply = ApplyView.as_view()
 detail = PostDetail.as_view()
 accept = AcceptApplicationView.as_view()
+update = UpdateView.as_view()
