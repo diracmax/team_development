@@ -1,4 +1,7 @@
+{% extends 'base.html' %}
 {% load static %}
+{% block title %}投稿詳細 | seekiee{% endblock %}
+{% block contents %}
 
 <h1>ディテイルだよー</h1>
 
@@ -35,4 +38,28 @@
 
 {% endif %}
 
+<hr>
+
+<button class="btn btn-link p-0 {% if user in post.get_like %}disabled post-liked text-secondary{% else %}post-like text-dark{% endif %}" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
+  いいね
+</button>
+<span class="badge badge-info" id="like-count-{{ post.id }}">{% if post.get_like %}{{ post.get_like | length }}{% endif %}</span>
+
+{% if post.author.id == user.id %}
+<form method="post" action="{% url 'timeline:delete' post.id %}" class="d-inline">
+<button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("この投稿を本当に削除しますか？");'>
+  削除
+</button>
+</form>
+<a href="{% url 'timeline:update' object.pk %}" class="btn btn-primary my-2">編集する</a>
+{% elif not post.is_recruited %}
+<p>現在募集していません</p>
+{% else %}
+<button class="btn btn-link p-0 {% if user in post.get_applicant or user in post.get_member %}disabled post-applied text-secondary{% else %}post-apply text-dark{% endif %}" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
+応募
+</button>
+<span class="badge badge-info" id="apply-count-{{ post.id }}">{% if post.get_applicant %}{{ post.get_applicant | length }}{% endif %}</span>
+{% endif %}
+
 <img class="card-img-bottom" src="{{ object.post_photo.url }}" alt="Card image cap">
+{% endblock %}

@@ -50,6 +50,8 @@
         削除
       </button>
     </form>
+    {% elif not post.is_recruited %}
+    <p>現在募集していません</p>
     {% else %}
       {% if user in post.get_applicant or user in post.get_member %}
       <button class="btn btn-link p-0 post-apply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
@@ -64,7 +66,7 @@
     {% endif %}
 
   </div>
-  
+
   <a href="{% url 'timeline:detail' post.id %}">
   {% if post.post_photo %}
   <img class="card-img-bottom" src="{{ post.post_photo.url }}" alt="Card image cap">
