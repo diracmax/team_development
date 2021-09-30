@@ -6,5 +6,13 @@
   <h1>{{ customuser.username }}</h1>
   <p class="mt-5"><img src="{% if customuser.thumbnail %}{{ customuser.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-photo"></p>
   <p class="mt-5">{% if customuser.description %}{{ customuser.description | linebreaks }}{% else %}本文はありません。{% endif %}</p>
+  {% if customuser.id == user.id %}
+    <form method="post" action="{% url 'accounts:quit' %}" class="d-inline">
+      {% csrf_token %}
+      <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("本当に退会しますか？");'>
+        退会
+      </button>
+    </form>
+  {% endif %}
 </div>
 {% endblock %}
