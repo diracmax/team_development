@@ -53,13 +53,13 @@ class PostList(LoginRequiredMixin, generic.ListView):
             return posts.order_by('-created_at')
         if query == "like":
             posts = Post.objects.filter(like__user_id=id)
-            return posts.order_by('-created_at')
+            return posts.order_by('-like__created_at')
         if query == "entry":
             posts = Post.objects.filter(apply__user_id=id, apply__is_member=False)
-            return posts.order_by('-created_at')
+            return posts.order_by('-apply__created_at')
         if query == "join":
             posts = Post.objects.filter(apply__user_id=id, apply__is_member=True)
-            return posts.order_by('-created_at')
+            return posts.order_by('-apply__updated_at')
         raise ValueError("invarid url")
             
 
