@@ -28,6 +28,7 @@ class Post(models.Model):
 class Like(models.Model):
 	user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
 	post = models.ForeignKey('Post', on_delete=models.CASCADE)
+	created_at = models.DateTimeField(auto_now_add=True, blank=True)
 
 	class Meta:
 		unique_together = ('user', 'post')
@@ -36,6 +37,8 @@ class Apply(models.Model):
 	user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
 	post = models.ForeignKey('Post', on_delete=models.CASCADE)
 	is_member = models.BooleanField(default=False)
+	created_at = models.DateTimeField(auto_now_add=True, blank=True)
+	updated_at = models.DateTimeField(auto_now=True, blank=True)
 
 	class Meta:
 		unique_together = ('user', 'post')
