@@ -11,7 +11,7 @@
     <button class="btn btn-dark btn-block" type="submit">ログイン</button>
     <p class="mt-3"><a href="{% url 'account_reset_password' %}" class="text-dark">パスワードをお忘れですか？</a></p>
     <hr>
-    <p class="mt-3"><a href="{% url 'account_signup' %}" class="text-dark">アカウントを作成</a></p>
+    <p class="mt-3"><a href="{% url 'accounts:signup' %}" class="text-dark">アカウントを作成</a></p>
   </form>
 </div>
 {% endblock %}

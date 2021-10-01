@@ -1,8 +1,9 @@
 from .models import CustomUser
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import authenticate, login
 from django.views import generic
-from django.shortcuts import redirect
-from .forms import ProfileForm
+from django.shortcuts import redirect, render
+from .forms import ProfileForm, SignUpForm
 from django.contrib.messages.views import SuccessMessageMixin
 from timeline.models import Post, Apply
 
@@ -72,6 +73,20 @@ class QuitView(LoginRequiredMixin, generic.View):
         record.save()
         return redirect('timeline:index')
 
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            email = form.cleaned_data.get('email')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(email=email, password=raw_password)
+            login(request, user)
+            return redirect('timeline:index')
+    else:
+        form = SignUpForm()
+    return render(request, 'account/signup.html', {'form': form})
 
 
 edit = ProfileEdit.as_view()

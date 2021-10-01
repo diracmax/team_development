@@ -8,4 +8,5 @@ urlpatterns = [
     path('<int:pk>/', views.detail, name='detail'),
     path('<int:pk>/<str:query>', views.PostList.as_view(), name='posts'),
     path('quit/', views.quit, name='quit'),
+    path('signup/', views.signup, name='signup'),
 ]

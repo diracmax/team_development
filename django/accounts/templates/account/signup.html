@@ -6,7 +6,7 @@
 {% block contents %}
 <div class="form-content">
   <h1 class="mb-4">ユーザー登録</h1>
-  <form method="post" action="{% url 'account_signup' %}">
+  <form method="post" action="{% url 'accounts:signup' %}">
     {% csrf_token %}
     {% bootstrap_form form %}
      <button class="btn btn-dark btn-block" type="submit">登録する</button>
