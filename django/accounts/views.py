@@ -11,21 +11,28 @@ QUERY_DICT = {
         "display": "いいね",
         "custom": {
             "table": "like",
-            "column": "created_at"
+            "column": "created_at",
+            "query": False
         }
     },
     "entry": {
         "display": "応募",
         "custom": {
             "table": "apply",
-            "column": "created_at"
+            "column": "created_at",
+            "query": {
+                "apply__is_member": False
+            }
         }
     },
     "join": {
         "display": "参加",
         "custom": {
             "table": "apply",
-            "column": "updated_at"
+            "column": "updated_at",
+            "query": {
+                "apply__is_member": True
+            }
         }
     },
     "recruit": {
@@ -71,12 +78,16 @@ class PostList(LoginRequiredMixin, generic.ListView):
         query = self.kwargs.get('query', 0)
         if query in QUERY_DICT:
             if not QUERY_DICT[query]["custom"]:
-                keyword = "author_id"
+                keyword = {"author_id": id}
                 order = "-created_at"
             else:
-                keyword = QUERY_DICT[query]["custom"]["table"] + "__user_id"
+                if QUERY_DICT[query]["custom"]["query"]:
+                    kwdict = QUERY_DICT[query]["custom"]["query"]
+                else:
+                    kwdict = dict()
+                kwdict[QUERY_DICT[query]["custom"]["table"] + "__user_id"] = id
                 order = "-" + QUERY_DICT[query]["custom"]["table"] + "__" + QUERY_DICT[query]["custom"]["column"]
-            posts = Post.objects.filter(**{keyword: id})
+            posts = Post.objects.filter(**kwdict)
             return posts.order_by(order)
         raise ValueError("This URL is forbidden. allowed is following:\n" + ",\n".join(["    \"/accounts/[user_id]/"+key+"\"" for key in QUERY_DICT]))
             
