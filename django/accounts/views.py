@@ -4,13 +4,34 @@ from django.views import generic
 from django.shortcuts import redirect
 from .forms import ProfileForm
 from django.contrib.messages.views import SuccessMessageMixin
-from timeline.models import Post, Apply
+from timeline.models import Post
 
 QUERY_DICT = {
-    "like": "いいね",
-    "entry": "応募",
-    "join": "参加",
-    "recruit": "募集",
+    "like": {
+        "display": "いいね",
+        "custom": {
+            "table": "like",
+            "column": "created_at"
+        }
+    },
+    "entry": {
+        "display": "応募",
+        "custom": {
+            "table": "apply",
+            "column": "created_at"
+        }
+    },
+    "join": {
+        "display": "参加",
+        "custom": {
+            "table": "apply",
+            "column": "updated_at"
+        }
+    },
+    "recruit": {
+        "display": "募集",
+        "custom": False
+    }
 }
 
 class ProfileEdit(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
@@ -39,7 +60,7 @@ class PostList(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         query = self.kwargs.get('query', "")
         owner = CustomUser.objects.get(id=self.kwargs.get('pk', 0)).username
-        context["title"] = owner + "の" + QUERY_DICT[query] + "一覧"
+        context["title"] = owner + "の" + QUERY_DICT[query]["display"] + "一覧"
         context["name"] = owner
         context["QUERY_DICT"] = QUERY_DICT
         return context
@@ -48,19 +69,16 @@ class PostList(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         id = self.kwargs.get('pk', 0)
         query = self.kwargs.get('query', 0)
-        if query == "recruit":
-            posts = Post.objects.filter(author_id=id)
-            return posts.order_by('-created_at')
-        if query == "like":
-            posts = Post.objects.filter(like__user_id=id)
-            return posts.order_by('-like__created_at')
-        if query == "entry":
-            posts = Post.objects.filter(apply__user_id=id, apply__is_member=False)
-            return posts.order_by('-apply__created_at')
-        if query == "join":
-            posts = Post.objects.filter(apply__user_id=id, apply__is_member=True)
-            return posts.order_by('-apply__updated_at')
-        raise ValueError("invarid url")
+        if query in QUERY_DICT:
+            if not QUERY_DICT[query]["custom"]:
+                keyword = "author_id"
+                order = "-created_at"
+            else:
+                keyword = QUERY_DICT[query]["custom"]["table"] + "__user_id"
+                order = "-" + QUERY_DICT[query]["custom"]["table"] + "__" + QUERY_DICT[query]["custom"]["column"]
+            posts = Post.objects.filter(**{keyword: id})
+            return posts.order_by(order)
+        raise ValueError("This URL is forbidden. allowed is following:\n" + ",\n".join(["    \"/accounts/[user_id]/"+key+"\"" for key in QUERY_DICT]))
             
 
 class QuitView(LoginRequiredMixin, generic.View):

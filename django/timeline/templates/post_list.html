@@ -11,6 +11,26 @@
       <div class="col-10 ml-3">
         <a href="{% url 'accounts:detail' post.author.id %}" class="text-secondary">{{ post.author }}</a><br>
         <small class="text-muted">{{ post.created_at | date:"n月j日 H時i分" }}</small>
+        {% if sort_method == "like" %}
+          {% for like in post.like_set.all %}{% if like.user_id == sort_userid %}
+            <br><small class="text-muted">{{name}}さんは{{ like.created_at | date:"n月j日H時i分" }}、この投稿にいいねしました</small>
+          {% endif %}{% endfor %}
+        {% elif sort_method == "entry" %}
+          {% for apply in post.apply_set.all %}{% if apply.user_id == sort_userid %}
+            <br><small class="text-muted">{{name}}さんは{{ apply.created_at | date:"n月j日H時i分" }}、この投稿に応募しました</small>
+          {% endif %}{% endfor %}
+        {% elif sort_method == "join" %}
+          {% for apply in post.apply_set.all %}{% if apply.user_id == sort_userid %}
+            <br><small class="text-muted">{{name}}さんは{{ apply.updated_at | date:"n月j日H時i分" }}、この投稿に参加しました</small>
+          {% endif %}{% endfor %}
+        {% endif %}
+        {% comment %} {% if sort_DICT.[sort_method].custom %}
+          {% with table=sort_DICT.[sort_method].custom.table+"_set" column=sort_DICT.[sort_method].custom.column%}
+          {% for record in post.[table].all %}{% if record.user_id == sort_postid %}
+            <br><small class="text-muted">{{name}}さんは{{ record.[column] | date:"n月j日H時i分" }}にこの投稿に{{sort_DICT.[sort_method].display}}しました</small>
+          {% endif %}{% endfor %}
+          {% endwith %}
+        {% endif %} {% endcomment %}
       </div>
     </div>
     <p class="card-text mt-2">{{ post.text | linebreaks }}</p>
@@ -50,5 +70,5 @@
   </a>
 
 </div>
-{% endfor %}
+{% endfor %} 
 
