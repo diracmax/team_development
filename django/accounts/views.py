@@ -1,10 +1,11 @@
-from .models import CustomUser
+from .models import CustomUser, Follow
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.shortcuts import redirect
 from .forms import ProfileForm
 from django.contrib.messages.views import SuccessMessageMixin
 from timeline.models import Post, Apply
+from django.http.response import JsonResponse
 
 QUERY_DICT = {
     "like": "いいね",
@@ -31,6 +32,21 @@ class ProfileDetail(LoginRequiredMixin, generic.DetailView):
         context["QUERY_DICT"] = QUERY_DICT
         return context
 
+
+class FollowView(LoginRequiredMixin, generic.View):
+    model = Follow
+
+    def post(self, request):
+        following_id = request.POST.get('id')
+        following = CustomUser.objects.get(id=following_id)
+        follow = Follow(follower=self.request.user, following=following)
+        follow.save()
+        follow_count = Follow.objects.filter(following=following).count()
+        data = {'message': 'フォローしました',
+                'follow_count': follow_count}
+        return JsonResponse(data)
+
+
 class PostList(LoginRequiredMixin, generic.ListView):
     template_name = 'account/related_posts.html'
     paginate_by = 10
@@ -43,7 +59,6 @@ class PostList(LoginRequiredMixin, generic.ListView):
         context["name"] = owner
         context["QUERY_DICT"] = QUERY_DICT
         return context
-        
         
     def get_queryset(self):
         id = self.kwargs.get('pk', 0)
@@ -77,3 +92,4 @@ class QuitView(LoginRequiredMixin, generic.View):
 edit = ProfileEdit.as_view()
 detail = ProfileDetail.as_view()
 quit = QuitView.as_view()
+follow = FollowView.as_view()
