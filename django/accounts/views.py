@@ -47,6 +47,40 @@ class FollowView(LoginRequiredMixin, generic.View):
         return JsonResponse(data)
 
 
+    def post(self, request):
+        following_id = request.POST.get('id')
+        following = CustomUser.objects.get(id=following_id)
+
+        try:
+            # if it already exists, it violates unique constraints
+            follow = Follow(follower=self.request.user, following=following)
+            follow.save()
+            follow_count = Follow.objects.filter(following=following).count()
+            data = {'message': 'フォローしました',
+                    'follow_count': follow_count}
+            return JsonResponse(data)    
+            # apply = Apply(user=self.request.user, post=post)
+            # apply.save()
+            # apply_count = Apply.objects.filter(post=post).count()
+            # data = {'message': '応募しました',
+            #         'apply_count': apply_count}
+            # return JsonResponse(data)
+        except:
+            follow = Follow.objects.get(follower=self.request.user, following=following)
+            follow.delete()
+            follow_count = Follow.objects.filter(following=following).count()
+            data = {'message': 'フォロー解除しました',
+                    'follow_count': follow_count}
+            return JsonResponse(data)
+            # apply = Apply.objects.get(user=self.request.user, post=post)
+            # apply.delete()
+            # apply_count = Apply.objects.filter(post=post).count()
+            # data = {'message': '応募を取り下げました',
+            #         'apply_count': apply_count}
+            # return JsonResponse(data)
+
+
+
 class PostList(LoginRequiredMixin, generic.ListView):
     template_name = 'account/related_posts.html'
     paginate_by = 10
