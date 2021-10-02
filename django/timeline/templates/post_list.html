@@ -10,18 +10,26 @@
       </div>
       <div class="col-10 ml-3">
         <a href="{% url 'accounts:detail' post.author.id %}" class="text-secondary">{{ post.author }}</a>
-        <button class="btn btn-link p-0 {% if post.author == user and user in post.author.get_follower %}disabled user-followed text-secondary{% else %}user-follow text-dark{% endif %}" id="user-follow-{{ post.author.id }}" data-id="{{ post.author.id }}">
-        フォロー
-        </button>
-        <span class="badge badge-info" id="follower-count-{{ post.author.id }}">{% if post.get_follower %}{{ post.user.get_follower | length }}{% endif %}</span>
+        {% if post.author == user %}
+          <button class="btn btn-link p-0 {% if user in post.author.get_follower %}disabled user-followed text-secondary{% else %}user-follow text-dark{% endif %}" id="user-follow-{{ post.author.id }}" data-id="{{ post.author.id }}">
+          フォロー
+          </button>
+          <span class="badge badge-info" id="follower-count-{{ post.author.id }}">{% if post.get_follower %}{{ post.user.get_follower | length }}{% endif %}</span>
+        {% endif %}
         <br>
         <small class="text-muted">{{ post.created_at | date:"n月j日 H時i分" }}</small>
       </div>
     </div>
     <p class="card-text mt-2">{{ post.text | linebreaks }}</p>
-    <button class="btn btn-link p-0 {% if user in post.get_like %}disabled post-liked text-secondary{% else %}post-like text-dark{% endif %}" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
-        いいね
+    {% if user in post.get_like %}
+    <button class="btn btn-link p-0 post-like" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
+      いいね
     </button>
+    {% else %}
+    <button class="btn btn-link p-0 post-dislike" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
+      いいね取消
+    </button>
+    {% endif %}
     <span class="badge badge-info" id="like-count-{{ post.id }}">{% if post.get_like %}{{ post.get_like | length }}{% endif %}</span>
 
     {% if post.author.id == user.id %}

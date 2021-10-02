@@ -94,7 +94,26 @@ $(document).on("click", ".post-like", function () {
       csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
     },
     success: function (data) {
-      $("#post-like-" + id).removeClass("post-like text-dark").addClass("post-liked disabled text-secondary");
+      $("#post-like-" + id).removeClass("post-like").addClass("post-dislike");
+      $("#post-like-" + id).html("いいね")
+      var like_count = data["like_count"]
+      $("#like-count-" + id).html(like_count);
+      alert(data["message"])
+    }
+  });
+});
+$(document).on("click", ".post-dislike", function () {
+  var id = $(this).data('id');
+  $.ajax({
+    type: "post",
+    url: "/like/",
+    data: {
+      id: id,
+      csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+    },
+    success: function (data) {
+      $("#post-like-" + id).removeClass("post-dislike").addClass("post-like");
+      $("#post-like-" + id).html("いいね取消")
       var like_count = data["like_count"]
       $("#like-count-" + id).html(like_count);
       alert(data["message"])

@@ -49,12 +49,22 @@ class LikeView(LoginRequiredMixin, generic.View):
     def post(self, request):
         post_id = request.POST.get('id')
         post = Post.objects.get(id=post_id)
-        like = Like(user=self.request.user, post=post)
-        like.save()
-        like_count = Like.objects.filter(post=post).count()
-        data = {'message': 'いいねしました',
-                'like_count': like_count}
-        return JsonResponse(data)
+        
+        try:
+            # if it already exists, it violates unique constraints
+            like = Like(user=self.request.user, post=post)
+            like.save()
+            like_count = Like.objects.filter(post=post).count()
+            data = {'message': 'いいねしました',
+                    'like_count': like_count}
+            return JsonResponse(data)
+        except:
+            like = Like.objects.get(user=self.request.user, post=post)
+            like.delete()
+            like_count = Like.objects.filter(post=post).count()
+            data = {'message': 'いいねを取り消しました',
+                    'like_count': like_count}
+            return JsonResponse(data)
 
 
 class ApplyView(LoginRequiredMixin, generic.View):
