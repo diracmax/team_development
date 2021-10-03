@@ -1,0 +1,33 @@
+{% load static %}
+
+
+
+{% for account in object_list %}
+  <div class="card mb-5 text-left">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-1">
+        <a href="{% url 'accounts:detail' account.id %}"><img src="{% if account.thumbnail %}{{ account.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
+      </div>
+      <div class="col-10 ml-3">
+        <a href="{% url 'accounts:detail' account.id %}" class="text-secondary">{{ account }}</a>
+        {% if account != user %}
+          {% if user in account.get_follower %}
+          <button class="btn btn-link p-0 user-follow" id="user-follow-{{ account.id }}" data-id="{{ account.id }}">
+            フォロー解除
+          </button>
+          {% else %}
+          <button class="btn btn-link p-0 user-disfollow" id="user-follow-{{ account.id }}" data-id="{{ account.id }}">
+            フォロー
+          </button>
+          {% endif %}
+          <span class="badge badge-info" id="follow-count-{{ account.id }}">{% if account.get_follower %}{{ account.get_follower | length }}{% endif %}</span>
+        {% endif %}
+        <br>
+        <small class="text-muted">{{ post.created_at | date:"n月j日 H時i分" }}</small>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endfor %}

@@ -14,6 +14,9 @@ class CustomUser(AbstractUser):
     def get_follower(self):
         followers = Follow.objects.filter(following=self)
         return [follower.follower for follower in followers]
+    def get_following(self):
+        followings = Follow.objects.filter(follower=self)
+        return [following.follower for following in followings]
 
 
     class Meta:

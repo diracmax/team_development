@@ -12,6 +12,8 @@ QUERY_DICT = {
     "entry": "応募",
     "join": "参加",
     "recruit": "募集",
+    "follow": "フォロー",
+    "follower": "フォロワー",
 }
 
 class ProfileEdit(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
@@ -36,15 +38,15 @@ class ProfileDetail(LoginRequiredMixin, generic.DetailView):
 class FollowView(LoginRequiredMixin, generic.View):
     model = Follow
 
-    def post(self, request):
-        following_id = request.POST.get('id')
-        following = CustomUser.objects.get(id=following_id)
-        follow = Follow(follower=self.request.user, following=following)
-        follow.save()
-        follow_count = Follow.objects.filter(following=following).count()
-        data = {'message': 'フォローしました',
-                'follow_count': follow_count}
-        return JsonResponse(data)
+    # def post(self, request):
+    #     following_id = request.POST.get('id')
+    #     following = CustomUser.objects.get(id=following_id)
+    #     follow = Follow(follower=self.request.user, following=following)
+    #     follow.save()
+    #     follow_count = Follow.objects.filter(following=following).count()
+    #     data = {'message': 'フォローしました',
+    #             'follow_count': follow_count}
+    #     return JsonResponse(data)
 
 
     def post(self, request):
@@ -58,13 +60,8 @@ class FollowView(LoginRequiredMixin, generic.View):
             follow_count = Follow.objects.filter(following=following).count()
             data = {'message': 'フォローしました',
                     'follow_count': follow_count}
-            return JsonResponse(data)    
-            # apply = Apply(user=self.request.user, post=post)
-            # apply.save()
-            # apply_count = Apply.objects.filter(post=post).count()
-            # data = {'message': '応募しました',
-            #         'apply_count': apply_count}
-            # return JsonResponse(data)
+            return JsonResponse(data)
+
         except:
             follow = Follow.objects.get(follower=self.request.user, following=following)
             follow.delete()
@@ -72,13 +69,6 @@ class FollowView(LoginRequiredMixin, generic.View):
             data = {'message': 'フォロー解除しました',
                     'follow_count': follow_count}
             return JsonResponse(data)
-            # apply = Apply.objects.get(user=self.request.user, post=post)
-            # apply.delete()
-            # apply_count = Apply.objects.filter(post=post).count()
-            # data = {'message': '応募を取り下げました',
-            #         'apply_count': apply_count}
-            # return JsonResponse(data)
-
 
 
 class PostList(LoginRequiredMixin, generic.ListView):
@@ -102,6 +92,7 @@ class PostList(LoginRequiredMixin, generic.ListView):
             return posts.order_by('-created_at')
         if query == "like":
             posts = Post.objects.filter(like__user_id=id)
+            print(posts)
             return posts.order_by('-created_at')
         if query == "entry":
             posts = Post.objects.filter(apply__user_id=id, apply__is_member=False)
@@ -109,6 +100,33 @@ class PostList(LoginRequiredMixin, generic.ListView):
         if query == "join":
             posts = Post.objects.filter(apply__user_id=id, apply__is_member=True)
             return posts.order_by('-created_at')
+        if query == "follower":
+            accounts = CustomUser.objects.raw('SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id WHERE following_id = %s', str(id))
+            return accounts
+        if query == "follow":
+            accounts = CustomUser.objects.raw('SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id WHERE follower_id = %s', str(id))
+            return accounts
+        raise ValueError("invarid url")
+
+
+class UserList(LoginRequiredMixin, generic.ListView):
+    template_name = 'account/user_list.html'
+    paginate_by = 10
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     query = self.kwargs.get('query', "")
+    #     owner = CustomUser.objects.get(id=self.kwargs.get('pk', 0)).username
+    #     context["title"] = owner + "の" + QUERY_DICT[query] + "一覧"
+    #     context["name"] = owner
+    #     context["QUERY_DICT"] = QUERY_DICT
+    #     return context
+        
+    def get_queryset(self):
+        id = self.kwargs.get('pk', 0)
+        query = self.kwargs.get('query', 0)
+
+
         raise ValueError("invarid url")
             
 
