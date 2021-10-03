@@ -92,7 +92,6 @@ class PostList(LoginRequiredMixin, generic.ListView):
             return posts.order_by('-created_at')
         if query == "like":
             posts = Post.objects.filter(like__user_id=id)
-            print(posts)
             return posts.order_by('-created_at')
         if query == "entry":
             posts = Post.objects.filter(apply__user_id=id, apply__is_member=False)
