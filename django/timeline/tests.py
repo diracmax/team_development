@@ -20,6 +20,6 @@ class TimelineTestCase(TestCase):
         response = client.get('/')
         self.assertEqual(response.status_code, 200)
 
-        client.post('/create/', {'text': '本文', 'photo': ''})
+        client.post('/create/', {'title': 'タイトル', 'text': '本文', 'photo': ''})
         latest_post = Post.objects.latest('created_at')
         self.assertEqual(latest_post.text, '本文')
