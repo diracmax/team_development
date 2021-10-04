@@ -1,16 +1,20 @@
-from .models import CustomUser
+from .models import CustomUser, Follow
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.shortcuts import redirect
 from .forms import ProfileForm
 from django.contrib.messages.views import SuccessMessageMixin
 from timeline.models import Post, Apply
+from django.http.response import JsonResponse
+from django.db import connection
 
 QUERY_DICT = {
     "like": "いいね",
     "entry": "応募",
     "join": "参加",
     "recruit": "募集",
+    "follow": "フォロー",
+    "follower": "フォロワー",
 }
 
 class ProfileEdit(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
@@ -31,6 +35,32 @@ class ProfileDetail(LoginRequiredMixin, generic.DetailView):
         context["QUERY_DICT"] = QUERY_DICT
         return context
 
+
+class FollowView(LoginRequiredMixin, generic.View):
+    model = Follow
+
+    def post(self, request):
+        following_id = request.POST.get('id')
+        following = CustomUser.objects.get(id=following_id)
+
+        try:
+            # if it already exists, it violates unique constraints
+            follow = Follow(follower=self.request.user, following=following)
+            follow.save()
+            follow_count = Follow.objects.filter(following=following).count()
+            data = {'message': 'フォローしました',
+                    'follow_count': follow_count}
+            return JsonResponse(data)
+
+        except:
+            follow = Follow.objects.get(follower=self.request.user, following=following)
+            follow.delete()
+            follow_count = Follow.objects.filter(following=following).count()
+            data = {'message': 'フォロー解除しました',
+                    'follow_count': follow_count}
+            return JsonResponse(data)
+
+
 class PostList(LoginRequiredMixin, generic.ListView):
     template_name = 'account/related_posts.html'
     paginate_by = 10
@@ -43,7 +73,6 @@ class PostList(LoginRequiredMixin, generic.ListView):
         context["name"] = owner
         context["QUERY_DICT"] = QUERY_DICT
         return context
-        
         
     def get_queryset(self):
         id = self.kwargs.get('pk', 0)
@@ -60,6 +89,12 @@ class PostList(LoginRequiredMixin, generic.ListView):
         if query == "join":
             posts = Post.objects.filter(apply__user_id=id, apply__is_member=True)
             return posts.order_by('-created_at')
+        if query == "follower":
+            accounts = CustomUser.objects.raw('SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id WHERE following_id = %s', str(id))
+            return accounts
+        if query == "follow":
+            accounts = CustomUser.objects.raw('SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id WHERE follower_id = %s', str(id))
+            return accounts
         raise ValueError("invarid url")
             
 
@@ -77,3 +112,4 @@ class QuitView(LoginRequiredMixin, generic.View):
 edit = ProfileEdit.as_view()
 detail = ProfileDetail.as_view()
 quit = QuitView.as_view()
+follow = FollowView.as_view()

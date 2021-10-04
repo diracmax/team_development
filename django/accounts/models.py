@@ -11,6 +11,23 @@ class CustomUser(AbstractUser):
                                format='JPEG',
                                options={'quality': 60})
 
+    def get_follower(self):
+        followers = Follow.objects.filter(following=self)
+        return [follower.follower for follower in followers]
+    def get_following(self):
+        followings = Follow.objects.filter(follower=self)
+        return [following.follower for following in followings]
+
 
     class Meta:
         verbose_name_plural = 'CustomUser'
+
+
+class Follow(models.Model):
+    follower = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name='follower')
+    following = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name='following')
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+
+
+    class Meta:
+    	unique_together = ('follower', 'following')
