@@ -24,7 +24,7 @@
           <span class="badge badge-info" id="follow-count-{{ account.id }}">{% if account.get_follower %}{{ account.get_follower | length }}{% endif %}</span>
         {% endif %}
         <br>
-        <small class="text-muted">{{ post.created_at | date:"n月j日 H時i分" }}</small>
+        <small class="text-muted">{{ account.created_at | date:"n月j日 H時i分" }}</small>
       </div>
     </div>
   </div>

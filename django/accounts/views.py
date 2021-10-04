@@ -6,6 +6,7 @@ from .forms import ProfileForm
 from django.contrib.messages.views import SuccessMessageMixin
 from timeline.models import Post, Apply
 from django.http.response import JsonResponse
+from django.db import connection
 
 QUERY_DICT = {
     "like": "いいね",
@@ -37,17 +38,6 @@ class ProfileDetail(LoginRequiredMixin, generic.DetailView):
 
 class FollowView(LoginRequiredMixin, generic.View):
     model = Follow
-
-    # def post(self, request):
-    #     following_id = request.POST.get('id')
-    #     following = CustomUser.objects.get(id=following_id)
-    #     follow = Follow(follower=self.request.user, following=following)
-    #     follow.save()
-    #     follow_count = Follow.objects.filter(following=following).count()
-    #     data = {'message': 'フォローしました',
-    #             'follow_count': follow_count}
-    #     return JsonResponse(data)
-
 
     def post(self, request):
         following_id = request.POST.get('id')
@@ -105,27 +95,6 @@ class PostList(LoginRequiredMixin, generic.ListView):
         if query == "follow":
             accounts = CustomUser.objects.raw('SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id WHERE follower_id = %s', str(id))
             return accounts
-        raise ValueError("invarid url")
-
-
-class UserList(LoginRequiredMixin, generic.ListView):
-    template_name = 'account/user_list.html'
-    paginate_by = 10
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     query = self.kwargs.get('query', "")
-    #     owner = CustomUser.objects.get(id=self.kwargs.get('pk', 0)).username
-    #     context["title"] = owner + "の" + QUERY_DICT[query] + "一覧"
-    #     context["name"] = owner
-    #     context["QUERY_DICT"] = QUERY_DICT
-    #     return context
-        
-    def get_queryset(self):
-        id = self.kwargs.get('pk', 0)
-        query = self.kwargs.get('query', 0)
-
-
         raise ValueError("invarid url")
             
 
