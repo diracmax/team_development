@@ -61,5 +61,31 @@
 <span class="badge badge-info" id="apply-count-{{ post.id }}">{% if post.get_applicant %}{{ post.get_applicant | length }}{% endif %}</span>
 {% endif %}
 
+<div>
+  <form method="post" action="{% url 'timeline:comment' object.id %}" class="d-inline">
+    {% csrf_token %}
+    <textarea name="text" rows="3" placeholder="コメント"></textarea>
+    <button class="btn btn-dark btn-block" type="submit">コメントを送信</button>
+  </form>
+</div>
+
+{% for comment in object.get_comment %}
+  <div>
+    {% if comment.author.id == object.id %}
+      <p style="color: blue">投稿者</p>
+    {% endif %}
+    <p>{{comment.text}}</p>
+    <p>{{comment.created_at}}</p>
+    {% if comment.author.id == user.id %}
+      <form method="post" action="{% url 'timeline:delete_comment' object.id %}" class="d-inline">
+      {% csrf_token %}
+      <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("このコメントを本当に削除しますか？");'>
+        削除
+      </button>
+      </form>
+    {% endif %}
+  </div>
+{% endfor %}
+
 <img class="card-img-bottom" src="{{ object.post_photo.url }}" alt="Card image cap">
 {% endblock %}

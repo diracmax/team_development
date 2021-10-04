@@ -12,4 +12,7 @@ urlpatterns = [
     path('apply/', views.apply, name='apply'),
     path('accept/<int:post_id>/<int:user_id>/', views.accept, name='accept'),
     path('update/<int:pk>/', views.update, name='update'),
+    path('<int:pk>/comment', views.comment, name="comment"),
+    path('<int:pk>/comment/delete',
+         views.delete_comment, name="delete_comment"),
 ]

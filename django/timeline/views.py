@@ -1,10 +1,10 @@
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 from django.contrib import messages
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
-from .models import Post, Like, Apply
+from django.urls import reverse_lazy, reverse
+from .models import Post, Like, Apply, Comment
 from accounts.models import CustomUser
 from django.http.response import JsonResponse
 
@@ -108,6 +108,37 @@ class UpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy('timeline:index')
 
 
+class CommentView(LoginRequiredMixin, generic.CreateView):
+    form_class = CommentForm
+
+    def form_valid(self, form):
+        form.instance.author_id = self.request.user.id
+        pk = self.kwargs.get('pk')
+        form.instance.post = Post.objects.get(pk=pk)
+        messages.success(self.request, 'コメントが完了しました。')
+        return super(CommentView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        messages.warning(self.request, 'コメントが失敗しました。')
+        return redirect('timeline:detail', pk=self.kwargs['pk'])
+
+    def get_success_url(self):
+        return reverse('timeline:detail', kwargs={'pk': self.kwargs['pk']})
+
+
+class DeleteCommentView(LoginRequiredMixin, generic.DeleteView):
+    model = Comment
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.author == request.user:
+            messages.success(self.request, '削除しました。')
+            return super().delete(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('timeline:detail', kwargs={'pk': self.kwargs['pk']})
+
+
 index = IndexView.as_view()
 create = CreateView.as_view()
 delete = DeleteView.as_view()
@@ -116,3 +147,5 @@ apply = ApplyView.as_view()
 detail = PostDetail.as_view()
 accept = AcceptApplicationView.as_view()
 update = UpdateView.as_view()
+comment = CommentView.as_view()
+delete_comment = DeleteCommentView.as_view()
