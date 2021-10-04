@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'accounts.apps.AccountsConfig',
     'timeline.apps.TimelineConfig',
+    'dm.apps.DmConfig',
     'django_cleanup.apps.CleanupConfig',
     
     'django.contrib.sites',
