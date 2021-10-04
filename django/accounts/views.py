@@ -43,8 +43,8 @@ class PostList(LoginRequiredMixin, generic.ListView):
         context["name"] = owner
         context["QUERY_DICT"] = QUERY_DICT
         return context
-        
-        
+
+
     def get_queryset(self):
         id = self.kwargs.get('pk', 0)
         query = self.kwargs.get('query', 0)
@@ -61,7 +61,7 @@ class PostList(LoginRequiredMixin, generic.ListView):
             posts = Post.objects.filter(apply__user_id=id, apply__is_member=True)
             return posts.order_by('-created_at')
         raise ValueError("invarid url")
-            
+
 
 class QuitView(LoginRequiredMixin, generic.View):
     model = CustomUser
@@ -76,4 +76,5 @@ class QuitView(LoginRequiredMixin, generic.View):
 
 edit = ProfileEdit.as_view()
 detail = ProfileDetail.as_view()
+postlist = PostList.as_view()
 quit = QuitView.as_view()

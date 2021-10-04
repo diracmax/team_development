@@ -9,7 +9,7 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ('username','description','photo')
+        fields = ('username', 'description', 'photo', 'school', 'age', 'github_id')
         help_texts = {
             'username': None,
         }
