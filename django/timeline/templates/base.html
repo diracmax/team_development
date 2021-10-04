@@ -26,8 +26,12 @@
                     <a class="nav-link" href="{% url 'accounts:edit' %}">プロフィール</a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" href="{% url 'dm:inbox' %}">メッセージ</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'account_logout' %}">ログアウト</a>
                 </li>
+                
                 {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'account_login' %}">ログイン</a>
@@ -94,9 +98,65 @@ $(document).on("click", ".post-like", function () {
       csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
     },
     success: function (data) {
-      $("#post-like-" + id).removeClass("post-like text-dark").addClass("post-liked disabled text-secondary");
+      $("#post-like-" + id).removeClass("post-like").addClass("post-dislike");
+      $("#post-like-" + id).html("いいね")
       var like_count = data["like_count"]
       $("#like-count-" + id).html(like_count);
+      alert(data["message"])
+    }
+  });
+});
+$(document).on("click", ".post-dislike", function () {
+  var id = $(this).data('id');
+  $.ajax({
+    type: "post",
+    url: "/like/",
+    data: {
+      id: id,
+      csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+    },
+    success: function (data) {
+      $("#post-like-" + id).removeClass("post-dislike").addClass("post-like");
+      $("#post-like-" + id).html("いいね取消")
+      var like_count = data["like_count"]
+      $("#like-count-" + id).html(like_count);
+      alert(data["message"])
+    }
+  });
+});
+// follow
+$(document).on("click", ".user-follow", function () {
+  var id = $(this).data('id');
+  $.ajax({
+    type: "post",
+    url: "/accounts/follow/",
+    data: {
+      id: id,
+      csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+    },
+    success: function (data) {
+      $("#user-follow-" + id).removeClass("user-follow").addClass("user-disfollow");
+      $("#user-follow-" + id).html("フォロー")
+      var follow_count = data["follow_count"]
+      $("#follow-count-" + id).html(follow_count);
+      alert(data["message"])
+    }
+  });
+});
+$(document).on("click", ".user-disfollow", function () {
+  var id = $(this).data('id');
+  $.ajax({
+    type: "post",
+    url: "/accounts/follow/",
+    data: {
+      id: id,
+      csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+    },
+    success: function (data) {
+      $("#user-follow-" + id).removeClass("user-disfollow").addClass("user-follow");
+      $("#user-follow-" + id).html("フォロー解除")
+      var follow_count = data["follow_count"]
+      $("#follow-count-" + id).html(follow_count);
       alert(data["message"])
     }
   });

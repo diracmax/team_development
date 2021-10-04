@@ -13,7 +13,11 @@
   {% endif %}
 {% endfor %}
 
-{% include "post_list.html" %}
-{% include "pagination.html" %}
+{% if view.kwargs.query == "follow" or view.kwargs.query == "follower" %}
+  {% include "account/account_list.html" %}
+{% else %}
+  {% include "timeline/post_list.html" %}
+{% endif %}
+{% include "timeline/pagination.html" %}
 
 {% endblock %}
