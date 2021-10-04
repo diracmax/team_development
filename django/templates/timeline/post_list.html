@@ -1,0 +1,26 @@
+{% load static %}
+
+{% for post in object_list %}
+  <div class="card mb-5 text-left">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-1">
+        <a href="{% url 'accounts:detail' post.author.id %}"><img src="{% if post.author.thumbnail %}{{ post.author.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
+      </div>
+      <div class="col-10 ml-3">
+        <a href="{% url 'accounts:detail' post.author.id %}" class="text-secondary">{{ post.author }}</a><br>
+        <small class="text-muted">{{ post.created_at | date:"n月j日 H時i分" }}</small>
+      </div>
+    </div>
+    <p class="card-text mt-2">{{ post.title | linebreaks }}</p>
+    {% include "timeline/like_apply_delete.html" %}
+  </div>
+
+  <a href="{% url 'timeline:detail' post.id %}">
+  {% if post.post_photo %}
+  <img class="card-img-bottom" src="{{ post.post_photo.url }}" alt="Card image cap">
+  {% endif %}
+  </a>
+
+</div>
+{% endfor %}

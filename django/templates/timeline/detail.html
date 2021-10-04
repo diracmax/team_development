@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}投稿詳細 | seekiee{% endblock %}
+{% block contents %}
+
+<h1>ディテイルだよー</h1>
+
+<h1>You are {{user}}</h1>
+
+<h1>タイトル is {{ object.title }}</h1>
+
+<h1>内容 is {{object.text}}</h1>
+
+<h1>募集条件 is {{ object.recruitment_conditions }}</h1>
+
+<h1>募集人数 is {{ object.capacity }}</h1>
+
+<h1>投稿者 is {{object.author}}</h1>
+
+<h1>応募者 is {{object.get_applicant}}</h1>
+
+<h1>メンバー is {{object.get_member}}</h1>
+
+<h1></h1>
+
+{% if post.author.id == user.id %}
+<p>メンバー</p>
+{% for user in object.get_member %}
+    <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
+      {% csrf_token %}
+      <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("このユーザーをメンバーから外しますか？");'>
+        {{user}}
+      </button>
+    </form>
+{% endfor %}
+
+<p>応募者</p>
+{% for user in object.get_applicant %}
+    <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
+      {% csrf_token %}
+      <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("このユーザーをメンバーにしますか？");'>
+        {{user}}
+      </button>
+    </form>
+{% endfor %}
+
+{% endif %}
+
+<hr>
+
+{% include "timeline/like_apply_delete.html" %}
+
+{% if post.author.id == user.id %}
+<a href="{% url 'timeline:update' object.pk %}" class="btn btn-primary my-2">編集する</a>
+{% endif %}
+
+<img class="card-img-bottom" src="{{ object.post_photo.url }}" alt="Card image cap">
+{% endblock %}
