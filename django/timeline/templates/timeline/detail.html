@@ -7,7 +7,13 @@
 
 <h1>You are {{user}}</h1>
 
+<h1>タイトル is {{ object.title }}</h1>
+
 <h1>内容 is {{object.text}}</h1>
+
+<h1>募集条件 is {{ object.recruitment_conditions }}</h1>
+
+<h1>募集人数 is {{ object.capacity }}</h1>
 
 <h1>投稿者 is {{object.author}}</h1>
 
@@ -15,8 +21,9 @@
 
 <h1>メンバー is {{object.get_member}}</h1>
 
+
 {% if post.author.id == user.id %}
-メンバー
+<p>メンバー</p>
 {% for user in object.get_member %}
     <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
       {% csrf_token %}
@@ -26,7 +33,7 @@
     </form>
 {% endfor %}
 
-応募者
+<p>応募者</p>
 {% for user in object.get_applicant %}
     <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
       {% csrf_token %}
@@ -40,25 +47,10 @@
 
 <hr>
 
-<button class="btn btn-link p-0 {% if user in post.get_like %}disabled post-liked text-secondary{% else %}post-like text-dark{% endif %}" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
-  いいね
-</button>
-<span class="badge badge-info" id="like-count-{{ post.id }}">{% if post.get_like %}{{ post.get_like | length }}{% endif %}</span>
+{% include "timeline/like_apply_delete.html" %}
 
 {% if post.author.id == user.id %}
-<form method="post" action="{% url 'timeline:delete' post.id %}" class="d-inline">
-<button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("この投稿を本当に削除しますか？");'>
-  削除
-</button>
-</form>
 <a href="{% url 'timeline:update' object.pk %}" class="btn btn-primary my-2">編集する</a>
-{% elif not post.is_recruited %}
-<p>現在募集していません</p>
-{% else %}
-<button class="btn btn-link p-0 {% if user in post.get_applicant or user in post.get_member %}disabled post-applied text-secondary{% else %}post-apply text-dark{% endif %}" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
-応募
-</button>
-<span class="badge badge-info" id="apply-count-{{ post.id }}">{% if post.get_applicant %}{{ post.get_applicant | length }}{% endif %}</span>
 {% endif %}
 
 <div>

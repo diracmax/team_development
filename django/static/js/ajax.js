@@ -59,6 +59,44 @@ $(document).on("click", ".post-like", function () {
 	});
 });
 
+// follow
+$(document).on("click", ".user-follow", function () {
+	var id = $(this).data('id');
+	$.ajax({
+	  type: "post",
+	  url: "/accounts/follow/",
+	  data: {
+		id: id,
+		csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+	  },
+	  success: function (data) {
+		$("#user-follow-" + id).removeClass("user-follow").addClass("user-disfollow");
+		$("#user-follow-" + id).html("フォロー")
+		var follow_count = data["follow_count"]
+		$("#follow-count-" + id).html(follow_count);
+		alert(data["message"])
+	  }
+	});
+  });
+  $(document).on("click", ".user-disfollow", function () {
+	var id = $(this).data('id');
+	$.ajax({
+	  type: "post",
+	  url: "/accounts/follow/",
+	  data: {
+		id: id,
+		csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+	  },
+	  success: function (data) {
+		$("#user-follow-" + id).removeClass("user-disfollow").addClass("user-follow");
+		$("#user-follow-" + id).html("フォロー解除")
+		var follow_count = data["follow_count"]
+		$("#follow-count-" + id).html(follow_count);
+		alert(data["message"])
+	  }
+	});
+  });
+  
 // apply
 $(document).on("click", ".post-apply", function () {
 	var id = $(this).data('id');

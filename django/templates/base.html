@@ -26,6 +26,9 @@
                     <a class="nav-link" href="{% url 'accounts:edit' %}">プロフィール</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'dm:inbox' %}">メッセージ</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'account_logout' %}">ログアウト</a>
                 </li>
                 {% else %}

@@ -1,6 +1,5 @@
 {% load static %}
 
-
 {% for post in object_list %}
   <div class="card mb-5 text-left">
   <div class="card-body">
@@ -26,40 +25,8 @@
         <small class="text-muted">{{ post.created_at | date:"n月j日 H時i分" }}</small>
       </div>
     </div>
-    <p class="card-text mt-2">{{ post.text | linebreaks }}</p>
-    {% if user in post.get_like %}
-    <button class="btn btn-link p-0 post-like" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
-      いいね取消
-    </button>
-    {% else %}
-    <button class="btn btn-link p-0 post-dislike" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
-      いいね
-    </button>
-    {% endif %}
-    <span class="badge badge-info" id="like-count-{{ post.id }}">{% if post.get_like %}{{ post.get_like | length }}{% endif %}</span>
-
-    {% if post.author.id == user.id %}
-    <form method="post" action="{% url 'timeline:delete' post.id %}" class="d-inline">
-      {% csrf_token %}
-      <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("この投稿を本当に削除しますか？");'>
-        削除
-      </button>
-    </form>
-    {% elif not post.is_recruited %}
-    <p>現在募集していません</p>
-    {% else %}
-      {% if user in post.get_applicant or user in post.get_member %}
-      <button class="btn btn-link p-0 post-apply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
-        取り下げ
-      </button>
-      {% else %}
-      <button class="btn btn-link p-0 post-disapply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
-        応募
-      </button>
-      {% endif %}
-      <span class="badge badge-info" id="apply-count-{{ post.id }}">{% if post.get_applicant %}{{ post.get_apply_number }}{% endif %}</span>
-    {% endif %}
-
+    <p class="card-text mt-2">{{ post.title | linebreaks }}</p>
+    {% include "timeline/like_apply_delete.html" %}
   </div>
 
   <a href="{% url 'timeline:detail' post.id %}">
@@ -70,4 +37,3 @@
 
 </div>
 {% endfor %}
-
