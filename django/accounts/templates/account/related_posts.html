@@ -12,11 +12,12 @@
     <a href="{% url 'accounts:posts' view.kwargs.pk key %}" class="btn btn-link p-0">{{value}}</a>
   {% endif %}
 {% endfor %}
+
 {% if view.kwargs.query == "follow" or view.kwargs.query == "follower" %}
   {% include "account/account_list.html" %}
 {% else %}
-  {% include "post_list.html" %}
+  {% include "timeline/post_list.html" %}
 {% endif %}
-{% include "pagination.html" %}
+{% include "timeline/pagination.html" %}
 
 {% endblock %}

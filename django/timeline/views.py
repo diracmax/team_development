@@ -10,7 +10,7 @@ from django.http.response import JsonResponse
 
 
 class IndexView(LoginRequiredMixin, generic.ListView):
-    template_name = 'index.html'
+    template_name = 'timeline/index.html'
     paginate_by = 10
 
     def get_queryset(self):
@@ -20,6 +20,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 
 class CreateView(LoginRequiredMixin, generic.CreateView):
     form_class = PostForm
+    template_name = 'timeline/create_post.html'
     success_url = reverse_lazy('timeline:index')
 
     def form_valid(self, form):
@@ -49,9 +50,8 @@ class LikeView(LoginRequiredMixin, generic.View):
     def post(self, request):
         post_id = request.POST.get('id')
         post = Post.objects.get(id=post_id)
-        
+
         try:
-            # if it already exists, it violates unique constraints
             like = Like(user=self.request.user, post=post)
             like.save()
             like_count = Like.objects.filter(post=post).count()
@@ -108,13 +108,13 @@ class AcceptApplicationView(LoginRequiredMixin, generic.View):
 
 class PostDetail(LoginRequiredMixin, generic.DetailView):
     model = Post
-    template_name = 'detail.html'
+    template_name = 'timeline/detail.html'
 
 
 class UpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Post
     fields = ('text', 'photo', 'is_recruited')
-    template_name = 'update.html'
+    template_name = 'timeline/update.html'
     success_url = reverse_lazy('timeline:index')
 
 

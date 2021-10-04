@@ -3,8 +3,8 @@ from .models import Post, Apply
 
 # Register your models here.
 class PostAdmin(admin.ModelAdmin):
-    fields = ['text', 'photo', 'is_recruited']
-    list_display = ('id', 'author', 'text', 'photo', 'created_at', 'is_recruited')
+    fields = ['text', 'title', 'photo', 'is_recruited', 'recruitment_conditions', 'capacity']
+    list_display = ('id', 'title', 'author', 'text', 'photo', 'created_at', 'is_recruited', 'recruitment_conditions', 'capacity', 'created_at', 'updated_at')
 
 
 class ApplyAdmin(admin.ModelAdmin):

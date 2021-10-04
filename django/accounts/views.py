@@ -73,7 +73,8 @@ class PostList(LoginRequiredMixin, generic.ListView):
         context["name"] = owner
         context["QUERY_DICT"] = QUERY_DICT
         return context
-        
+
+
     def get_queryset(self):
         id = self.kwargs.get('pk', 0)
         query = self.kwargs.get('query', 0)
@@ -96,7 +97,7 @@ class PostList(LoginRequiredMixin, generic.ListView):
             accounts = CustomUser.objects.raw('SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id WHERE follower_id = %s', str(id))
             return accounts
         raise ValueError("invarid url")
-            
+
 
 class QuitView(LoginRequiredMixin, generic.View):
     model = CustomUser
@@ -112,4 +113,5 @@ class QuitView(LoginRequiredMixin, generic.View):
 edit = ProfileEdit.as_view()
 detail = ProfileDetail.as_view()
 quit = QuitView.as_view()
+postlist = PostList.as_view()
 follow = FollowView.as_view()
