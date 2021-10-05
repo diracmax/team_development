@@ -11,6 +11,7 @@ from django.http.response import JsonResponse
 
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'timeline/index.html'
+    template_name = 'index2.html'
     paginate_by = 10
 
     def get_queryset(self):

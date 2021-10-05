@@ -1,0 +1,11 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% block title %}トップページ | seekiee{% endblock %}
+{% block contents %}
+<a href="{% url 'timeline:create' %}" class="btn btn-primary my-2">投稿する</a>
+
+{% include "timeline/post_list.html" %}
+{% include "timeline/pagination.html" %}
+
+
+{% endblock %}
