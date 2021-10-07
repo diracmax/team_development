@@ -1,0 +1,41 @@
+{% load static %}
+
+<div id="contentBoxApp" ng-app="contentBoxApp">
+  <div id="GridCtrl" ng-controller="GridCtrl">
+
+    <div class="my_container dynamic-grid">
+      {% for post in object_list %}
+      <article class="grid-item content-box">
+      <div class="inner">
+
+        <div class="post_info">
+          <a href="{% url 'timeline:detail' post.id %}">
+            <span class="mask">
+              {% if post.post_photo %}
+              <img class="card-img-bottom content-box-thumb" src="{{ post.post_photo.url }}" alt="Card image cap">
+              {% endif %}
+              <span class="cap">
+                タイトル: {{ post.title }}<br>
+                募集条件: {{ post.recruitment_conditions }}<br>
+                募集人数: {{ post.capacity }}
+                {% include "timeline/like_apply_delete.html" %}
+              </span>
+            </span>
+          </a>
+        </div>
+
+        <h1 class="content-box-header">{{ post.title }}</h1>
+        <a href="{% url 'accounts:detail' post.author.id %}">
+        <img src="{% if post.author.thumbnail %}{{ post.author.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo">
+        </a>
+        <p class="content-box-blurb"><a href="{% url 'accounts:detail' post.author.id %}">{{ post.author }}</a></p>
+        {% include "timeline/like_apply_delete.html" %}
+        {% include "follow2.html" %}
+        <small class="text-muted">{{ post.created_at | date:"n月j日 H時i分" }}</small>
+        <a class="readmore-link" href="{% url 'timeline:detail' post.id %}">read more</a>
+      </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</div>

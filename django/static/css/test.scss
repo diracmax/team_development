@@ -1,0 +1,198 @@
+@import "parts/_destyle.scss";
+@import "parts/_nav.scss";
+
+$bg: rgba(255,255,255, 1);
+$fg: rgba(58,58,58, 1);
+$linkColor: #0074D9;
+$border: 0px solid rgba(230,230,230,1);
+$margin: 1rem;
+$padding: 1rem 1rem 1rem 1rem;
+$lineHeight: 1.4rem;
+$boxShadowColor: rgba(58,58,58,0.1);
+$boxShadow: 0px -1px 2px $boxShadowColor, 1px 1px 2px $boxShadowColor;
+$gradient: linear-gradient(rgba(0,0,0,0.07), rgba(255,255,255,0));
+
+// * {
+//   background-color: #2f2f2f;
+// }
+
+body * {
+  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: $lineHeight;
+}
+body {
+  background: #efefef;
+  color: $fg;
+
+  &:before {
+    content: '';
+    display: block;
+    position: fixed;
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+    max-height: 100vh;
+    max-width: 100wh;
+    top: 0px;
+    left: 0px;
+  }
+}
+a {
+  color: $linkColor;
+  text-decoration: none;
+  font-size: 0.85rem;
+  opacity: 0.75;
+  linear-gradient: ease-in-out 0.6s;
+  &:hover {
+    linear-gradient: ease-in-out 0.6s;
+    opacity: 1;
+  }
+}
+
+.my_container {
+  width: 90%;
+  max-width: 1280px;
+  margin: 0px auto;
+  // background-color: #eee;
+}
+
+.dynamic-grid {
+  position: relative;
+  z-index: 1;
+  columns: 240px 3;
+  // display: grid;
+  // grid-template-columns: repeat(4, auto);
+	column-gap: 0rem;
+  &.my_container {
+    padding-top: 6rem;
+  }
+}
+.grid-item {
+  position: relative;
+  display: inline-block;
+  margin: 0.5rem;
+  max-width: 100%;
+  column-break-inside: avoid;
+  .inner {
+    padding: 0.1rem;
+  }
+}
+.content-box {
+  border: $border;
+  background-color: $bg;
+  box-shadow: $boxShadow;
+
+  &:before {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 4rem;
+    left: 0px;
+    top: 0px;
+  }
+
+}
+.content-box-thumb {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.content-box-header {
+  font-size: 1rem;
+  margin: 0.75rem 0rem 0rem 0rem;
+}
+.content-box-blurb {
+  font-size: 0.85rem;
+  display: block;
+  display: -webkit-box;
+  margin: 0rem;
+  max-width: 100%;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.readmore-link {
+  display: block;
+  margin: 5px 5px 0px 5px;
+  text-align: right;
+}
+
+.post-photo {
+  width: 30px;
+  height: 30px;
+}
+
+.flipLeft{
+  animation-name: flipLeft;
+  animation-duration:0.5s;
+  animation-fill-mode:forwards;
+  perspective-origin: left center;
+  opacity: 0;
+}
+
+@keyframes flipLeft{
+  from {
+    transform: perspective(600px) translate3d(0, 0, 0) rotateY(30deg);
+  opacity: 0;
+  }
+
+  to {
+  transform: perspective(600px) translate3d(0, 0, 0) rotateY(0deg);
+  opacity: 1;
+  }
+}
+
+.post_info {/*テキストの基点となる位置を定義*/
+	position: relative;
+
+  span.mask {
+    position: relative;
+    transition: .3s ease-in-out;/*移り変わる速さを変更したい場合はこの数値を変更*/
+    display: block;/*画像をくくるspanタグをブロック要素にする*/
+    line-height: 0;/*行の高さを0にする*/
+    overflow:hidden;/*拡大してはみ出る要素を隠す*/
+  }
+
+  img {
+    transform: scale(1);
+    filter: blur(0);
+    transition: .3s ease-in-out;/*移り変わる速さを変更したい場合はこの数値を変更*/
+  }
+
+  span.cap {
+    opacity:0;
+    transition: .5s ease-in-out;/*移り変わる速さを変更したい場合はこの数値を変更*/
+    position: absolute;
+    z-index:3;/*テキストを前面に出す*/
+    top: 50%;
+      left: 50%;
+    transform: translate(-50%,-50%);
+    color: #fff;/*テキストの色を変えたい場合はここを修正*/
+      line-height: 1.5;/*行の高さを1.5にする*/
+  }
+
+  :hover {
+    span.mask::before {/*hoverした時の変化*/
+      content:"";
+      position: absolute;
+      z-index:2;
+      top:10px;
+      left:10px;
+      width: calc(100% - 20px);
+        height: calc(100% - 20px);
+      background:rgba(0,0,0,0.5);/*背景色*/
+    }
+
+    img {/*hoverした時の変化*/
+      transform: scale(1.2);/*拡大の値を変更したい場合はこの数値を変更*/
+      filter: blur(3px);/*ぼかし具合を変更したい場合はこの数値を変更*/
+    }
+
+    span.cap {/*hoverした時の変化*/
+      opacity:1;
+    }
+  }
+}

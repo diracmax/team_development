@@ -96,7 +96,7 @@ $(document).on("click", ".user-follow", function () {
 	  }
 	});
   });
-  
+
 // apply
 $(document).on("click", ".post-apply", function () {
 	var id = $(this).data('id');

@@ -12,7 +12,7 @@ from django.http.response import JsonResponse
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'timeline/index.html'
     template_name = 'index2.html'
-    paginate_by = 10
+    paginate_by = 24
 
     def get_queryset(self):
         posts = Post.objects.order_by('-created_at')
