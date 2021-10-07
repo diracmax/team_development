@@ -113,12 +113,18 @@ class PostList(LoginRequiredMixin, generic.ListView):
             return posts.order_by('-created_at')
         if query == "like":
             posts = Post.objects.filter(like__user_id=id)
+            if self.request.GET.get("order"):
+                return posts.order_by(self.request.GET.get("order"))
             return posts.order_by('-like__created_at')
         if query == "entry":
             posts = Post.objects.filter(apply__user_id=id, apply__is_member=False)
+            if self.request.GET.get("order"):
+                return posts.order_by(self.request.GET.get("order"))
             return posts.order_by('-apply__created_at')
         if query == "join":
             posts = Post.objects.filter(apply__user_id=id, apply__is_member=True)
+            if self.request.GET.get("order"):
+                return posts.order_by(self.request.GET.get("order"))
             return posts.order_by('-apply__updated_at')
         if query == "follower":
             accounts = CustomUser.objects.raw('SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id WHERE following_id = %s', str(id))
