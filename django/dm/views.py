@@ -72,7 +72,7 @@ class CreateMessage(generic.View):
         )
         message.save()
 
-        current_site = get_current_site(request).domain
+        current_site = "localhost:8000"
         relativeLink = "/inbox/" + str(pk) + "/"
 
         absurl = 'http://'+current_site+relativeLink
