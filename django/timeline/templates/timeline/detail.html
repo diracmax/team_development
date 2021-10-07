@@ -63,7 +63,7 @@
 
 {% for comment in object.get_comment %}
   <div>
-    {% if comment.author.id == object.id %}
+    {% if comment.author.id == object.author.id %}
       <p style="color: blue">投稿者</p>
     {% endif %}
     <p>{{comment.text}}</p>
@@ -75,6 +75,9 @@
         削除
       </button>
       </form>
+    {% endif %}
+    {% if comment.parent_comment.all %}
+    <a href="{% url 'timeline:comment_reply_list' comment.id %}">詳細</a>
     {% endif %}
   </div>
 {% endfor %}

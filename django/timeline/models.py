@@ -62,3 +62,12 @@ class Comment(models.Model):
     text = models.TextField(verbose_name='コメント')
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class CommentReply(models.Model):
+    author = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
+    parent = models.ForeignKey(
+        'Comment', verbose_name='親コメント', on_delete=models.CASCADE, related_name='parent_comment')
+    text = models.TextField(verbose_name='コメント')
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)

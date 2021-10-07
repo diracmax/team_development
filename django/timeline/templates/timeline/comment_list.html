@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}投稿詳細 | seekiee{% endblock %}
+{% block contents %}
+
+<!-- <div>
+    <form method="post" action="{% url 'timeline:comment_reply' object.post.id object.id %}" class="d-inline">
+        {% csrf_token %}
+        <textarea name="text" rows="3" placeholder="コメント"></textarea>
+        <button class="btn btn-dark btn-block" type="submit">コメントを送信</button>
+    </form>
+</div>
+
+<div>
+    <p>{{parent.text}}</p>
+    <p>{{parent.created_at}}</p>
+</div>
+
+{% for reply in comment_replys %}
+    <div>
+        <div>
+            {% if reply.comment.post.author.id == reply.author.id %}
+              <p style="color: blue">投稿者</p>
+            {% endif %}
+            <p>{{reply.text}}</p>
+            <p>{{reply.created_at}}</p>
+            {% if reply.comment.author.id == user.id %}
+              <form method="post" action="#" class="d-inline">
+              {% csrf_token %}
+              <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("このコメントを本当に削除しますか？");'>
+                削除
+              </button>
+              </form>
+            {% endif %}
+          </div>
+    </div>
+{% endfor %} -->
+
+{% endblock %}

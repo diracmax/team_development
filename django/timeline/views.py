@@ -1,10 +1,10 @@
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, CommentReplyForm
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
-from .models import Post, Like, Apply, Comment
+from .models import Post, Like, Apply, Comment, CommentReply
 from accounts.models import CustomUser
 from django.http.response import JsonResponse
 
@@ -149,6 +149,43 @@ class DeleteCommentView(LoginRequiredMixin, generic.DeleteView):
         return reverse('timeline:detail', kwargs={'pk': self.kwargs['pk']})
 
 
+class CommentReplyList(LoginRequiredMixin, generic.ListView):
+    template_name = 'timeline/comment_list.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        parent = Comment.objects.get(pk=pk)
+        comment_replys = CommentReply.objects.filter(
+            parent=parent).order_by('created_at')
+        return comment_replys
+
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs.get('pk')
+        parent = Comment.objects.get(pk=pk)
+        context = super().get_context_data(**kwargs)
+        context['parent'] = parent
+        return context
+
+
+class CommentReplyView(LoginRequiredMixin, generic.CreateView):
+    form_class = CommentReplyForm
+
+    def form_valid(self, form):
+        form.instance.author_id = self.request.user.id
+        comment_id = self.kwargs.get('comment_id')
+        form.instance.parent = Comment.objects.get(pk=comment_id)
+        messages.success(self.request, 'コメントが完了しました。')
+        return super(CommentReplyView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        messages.warning(self.request, 'コメントが失敗しました。')
+        return redirect('timeline:comment_detail', pk=self.kwargs['pk'], comment_id=self.kwargs["comment_id"])
+
+    def get_success_url(self):
+        return reverse('timeline:comment_detail', kwargs={'pk': self.kwargs['pk'], 'comment_id': self.kwargs['comment_id']})
+
+
 index = IndexView.as_view()
 create = CreateView.as_view()
 delete = DeleteView.as_view()
@@ -159,3 +196,5 @@ accept = AcceptApplicationView.as_view()
 update = UpdateView.as_view()
 comment = CommentView.as_view()
 delete_comment = DeleteCommentView.as_view()
+# comment_reply = CommentReplyView.as_view()
+comment_reply_list = CommentReplyList.as_view()
