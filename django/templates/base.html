@@ -29,6 +29,9 @@
                     <a class="nav-link" href="{% url 'dm:inbox' %}">メッセージ</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'search:post' %}">検索</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'account_logout' %}">ログアウト</a>
                 </li>
                 {% else %}
