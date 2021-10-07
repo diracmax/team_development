@@ -6,9 +6,8 @@
   <h1>{{ customuser.username }}</h1>
   <p class="mt-5"><img src="{% if customuser.thumbnail %}{{ customuser.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-photo"></p>
   <p class="mt-5">{% if customuser.description %}{{ customuser.description | linebreaks }}{% else %}本文はありません。{% endif %}</p>
-
   {% for key, value in QUERY_DICT.items %}
-  <a href="{% url 'accounts:posts' view.kwargs.pk key %}" class="btn btn-link p-0">{{value}}</a>
+  <a href="{% url 'accounts:posts' customuser.id key %}" class="btn btn-link p-0">{{value}}一覧</a>
   {% endfor %}
 
   {% if customuser.id == user.id %}
@@ -18,6 +17,18 @@
         退会
       </button>
     </form>
+    <a href="{% url 'accounts:edit' %}"class="btn btn-link p-0">プロフィール編集</a>
+  {% else %}
+    {% if user in customuser.get_follower %}
+    <button class="btn btn-link p-0 user-follow" id="user-follow-{{ customuser.id }}" data-id="{{ customuser.id }}">
+      フォロー解除
+    </button>
+    {% else %}
+    <button class="btn btn-link p-0 user-disfollow" id="user-follow-{{ customuser.id }}" data-id="{{ customuser.id }}">
+      フォロー
+    </button>
+    {% endif %}
+    <span class="badge badge-info" id="follow-count-{{ customuser.id }}">{% if customuser.get_follower %}{{ customuser.get_follower | length }}{% endif %}</span>
   {% endif %}
 
 </div>

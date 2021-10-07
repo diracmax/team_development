@@ -17,6 +17,34 @@ QUERY_DICT = {
     "follower": "フォロワー",
 }
 
+SORT_DICT = {
+    "post": {
+        "allowed": ["like", "entry", "join", "recruit"],
+        "display": "投稿日時",
+        "method": "created_at"
+    },
+    "edit": {
+        "allowed": ["like", "entry", "join", "recruit"],
+        "display": "更新日時",
+        "method": "updated_at"
+    },
+    "like": {
+        "allowed": ["like"],
+        "display": "いいね日時",
+        "method": "like__created_at"
+    },
+    "entry": {
+        "allowed": ["entry", "join"],
+        "display": "応募日時",
+        "method": "apply__created_at"
+    },
+    "join": {
+        "allowed": ["join"],
+        "display": "参加日時",
+        "method": "apply__updated_at"
+    },
+}
+
 class ProfileEdit(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     model = CustomUser
     form_class = ProfileForm
@@ -68,28 +96,36 @@ class PostList(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         query = self.kwargs.get('query', "")
-        owner = CustomUser.objects.get(id=self.kwargs.get('pk', 0)).username
-        context["title"] = owner + "の" + QUERY_DICT[query] + "一覧"
-        context["name"] = owner
+        owner = CustomUser.objects.get(id=self.kwargs.get('pk', 0))
+        context["title"] = owner.username + "の" + QUERY_DICT[query] + "一覧"
+        context["account"] = owner
         context["QUERY_DICT"] = QUERY_DICT
+        context["SORT_DICT"] = SORT_DICT
         return context
-
 
     def get_queryset(self):
         id = self.kwargs.get('pk', 0)
         query = self.kwargs.get('query', 0)
         if query == "recruit":
             posts = Post.objects.filter(author_id=id)
+            if self.request.GET.get("order"):
+                return posts.order_by(self.request.GET.get("order"))
             return posts.order_by('-created_at')
         if query == "like":
             posts = Post.objects.filter(like__user_id=id)
-            return posts.order_by('-created_at')
+            if self.request.GET.get("order"):
+                return posts.order_by(self.request.GET.get("order"))
+            return posts.order_by('-like__created_at')
         if query == "entry":
             posts = Post.objects.filter(apply__user_id=id, apply__is_member=False)
-            return posts.order_by('-created_at')
+            if self.request.GET.get("order"):
+                return posts.order_by(self.request.GET.get("order"))
+            return posts.order_by('-apply__created_at')
         if query == "join":
             posts = Post.objects.filter(apply__user_id=id, apply__is_member=True)
-            return posts.order_by('-created_at')
+            if self.request.GET.get("order"):
+                return posts.order_by(self.request.GET.get("order"))
+            return posts.order_by('-apply__updated_at')
         if query == "follower":
             accounts = CustomUser.objects.raw('SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id WHERE following_id = %s', str(id))
             return accounts

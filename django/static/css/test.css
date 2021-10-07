@@ -2,6 +2,7 @@
 /*! destyle.css v3.0.0 | MIT License | https://github.com/nicolas-cusan/destyle.css */
 /* Reset box-model and set borders */
 /* ============================================ */
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300);
 *, ::before, ::after { box-sizing: border-box; border-style: solid; border-width: 0; }
 
 /* Document */
@@ -240,6 +241,52 @@ th { text-align: left; font-weight: bold; }
 .button-element .icon { position: absolute; opacity: 1; left: 0; right: 0; line-height: 55px; width: 100%; height: 100%; text-align: center; font-size: 28px; -moz-transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1); -o-transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1); -webkit-transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1); transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
 
 .button-element .text { position: absolute; left: 0; right: 0; width: 100%; height: 100%; opacity: 0; line-height: 60px; text-align: center; -moz-transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1); -o-transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1); -webkit-transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1); transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
+
+html { height: 100%; }
+
+body { background: #2c3e50; }
+
+button:focus { outline: none; }
+
+button:hover { opacity: .8; }
+
+.fa { font-size: 20px; }
+
+.fa-plus { color: white; transition: 1s all ease 1s; }
+
+#pool { width: 100vw; height: 100vh; background: none; position: absolute; overflow: hidden; }
+
+.button-wrapper { width: 54px; height: 100%; position: absolute; bottom: 0; right: 0; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; -webkit-transform-origin: 50% 50%; -ms-transform-origin: 50% 50%; transform-origin: 50% 50%; right: 20px; bottom: 20px; transition: 1.25s all ease .9s; }
+
+button { width: 54px; height: 54px; border: none; border-radius: 50%; cursor: pointer; z-index: 4; position: relative; transition: 1.25s all ease .1s; }
+
+.main-button { background: #ff2670; -webkit-align-self: flex-end; -ms-flex-item-align: end; align-self: flex-end; }
+
+.layer { position: absolute; left: 0; right: 0; bottom: 0; width: 54px; height: 54px; background: #ff2670; border-radius: 50%; z-index: -99; pointer-events: none; transition: 1.25s all ease .5s; }
+
+/*déplacement btn i*/
+.button-wrapper.clicked { -webkit-transform: rotate(90deg) translateY(-96px); -ms-transform: rotate(90deg) translateY(-96px); transform: rotate(180deg) translateY(-20px) translateX(20px); right: 0; bottom: 0; -webkit-transition: .3s all ease .6s; transition: .3s all ease .6s; }
+
+.button-wrapper.clicked .main-button { opacity: 0; -webkit-transition: .3s all ease .3s; transition: .3s all ease .3s; }
+
+/*déclencheur layer*/
+.button-wrapper.clicked .layer { -webkit-transform: scale(100); -ms-transform: scale(100); transform: scale(100); -webkit-transition: 2.25s all ease .9s; transition: 1.25s all ease .9s; }
+
+.layered-content { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; opacity: 0; transition: 0.7s all ease .3s; }
+
+.layered-content.active { opacity: 1; }
+
+.close-button { background: white; position: absolute; right: 20px; top: 20px; color: #ff2670; }
+
+.layered-content.active .close-button { -webkit-animation: .2s bounceIn; animation: .2s bounceIn; }
+
+.content p { color: white; font-weight: 300; text-align: center; line-height: 1.5; font-family: 'Roboto', sans-serif; }
+
+.content p a { font-size: 12px; background: white; padding: 2.5px 5px; color: #ff2670; text-decoration: none; border-radius: 50px; display: inline-block; margin-left: 1.5px; }
+
+.content p { opacity: 0; position: relative; top: -7.5px; -webkit-transition: .5s all ease .5s; transition: .5s all ease .5s; }
+
+.layered-content.active .content p { opacity: 1; top: 0; -webkit-transition: .5s all ease 1s; transition: .5s all ease 1s; }
 
 body * { font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.4rem; }
 

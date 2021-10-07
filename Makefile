@@ -1,9 +1,6 @@
 # docker commands
 up:
-	python3 django/manage.py makemigrations
-	python3 django/manage.py migrate
 	docker-compose -f django/docker-compose.yml up --build
-	make migrate
 
 build:
 	docker-compose -f django/docker-compose.yml build
@@ -35,8 +32,8 @@ app:
 	docker-compose -f django/docker-compose.yml exec app bash
 
 test:
-	docker-compose -f django/docker-compose.yml exec app python manage.py test
+	docker-compose -f django/docker-compose.yml exec app python3 manage.py test
 
 migrate:
-	docker-compose -f django/docker-compose.yml exec app python manage.py makemigrations
-	docker-compose -f django/docker-compose.yml exec app python manage.py migrate
+	docker-compose -f django/docker-compose.yml exec app python3 manage.py makemigrations
+	docker-compose -f django/docker-compose.yml exec app python3 manage.py migrate
