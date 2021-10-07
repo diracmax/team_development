@@ -9,20 +9,21 @@
       </div>
       <div class="col-10 ml-3">
         <a href="{% url 'accounts:detail' post.author.id %}" class="text-secondary">{{ post.author }}</a>
-        {% if post.author != user %}
-          {% if user in post.author.get_follower %}
-          <button class="btn btn-link p-0 user-follow" id="user-follow-{{ post.author.id }}" data-id="{{ post.author.id }}">
-            フォロー解除
-          </button>
-          {% else %}
-          <button class="btn btn-link p-0 user-disfollow" id="user-follow-{{ post.author.id }}" data-id="{{ post.author.id }}">
-            フォロー
-          </button>
-          {% endif %}
-          <span class="badge badge-info" id="follow-count-{{ post.author.id }}">{% if post.author.get_follower %}{{ post.author.get_follower | length }}{% endif %}</span>
+        <small class="text-muted">{{ post.created_at | date:"n月j日 H時i分" }}</small>
+        {% if f_type == "like" %}
+          {% for row in post.like_set.all %}{% if row.user_id == account.pk %}
+          <br><small class="text-muted">{{account.username}}さんが{{ row.created_at | date:"n月j日H時i分" }}にいいねしました</small>
+          {% endif %}{% endfor %}
+        {% elif f_type == "entry" %}
+          {% for row in post.apply_set.all %}{% if row.user_id == account.pk %}
+          <br><small class="text-muted">{{account.username}}さんが{{ row.created_at | date:"n月j日H時i分" }}に応募しました</small>
+          {% endif %}{% endfor %}
+        {% elif f_type == "join" %}
+          {% for row in post.apply_set.all %}{% if row.user_id == account.pk %}
+          <br><small class="text-muted">{{account.username}}さんが{{ row.updated_at | date:"n月j日H時i分" }}に参加しました</small>
+          {% endif %}{% endfor %}
         {% endif %}
         <br>
-        <small class="text-muted">{{ post.created_at | date:"n月j日 H時i分" }}</small>
       </div>
     </div>
     <p class="card-text mt-2">{{ post.title | linebreaks }}</p>
