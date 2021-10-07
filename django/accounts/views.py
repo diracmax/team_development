@@ -68,9 +68,9 @@ class PostList(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         query = self.kwargs.get('query', "")
-        owner = CustomUser.objects.get(id=self.kwargs.get('pk', 0)).username
-        context["title"] = owner + "の" + QUERY_DICT[query] + "一覧"
-        context["name"] = owner
+        owner = CustomUser.objects.get(id=self.kwargs.get('pk', 0))
+        context["title"] = owner.username + "の" + QUERY_DICT[query] + "一覧"
+        context["account"] = owner
         context["QUERY_DICT"] = QUERY_DICT
         return context
 

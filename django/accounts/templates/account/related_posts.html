@@ -3,7 +3,7 @@
 {% block title %}{{title}} | seekiee{% endblock %}
 {% block contents %}
 
-<a href="{% url 'accounts:detail' view.kwargs.pk %}" class="btn btn-link p-0">{{name}}</a>
+<a href="{% url 'accounts:detail' view.kwargs.pk %}" class="btn btn-link p-0">{{account.username}}</a>
 {% for key, value in QUERY_DICT.items %}
   <span> / </span>
   {% if key == view.kwargs.query %}
@@ -16,7 +16,9 @@
 {% if view.kwargs.query == "follow" or view.kwargs.query == "follower" %}
   {% include "account/account_list.html" %}
 {% else %}
-  {% include "timeline/post_list.html" %}
+  {% with f_type=view.kwargs.query %}
+    {% include "timeline/post_list.html" %}
+  {% endwith %}
 {% endif %}
 {% include "timeline/pagination.html" %}
 

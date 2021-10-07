@@ -9,8 +9,21 @@
       </div>
       <div class="col-10 ml-3">
         <a href="{% url 'accounts:detail' post.author.id %}" class="text-secondary">{{ post.author }}</a>
-        <br>
         <small class="text-muted">{{ post.created_at | date:"n月j日 H時i分" }}</small>
+        {% if f_type == "like" %}
+          {% for row in post.like_set.all %}{% if row.user_id == account.pk %}
+          <br><small class="text-muted">{{account.username}}さんが{{ row.created_at | date:"n月j日H時i分" }}にいいねしました</small>
+          {% endif %}{% endfor %}
+        {% elif f_type == "entry" %}
+          {% for row in post.apply_set.all %}{% if row.user_id == account.pk %}
+          <br><small class="text-muted">{{account.username}}さんが{{ row.created_at | date:"n月j日H時i分" }}に応募しました</small>
+          {% endif %}{% endfor %}
+        {% elif f_type == "join" %}
+          {% for row in post.apply_set.all %}{% if row.user_id == account.pk %}
+          <br><small class="text-muted">{{account.username}}さんが{{ row.updated_at | date:"n月j日H時i分" }}に参加しました</small>
+          {% endif %}{% endfor %}
+        {% endif %}
+        <br>
       </div>
     </div>
     <p class="card-text mt-2">{{ post.title | linebreaks }}</p>
