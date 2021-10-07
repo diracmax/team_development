@@ -7,6 +7,7 @@ from django.urls import reverse_lazy, reverse
 from .models import Post, Like, Apply, Comment
 from accounts.models import CustomUser
 from django.http.response import JsonResponse
+from .utils import Util
 
 
 class IndexView(LoginRequiredMixin, generic.ListView):

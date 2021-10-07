@@ -6,7 +6,9 @@ from .models import ThreadModel, MessageModel
 from accounts.models import CustomUser
 from django.db.models import Q
 from django.contrib import messages
-
+from timeline.utils import Util
+from django.urls import reverse
+from django.contrib.sites.shortcuts import get_current_site
 
 class CreateThread(generic.View):
     def get(self, request, *args, **kwargs):
@@ -69,6 +71,17 @@ class CreateMessage(generic.View):
             body=request.POST.get('message'),
         )
         message.save()
+
+        current_site = get_current_site(request).domain
+        relativeLink = "/inbox/" + str(pk) + "/"
+
+        absurl = 'http://'+current_site+relativeLink
+        email_body = 'Hi '+ receiver.username + \
+            ' You got a new message! \n' + absurl
+        data = {'email_body': email_body, 'to_email': receiver.email,
+                'email_subject': 'You got a new message!'}
+        Util.send_email(data)
+
         return redirect('dm:thread', pk=pk)
 
 
