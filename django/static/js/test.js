@@ -25,6 +25,8 @@ function fadeAnime(){
 	});// ここまでページが読み込まれたらすぐに動かしたい場合の記述
 
 
+// ナビゲーション
+
 function isOverflown({ clientWidth, clientHeight, scrollWidth, scrollHeight }) {
 	return scrollHeight > clientHeight || scrollWidth > clientWidth;
 }

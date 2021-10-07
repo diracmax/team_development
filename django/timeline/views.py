@@ -114,7 +114,7 @@ class PostDetail(LoginRequiredMixin, generic.DetailView):
 
 class UpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Post
-    fields = ('text', 'photo', 'is_recruited')
+    fields = ('title', 'text', 'photo', 'recruitment_conditions', 'capacity', 'is_recruited')
     template_name = 'timeline/update.html'
     success_url = reverse_lazy('timeline:index')
 

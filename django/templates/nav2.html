@@ -6,23 +6,33 @@
 	  <div class="MobileNav-trigger" data-mobile-nav-trigger>
 		<div class="MobileNav-trigger-inner"></div>
 	  </div>
+	  <li class="MobileNav-item" data-mobile-nav-item="1">
+		<div class="MobileNav-item-title">
+			<a href="{% url 'timeline:index' %}">Timeline</a>
+		</div>
+	  </li>
+	  <li class="MobileNav-item" data-mobile-nav-item="2">
+		<div class="MobileNav-item-title">
+			<a href="{% url 'timeline:create' %}">Post</a>
+		</div>
+	  </li>
 	  <ul class="MobileNav-nav" data-mobile-nav-list>
-		<li class="MobileNav-item" data-mobile-nav-item="1">
+		<li class="MobileNav-item" data-mobile-nav-item="3">
 		  <div class="MobileNav-item-title">
 			<a href="{% url 'accounts:edit' %}">Profile</a>
 		  </div>
 		</li>
-		<li class="MobileNav-item" data-mobile-nav-item="2">
+		<li class="MobileNav-item" data-mobile-nav-item="4">
 		  <div class="MobileNav-item-title">
 			<a href="#">Nortification</a>
 		  </div>
 		</li>
-		<li class="MobileNav-item" data-mobile-nav-item="3">
+		<li class="MobileNav-item" data-mobile-nav-item="5">
 		  <div class="MobileNav-item-title">
 			<a href="{% url 'dm:inbox' %}">DM</a>
 		  </div>
 		</li>
-		<li class="MobileNav-item" data-mobile-nav-item="4">
+		<li class="MobileNav-item" data-mobile-nav-item="6">
 		  <div class="MobileNav-item-title">
 			<a href="{% url 'account_logout' %}">Logout</a>
 		  </div>
@@ -38,15 +48,21 @@
 	  </div>
 	  <nav class="Header-nav" data-nav>
 		<div class="Header-nav-item" data-nav-item="1">
-			<a href="{% url 'accounts:edit' %}">Profile</a>
+			<a href="{% url 'timeline:index' %}">Timeline</a>
 		</div>
 		<div class="Header-nav-item" data-nav-item="2">
-			<a href="#">Nortification</a>
+			<a href="{% url 'timeline:create' %}">Post</a>
 		</div>
 		<div class="Header-nav-item" data-nav-item="3">
-			<a href="{% url 'dm:inbox' %}">DM</a>
+			<a href="{% url 'accounts:edit' %}">Profile</a>
 		</div>
 		<div class="Header-nav-item" data-nav-item="4">
+			<a href="#">Nortification</a>
+		</div>
+		<div class="Header-nav-item" data-nav-item="5">
+			<a href="{% url 'dm:inbox' %}">DM</a>
+		</div>
+		<div class="Header-nav-item" data-nav-item="6">
 			<a href="{% url 'account_logout' %}">Logout</a>
 		</div>
 	  </nav>
