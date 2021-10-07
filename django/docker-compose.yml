@@ -9,4 +9,4 @@ services:
     volumes:
       - ".:/django"
     command:
-      sh -c "python manage.py runserver 0.0.0.0:8000"
+      sh -c "python3 manage.py runserver 0.0.0.0:8000"
