@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill
+from timeline.models import Post
 
 class CustomUser(AbstractUser):
     description = models.TextField(verbose_name='プロフィール', null=True, blank=True)
@@ -21,6 +22,16 @@ class CustomUser(AbstractUser):
     def get_following(self):
         followings = Follow.objects.filter(follower=self)
         return [following.follower for following in followings]
+    def get_post(self, method="recruit"):
+        if method == "recruit":
+            return Post.objects.filter(author_id=self.id)
+        if method == "like":
+            return Post.objects.filter(like__user_id=self.id)
+        if method == "entry":
+            return Post.objects.filter(apply__user_id=self.id, apply__is_member=False)
+        if method == "join":
+            return Post.objects.filter(apply__user_id=self.id, apply__is_member=True)
+        return False
 
 
     class Meta:

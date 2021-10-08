@@ -18,7 +18,7 @@ QUERY_DICT = {
 }
 
 SORT_DICT = {
-    "post": {
+    "recruit": {
         "allowed": ["like", "entry", "join", "recruit"],
         "display": "投稿日時",
         "method": "created_at"
@@ -105,27 +105,13 @@ class PostList(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         id = self.kwargs.get('pk', 0)
+        account = CustomUser.objects.get(pk=id)
         query = self.kwargs.get('query', 0)
-        if query == "recruit":
-            posts = Post.objects.filter(author_id=id)
+        if query in ["recruit", "like", "entry", "join"]:
+            posts = account.get_post(query)
             if self.request.GET.get("order"):
                 return posts.order_by(self.request.GET.get("order"))
-            return posts.order_by('-created_at')
-        if query == "like":
-            posts = Post.objects.filter(like__user_id=id)
-            if self.request.GET.get("order"):
-                return posts.order_by(self.request.GET.get("order"))
-            return posts.order_by('-like__created_at')
-        if query == "entry":
-            posts = Post.objects.filter(apply__user_id=id, apply__is_member=False)
-            if self.request.GET.get("order"):
-                return posts.order_by(self.request.GET.get("order"))
-            return posts.order_by('-apply__created_at')
-        if query == "join":
-            posts = Post.objects.filter(apply__user_id=id, apply__is_member=True)
-            if self.request.GET.get("order"):
-                return posts.order_by(self.request.GET.get("order"))
-            return posts.order_by('-apply__updated_at')
+            return posts.order_by("-"+SORT_DICT[query]["method"])
         if query == "follower":
             accounts = CustomUser.objects.raw('SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id WHERE following_id = %s', str(id))
             return accounts
