@@ -1,6 +1,9 @@
 from django.db import models
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill, ResizeToFit
+from accounts.models import CustomUser
+from django.utils import timezone
+from dm.models import ThreadModel
 
 
 class Post(models.Model):
@@ -42,6 +45,7 @@ class Post(models.Model):
 class Like(models.Model):
     user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
 
     class Meta:
         unique_together = ('user', 'post')
@@ -51,6 +55,8 @@ class Apply(models.Model):
     user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
     is_member = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ('user', 'post')
@@ -62,3 +68,20 @@ class Comment(models.Model):
     text = models.TextField(verbose_name='コメント')
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Notification(models.Model):
+    # 1 = Like, 2 = Comment, 3 = Follow, 4 = Apply, 5 = Message
+    notification_type = models.IntegerField(null=True, blank=True)
+    to_user = models.ForeignKey(
+        CustomUser, related_name='notification_to', on_delete=models.CASCADE, null=True)
+    from_user = models.ForeignKey(
+        CustomUser, related_name='notification_from', on_delete=models.CASCADE, null=True)
+    post = models.ForeignKey(
+        'Post', on_delete=models.CASCADE, related_name='+', blank=True, null=True)
+    comment = models.ForeignKey(
+        'Comment', on_delete=models.CASCADE, related_name='+', blank=True, null=True)
+    thread = models.ForeignKey(
+        ThreadModel, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
+    date = models.DateTimeField(default=timezone.now)
+    user_has_seen = models.BooleanField(default=False)

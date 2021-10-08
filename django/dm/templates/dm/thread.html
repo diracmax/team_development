@@ -3,7 +3,13 @@
   <div class="container">
     <div class="row">
       <div class="card col-md-12 mt-5 p-3 shadow-sm">
-        <h5>{{ thread.receiver }}と{{ thread.user }}</h5>
+        <h5>
+          {% if thread.receiver == user %}
+          {{ thread.user }}
+          {% else %}
+          {{ thread.receiver }}
+          {% endif %}
+        </h5>
       </div>
     </div>
     {% if message_list.all.count == 0 %}
