@@ -69,17 +69,22 @@
     <p>{{comment.text}}</p>
     <p>{{comment.created_at}}</p>
     {% if comment.author.id == user.id %}
-      <form method="post" action="{% url 'timeline:delete_comment' object.id %}" class="d-inline">
+      <form method="post" action="{% url 'timeline:delete_comment' comment.id %}" class="d-inline">
       {% csrf_token %}
       <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("このコメントを本当に削除しますか？");'>
         削除
       </button>
       </form>
+      <form method="post" action="{% url 'timeline:update_comment' comment.id %}" class="d-inline">
+        {% csrf_token %}
+        <button class="btn btn-link text-dark p-0 ml-3" type="submit">
+          編集
+        </button>
+      </form>
     {% endif %}
-    {% if comment.parent_comment.all %}
-    <a href="{% url 'timeline:comment_reply_list' comment.id %}">詳細</a>
-    {% endif %}
+    <a href="{% url 'timeline:comment_reply_list' comment.id %}">{% if comment.parent_comment.all %}詳細{% else %}リプライ{% endif %}</a>
   </div>
+  <hr>
 {% endfor %}
 
 <img class="card-img-bottom" src="{{ object.post_photo.url }}" alt="Card image cap">

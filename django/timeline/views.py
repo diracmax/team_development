@@ -146,7 +146,24 @@ class DeleteCommentView(LoginRequiredMixin, generic.DeleteView):
             return super().delete(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse('timeline:detail', kwargs={'pk': self.kwargs['pk']})
+        pk = self.kwargs['pk']
+        comment = Comment.objects.get(pk=pk)
+        return reverse('timeline:detail', kwargs={'pk': comment.post.id})
+
+
+class DeleteCommentReplyView(LoginRequiredMixin, generic.DeleteView):
+    model = CommentReply
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.author == request.user:
+            messages.success(self.request, '削除しました。')
+            return super().delete(request, *args, **kwargs)
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        comment_reply = CommentReply.objects.get(pk=pk)
+        return reverse('timeline:comment_reply_list', kwargs={'pk': comment_reply.parent.id})
 
 
 class CommentReplyList(LoginRequiredMixin, generic.ListView):
@@ -173,17 +190,38 @@ class CommentReplyView(LoginRequiredMixin, generic.CreateView):
 
     def form_valid(self, form):
         form.instance.author_id = self.request.user.id
-        comment_id = self.kwargs.get('comment_id')
-        form.instance.parent = Comment.objects.get(pk=comment_id)
+        pk = self.kwargs.get('pk')
+        form.instance.parent = Comment.objects.get(pk=pk)
         messages.success(self.request, 'コメントが完了しました。')
         return super(CommentReplyView, self).form_valid(form)
 
     def form_invalid(self, form):
         messages.warning(self.request, 'コメントが失敗しました。')
-        return redirect('timeline:comment_detail', pk=self.kwargs['pk'], comment_id=self.kwargs["comment_id"])
+        return redirect('timeline:comment_reply_list', pk=self.kwargs['pk'])
 
     def get_success_url(self):
-        return reverse('timeline:comment_detail', kwargs={'pk': self.kwargs['pk'], 'comment_id': self.kwargs['comment_id']})
+        return reverse('timeline:comment_reply_list', kwargs={'pk': self.kwargs['pk']})
+
+
+class UpdateCommentView(LoginRequiredMixin, generic.UpdateView):
+    model = Comment
+    fields = ('text',)
+    template_name = 'timeline/update_comment.html'
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        comment = Comment.objects.get(pk=pk)
+        post = Post.objects.get(pk=comment.id)
+        return reverse('timeline:detail', kwargs={'pk': post.id})
+
+
+class UpdateCommentReplyView(LoginRequiredMixin, generic.UpdateView):
+    model = CommentReply
+    fields = ('text',)
+    template_name = 'timeline/update_comment.html'
+
+    def get_success_url(self):
+        return reverse('timeline:comment_reply_list', kwargs={'pk': self.kwargs['pk']})
 
 
 index = IndexView.as_view()
@@ -196,5 +234,8 @@ accept = AcceptApplicationView.as_view()
 update = UpdateView.as_view()
 comment = CommentView.as_view()
 delete_comment = DeleteCommentView.as_view()
-# comment_reply = CommentReplyView.as_view()
+delete_comment_reply = DeleteCommentReplyView.as_view()
+comment_reply = CommentReplyView.as_view()
 comment_reply_list = CommentReplyList.as_view()
+update_comment = UpdateCommentView.as_view()
+update_comment_reply = UpdateCommentReplyView.as_view()

@@ -3,37 +3,45 @@
 {% block title %}投稿詳細 | seekiee{% endblock %}
 {% block contents %}
 
-<!-- <div>
-    <form method="post" action="{% url 'timeline:comment_reply' object.post.id object.id %}" class="d-inline">
-        {% csrf_token %}
-        <textarea name="text" rows="3" placeholder="コメント"></textarea>
-        <button class="btn btn-dark btn-block" type="submit">コメントを送信</button>
-    </form>
-</div>
-
 <div>
     <p>{{parent.text}}</p>
     <p>{{parent.created_at}}</p>
+    <a href="{% url 'timeline:detail' parent.post.id %}">投稿詳細に戻る</a>
 </div>
 
-{% for reply in comment_replys %}
+<div>
+  <form method="post" action="{% url 'timeline:comment_reply' parent.id %}" class="d-inline">
+      {% csrf_token %}
+      <textarea name="text" rows="3" placeholder="リプライ"></textarea>
+      <button class="btn btn-dark btn-block" type="submit">リプライを送信</button>
+  </form>
+</div>
+
+{% for reply in object_list %}
     <div>
         <div>
-            {% if reply.comment.post.author.id == reply.author.id %}
+            {% if reply.parent.post.author.id == reply.author.id %}
               <p style="color: blue">投稿者</p>
             {% endif %}
             <p>{{reply.text}}</p>
-            <p>{{reply.created_at}}</p>
-            {% if reply.comment.author.id == user.id %}
-              <form method="post" action="#" class="d-inline">
+            <p>投稿日:{{reply.created_at}}</p>
+            {% if reply.parent.author.id == user.id %}
+              <form method="post" action="{% url 'timeline:delete_comment_reply' reply.id %}" class="d-inline">
               {% csrf_token %}
               <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("このコメントを本当に削除しますか？");'>
                 削除
               </button>
               </form>
+              <form method="post" action="{% url 'timeline:update_comment_reply' reply.id %}" class="d-inline">
+                {% csrf_token %}
+                <button class="btn btn-link text-dark p-0 ml-3" type="submit">
+                  編集
+                </button>
+              </form>
             {% endif %}
           </div>
     </div>
-{% endfor %} -->
+    <hr>
+{% endfor %}
 
 {% endblock %}
