@@ -1,0 +1,82 @@
+{% load static %}
+
+{% if not user in post.get_like %}
+<span  class="post-like-button post-like" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
+  <div id="twitter-like"></div>
+</span>
+{% else %}
+<span  class="post-like-button post-liked" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
+  <div id="twitter-like2" class="a_liked"></div>
+</span>
+{% endif %}
+
+<div class="post-like-count numbers">
+  {% if not user in post.get_like %}
+    <a class="num1"><span id="like-count-{{ post.id }}">{{ post.get_like | length }}</span></a>
+    <a class="num2"><span id="like-count-{{ post.id }}">{{ post.get_like | length |add:"1" }}</span></a>
+  {% else %}
+    <a class="num1"><span id="like-count-{{ post.id }}">{{ post.get_like | length }}</span></a>
+    <a class="num2"><span id="like-count-{{ post.id }}">{{ post.get_like | length |add:"-1"}}</span></a>
+  {% endif %}
+</div>
+
+
+<!-- <span class="post-like-button">
+{% if not user in post.get_like %}
+<input type="checkbox" id="checkbox" class="post-like" id="post-like-{{ post.id }}" data-id="{{ post.id }}"/>
+{% else %}
+<input type="checkbox" id="checkbox" checked="checked" class="post-liked" id="post-like-{{ post.id }}" data-id="{{ post.id }}"/>
+{% endif %}
+<label for="checkbox">
+  <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round">
+    <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
+      <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" class="heart" />
+      <circle class="circle" cx="29.5" cy="29.5" r="1.5" stroke="#CD85E7" stroke-width="0 "/>
+
+      <g class="grp7" opacity="0" transform="translate(7 6)">
+        <circle class="oval1" fill="#9CD8C3" cx="2" cy="6" r="2" />
+        <circle class="oval2" fill="#8CE8C3" cx="5" cy="2" r="2" />
+      </g>
+
+      <g class="grp6" opacity="0" transform="translate(0 28)">
+        <circle class="oval1" fill="#CC8EF5" cx="2" cy="7" r="2" />
+        <circle class="oval2" fill="#91D2FA" cx="3" cy="2" r="2" />
+      </g>
+
+      <g class="grp3" opacity="0" transform="translate(52 28)">
+        <circle class="oval2" fill="#9CD8C3" cx="2" cy="7" r="2" />
+        <circle class="oval1" fill="#8CE8C3" cx="4" cy="2" r="2" />
+      </g>
+
+      <g class="grp2" opacity="0" transform="translate(44 6)">
+        <circle class="oval2" fill="#CC8EF5" cx="5" cy="6" r="2" />
+        <circle class="oval1" fill="#CC8EF5" cx="2" cy="2" r="2" />
+      </g>
+
+      <g class="grp5" opacity="0" transform="translate(14 50)">
+        <circle class="oval1" fill="#91D2FA" cx="6" cy="5" r="2" />
+        <circle class="oval2" fill="#91D2FA" cx="2" cy="2" r="2" />
+      </g>
+
+      <g class="grp4" opacity="0" transform="translate(35 50)">
+        <circle class="oval1" fill="#F48EA7" cx="6" cy="5" r="2" />
+        <circle class="oval2" fill="#F48EA7" cx="2" cy="2" r="2" />
+      </g>
+
+      <g class="grp1" opacity="0" transform="translate(24)">
+        <circle class="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2" />
+        <circle class="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2" />
+      </g>
+    </g>
+  </svg>
+</span>
+<div class="post-like-count numbers">
+  {% if not user in post.get_like %}
+    <a class="num1"><span id="like-count-{{ post.id }}">{{ post.get_like | length }}</span></a>
+    <a class="num2"><span id="like-count-{{ post.id }}">{{ post.get_like | length |add:"1" }}</span></a>
+  {% else %}
+    <a class="num1"><span id="like-count-{{ post.id }}">{{ post.get_like | length }}</span></a>
+    <a class="num2"><span id="like-count-{{ post.id }}">{{ post.get_like | length |add:"-1"}}</span></a>
+  {% endif %}
+</div>
+</label> -->

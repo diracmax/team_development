@@ -56,15 +56,13 @@ class LikeView(LoginRequiredMixin, generic.View):
             like = Like(user=self.request.user, post=post)
             like.save()
             like_count = Like.objects.filter(post=post).count()
-            data = {'message': 'いいねしました',
-                    'like_count': like_count}
+            data = {'like_count': like_count}
             return JsonResponse(data)
         except:
             like = Like.objects.get(user=self.request.user, post=post)
             like.delete()
             like_count = Like.objects.filter(post=post).count()
-            data = {'message': 'いいねを取り消しました',
-                    'like_count': like_count}
+            data = {'like_count': like_count}
             return JsonResponse(data)
 
 

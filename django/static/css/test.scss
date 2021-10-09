@@ -1,6 +1,7 @@
-@import "parts/_destyle.scss";
+// @import "parts/_destyle.scss";
 @import "parts/_nav.scss";
-@import "parts/_create_button.scss";
+@import "parts/_search_button.scss";
+@import "parts/_like.scss";
 
 $bg: rgba(255,255,255, 1);
 $fg: rgba(58,58,58, 1);
@@ -18,6 +19,7 @@ body * {
   -webkit-font-smoothing: antialiased;
   line-height: $lineHeight;
 }
+
 body {
   // background: #efefef;
   color: $fg;
@@ -40,7 +42,7 @@ body {
   width: 90%;
   max-width: 1280px;
   margin: 0 auto;
-  // background-color: #eaeded;
+  // background-color: #fefefe;
 }
 
 .dynamic-grid {
@@ -83,14 +85,15 @@ body {
   // background-color: gray;
   display: grid;
   grid-template-rows: 20px 20px;
-  grid-template-columns: 40px 1fr;
+  grid-template-columns: 40px 1fr 35px 30px;
+  grid-template-columns: 40px 1fr 65px 30px;
 
-  #thumbnail {
+  .post-thumbnail {
     grid-row: 1 / 3;
     grid-column: 1 / 2;
   }
 
-  #post-author {
+  .post-author {
     grid-row: 1 / 2;
     grid-column: 2 / 3;
     font-size: 0.85rem;
@@ -102,89 +105,34 @@ body {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    // background-color: salmon;
   }
 
-  #post-title {
-      grid-row: 2 / 3;
-      grid-column: 2 / 3;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-      // margin: 0px 5px 5px 5px;
-      // background-color: green;
-    }
-
-  // #like-apply {
-  //   grid-row: 2 / 3;
-  //   grid-column: 2 / 3;
-  //   margin: 0px 5px 5px 5px;
-  //   background-color: green;
-  // }
-
-  // #post-time {
-  //   grid-row: 2 / 3;
-  //   grid-column: 2 / 3;
-  // }
-}
-
-.post-middle {
-  position: relative;
-  // background-color: gray;
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr;
-
-  #thumbnail {
-    grid-row: 1 / 3;
-    grid-column: 1 / 2;
-  }
-
-  #post-author {
-    grid-row: 1 / 2;
-    grid-column: 2 / 3;
-    font-size: 0.85rem;
-    display: block;
-    display: -webkit-box;
-    margin: 0rem;
-    max-width: 100%;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  #post-title {
+  .post-title {
     grid-row: 2 / 3;
     grid-column: 2 / 3;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    // margin: 0px 5px 5px 5px;
-    // background-color: green;
-  }
-}
-
-.post-bottom {
-  position: relative;
-  // background-color: gray;
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr 90px;
-
-  #like-apply {
-    grid-row: 1 / 2;
-    grid-column: 1 / 2;
-    margin: 0px 5px 0px 5px;
-    // background-color: green;
+    // background-color: saddlebrown;
   }
 
-  #post-detail {
-    grid-row: 1 / 2;
-    grid-column: 2 / 3;
-    display: block;
-    margin: 0px 5px 0px 5px;
-    text-align: right;
-    // background-color: blue;
+  .post-like-button {
+    z-index: 5;
+    grid-row: 1 / 3;
+    grid-column: 3 / 4;
+    // background-color: royalblue;
+    position: absolute;
+    align-self: center;
+  }
+
+  .post-like-count {
+    z-index: 5;
+    grid-row: 1 / 3;
+    grid-column: 4 / 5;
+    // background-color: rosybrown;
+    // position: absolute;
+    align-self: center;
   }
 }
 
@@ -219,7 +167,7 @@ body {
   }
 }
 
-.post_info {/*テキストの基点となる位置を定義*/
+.post-info {/*テキストの基点となる位置を定義*/
 	position: relative;
 
   span.mask {
@@ -243,9 +191,51 @@ body {
     z-index:3;/*テキストを前面に出す*/
     top: 50%;
     left: 50%;
+    width: calc(100% - 60px);
+    height: calc(100% - 20px);
     transform: translate(-50%,-50%);
-    color: #EEE;/*テキストの色を変えたい場合はここを修正*/
-    line-height: 1.5;/*行の高さを1.5にする*/
+    // background-color: gray;
+    color: white;/*テキストの色を変えたい場合はここを修正*/
+    display: grid;
+    grid-template-rows: 1rf 1rf 1rf;
+    grid-template-columns: 1rf;
+    row-gap: 0px;
+    column-gap: 0px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    align-content: center;
+
+    .post-info1 {
+      grid-row: 1 / 2;
+      grid-column: 1 / 2;
+      align-self: center;
+      // background-color: green;
+    }
+
+    .post-info2 {
+      grid-row: 2 / 3;
+      grid-column: 1 / 2;
+      align-self: center;
+      // background-color: lightgreen;
+    }
+
+    .post-info-detail {
+      grid-row: 3 / 4;
+      grid-column: 1 / 2;
+      // background-color: blue;
+      align-self: center;
+      z-index: 3;
+
+      span {
+
+        &:hover{
+          border-bottom: solid 1px rgba(255, 255, 255, 1);
+          // color: royalblue;
+        }
+      }
+    }
+
   }
 
   :hover {
@@ -261,7 +251,7 @@ body {
     }
 
     img {/*hoverした時の変化*/
-      transform: scale(1.2);/*拡大の値を変更したい場合はこの数値を変更*/
+      transform: scale(1.1);/*拡大の値を変更したい場合はこの数値を変更*/
       filter: blur(3px);/*ぼかし具合を変更したい場合はこの数値を変更*/
     }
 

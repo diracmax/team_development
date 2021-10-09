@@ -10,9 +10,9 @@
 
         <div class="post-head">
           <a href="{% url 'accounts:detail' post.author.id %}">
-          <img src="{% if post.author.thumbnail %}{{ post.author.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo" id="thumbnail">
+          <img src="{% if post.author.thumbnail %}{{ post.author.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo post-thumbnail">
           </a>
-          <div id="post-author">
+          <div ="post-author">
             <p><a class="text-secondary" href="{% url 'accounts:detail' post.author.id %}">{{ post.author }}</a>
             {% if post.author != user %}
               {% if user in post.author.get_follower %}
@@ -21,37 +21,32 @@
             {% endif %}
             </p>
           </div>
-          <small id="post-title">{{ post.title }}</small>
-          <!-- <div id="like-apply">
-            {% include "timeline/like_apply_delete.html" %}
-          </div> -->
-          <!-- <small class="text-muted" id="post-time">{{ post.created_at | date:"n月j日 H時i分" }}</small> -->
+          <small class="post-title">{{ post.title }}</small>
+            {% include "like2.html" %}
         </div>
 
-        <div class="post_info">
+        <div class="post-info">
           <a href="{% url 'timeline:detail' post.id %}">
             <span class="mask">
               {% if post.post_photo %}
               <img class="card-img-bottom content-box-thumb" src="{{ post.post_photo.url }}" alt="Card image cap">
               {% endif %}
               <span class="cap">
-                <div class="post-middle">
-                  <p>タイトル: {{ post.title }}</p>
-                  <p>募集条件: {{ post.recruitment_conditions }}</p>
-                  <p>募集人数: {{ post.capacity }}</p>
-                  {% include "timeline/like_apply_delete.html" %}
+                <p class="post-info1">
+                  投稿日時: {{ post.created_at | date:"n月j日 H時i分" }}<br>
+                  タイトル: {{ post.title }}<br>
+                  コメント: {{ post.text }}
+                </p>
+                <p class="post-info2">
+                  募集条件: {{ post.recruitment_conditions }}<br>
+                  募集人数: {{ post.capacity }}人
+                </p>
+                <div class="post-info-detail">
+                  投稿詳細は<span>こちら</span>
                 </div>
               </span>
             </span>
           </a>
-        </div>
-
-        <div class="post-bottom">
-          <!-- <h1 id="post-title">{{ post.title }}</h1> -->
-          <div id="like-apply">
-            {% include "timeline/like_apply_delete.html" %}
-          </div>
-          <a id="post-detail" href="{% url 'timeline:detail' post.id %}">read more</a>
         </div>
 
       </div>
@@ -61,17 +56,4 @@
   </div>
 </div>
 
-<div class="button-element">
-  <a class="button-link" href="{% url 'timeline:create' %}">
-    <div class="button-container medium">
-      <div class="button">
-        <div class="icon">
-          +
-        </div>
-        <div class="text">
-          Search
-        </div>
-      </div>
-    </div>
-  </a>
-</div>
+{% include 'search_button2.html' %}
