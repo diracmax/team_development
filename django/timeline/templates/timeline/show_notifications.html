@@ -26,7 +26,7 @@
 				</div>
 			{% else %}
 			<div class="dropdown-item-parent">
-					<a href="{% url 'timeline:follow-notification' notification.pk notification.from_user.pk %}">{{ notification.from_user }} has started following you</a>
+					<a href="{% url 'timeline:follow-notification' notification.pk notification.from_user.pk %}">{{ notification.from_user }}さんがあなたをフォローしました。</a>
 					<span class="dropdown-item-close" onclick="removeNotification(`{% url 'timeline:notification-delete' notification.pk %}`, `{{ request.path }}`)">&times;</span>
 			</div>
 			{% endif %}
