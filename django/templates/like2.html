@@ -2,11 +2,11 @@
 
 {% if not user in post.get_like %}
 <span  class="post-like-button post-like" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
-  <div id="twitter-like"></div>
+  <div class="twitter-like"></div>
 </span>
 {% else %}
-<span  class="post-like-button post-liked" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
-  <div id="twitter-like2" class="a_liked"></div>
+<span  class="post-like-button post-liked a_liked" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
+  <div class="twitter-like"></div>
 </span>
 {% endif %}
 

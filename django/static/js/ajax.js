@@ -69,7 +69,7 @@ $(document).on("click", ".post-liked", function () {
 		csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
 	},
 	success: function (data) {
-		$("#post-like-" + id).removeClass("post-liked").addClass("post-like");
+		$("#post-like-" + id).removeClass("post-liked a_liked liked").addClass("post-like");
 	}
 	});
 });
@@ -83,7 +83,7 @@ $(document).on("click", ".post-like", function () {
 		csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
 	},
 	success: function (data) {
-		$("#post-like-" + id).removeClass("post-like").addClass("post-liked");
+		$("#post-like-" + id).removeClass("post-like").addClass("post-liked liked");
 	}
 	});
 });
