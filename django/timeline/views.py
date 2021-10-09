@@ -4,9 +4,10 @@ from .forms import PostForm, CommentForm
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
-from .models import Post, Like, Apply, Comment
+from .models import Post, Like, Apply, Comment, Notification
 from accounts.models import CustomUser
 from django.http.response import JsonResponse
+from django.http import HttpResponse
 
 
 class IndexView(LoginRequiredMixin, generic.ListView):
@@ -54,6 +55,11 @@ class LikeView(LoginRequiredMixin, generic.View):
         try:
             like = Like(user=self.request.user, post=post)
             like.save()
+
+            notification = Notification.objects.create(
+                notification_type=1, from_user=request.user, to_user=post.author, post=post)
+            notification.save()
+
             like_count = Like.objects.filter(post=post).count()
             data = {'message': 'いいねしました',
                     'like_count': like_count}
@@ -78,6 +84,11 @@ class ApplyView(LoginRequiredMixin, generic.View):
             # if it already exists, it violates unique constraints
             apply = Apply(user=self.request.user, post=post)
             apply.save()
+
+            notification = Notification.objects.create(
+                notification_type=4, from_user=request.user, to_user=post.author, post=post)
+            notification.save()
+
             apply_count = Apply.objects.filter(post=post).count()
             data = {'message': '応募しました',
                     'apply_count': apply_count}
@@ -125,6 +136,11 @@ class CommentView(LoginRequiredMixin, generic.CreateView):
         form.instance.author_id = self.request.user.id
         pk = self.kwargs.get('pk')
         form.instance.post = Post.objects.get(pk=pk)
+
+        notification = Notification.objects.create(
+            notification_type=2, from_user=self.request.user, to_user=form.instance.post.author, post=form.instance.post)
+        notification.save()
+
         messages.success(self.request, 'コメントが完了しました。')
         return super(CommentView, self).form_valid(form)
 
@@ -147,6 +163,36 @@ class DeleteCommentView(LoginRequiredMixin, generic.DeleteView):
 
     def get_success_url(self):
         return reverse('timeline:detail', kwargs={'pk': self.kwargs['pk']})
+
+
+class PostNotification(generic.View):
+    def get(self, request, notification_pk, object_pk, *args, **kwargs):
+        notification = Notification.objects.get(pk=notification_pk)
+        notification.user_has_seen = True
+        notification.save()
+        return redirect('timeline:detail', pk=object_pk)
+
+class MessageNotification(generic.View):
+    def get(self, request, notification_pk, object_pk, *args, **kwargs):
+        notification = Notification.objects.get(pk=notification_pk)
+        notification.user_has_seen = True
+        notification.save()
+        return redirect('dm:thread', pk=object_pk)
+
+class FollowNotification(generic.View):
+    def get(self, request, notification_pk, object_pk, *args, **kwargs):
+        notification = Notification.objects.get(pk=notification_pk)
+        notification.user_has_seen = True
+        notification.save()
+        return redirect('accounts:detail', pk=object_pk)
+
+
+class RemoveNotification(generic.View):
+    def delete(self, request, notification_pk, *args, **kwargs):
+        notification = Notification.objects.get(pk=notification_pk)
+        notification.user_has_seen = True
+        notification.save()
+        return HttpResponse('Success', content_type='text/plain')
 
 
 index = IndexView.as_view()

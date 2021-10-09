@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Apply
+from .models import Post, Apply, Notification
 
 # Register your models here.
 class PostAdmin(admin.ModelAdmin):
@@ -13,3 +13,4 @@ class ApplyAdmin(admin.ModelAdmin):
 
 admin.site.register(Post, PostAdmin)
 admin.site.register(Apply, ApplyAdmin)
+admin.site.register(Notification)

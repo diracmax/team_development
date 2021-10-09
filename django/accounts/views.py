@@ -7,6 +7,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from timeline.models import Post, Apply
 from django.http.response import JsonResponse
 from django.db import connection
+from timeline.models import Notification
 
 QUERY_DICT = {
     "like": "いいね",
@@ -45,6 +46,7 @@ SORT_DICT = {
     },
 }
 
+
 class ProfileEdit(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     model = CustomUser
     form_class = ProfileForm
@@ -55,9 +57,11 @@ class ProfileEdit(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     def get_object(self):
         return self.request.user
 
+
 class ProfileDetail(LoginRequiredMixin, generic.DetailView):
     model = CustomUser
     template_name = 'account/detail.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["QUERY_DICT"] = QUERY_DICT
@@ -76,12 +80,18 @@ class FollowView(LoginRequiredMixin, generic.View):
             follow = Follow(follower=self.request.user, following=following)
             follow.save()
             follow_count = Follow.objects.filter(following=following).count()
+
+            notification = Notification.objects.create(
+                notification_type=3, from_user=self.request.user, to_user=following)
+            notification.save()
+
             data = {'message': 'フォローしました',
                     'follow_count': follow_count}
             return JsonResponse(data)
 
         except:
-            follow = Follow.objects.get(follower=self.request.user, following=following)
+            follow = Follow.objects.get(
+                follower=self.request.user, following=following)
             follow.delete()
             follow_count = Follow.objects.filter(following=following).count()
             data = {'message': 'フォロー解除しました',
@@ -111,12 +121,14 @@ class PostList(LoginRequiredMixin, generic.ListView):
             posts = account.get_post(query)
             if self.request.GET.get("order"):
                 return posts.order_by(self.request.GET.get("order"))
-            return posts.order_by("-"+SORT_DICT[query]["method"])
+            return posts.order_by("-"+SORT_DICT[query][
         if query == "follower":
-            accounts = CustomUser.objects.raw('SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id WHERE following_id = %s', str(id))
+            accounts = CustomUser.objects.raw(
+                'SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id WHERE following_id = %s', str(id))
             return accounts
         if query == "follow":
-            accounts = CustomUser.objects.raw('SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id WHERE follower_id = %s', str(id))
+            accounts = CustomUser.objects.raw(
+                'SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id WHERE follower_id = %s', str(id))
             return accounts
         raise ValueError("invarid url")
 
@@ -129,7 +141,6 @@ class QuitView(LoginRequiredMixin, generic.View):
         record.is_active = False
         record.save()
         return redirect('timeline:index')
-
 
 
 edit = ProfileEdit.as_view()
