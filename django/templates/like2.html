@@ -12,11 +12,13 @@
 
 <div class="post-like-count numbers">
   {% if not user in post.get_like %}
-    <a class="num1"><span id="like-count-{{ post.id }}">{{ post.get_like | length }}</span></a>
-    <a class="num2"><span id="like-count-{{ post.id }}">{{ post.get_like | length |add:"1" }}</span></a>
+    <!-- <a class="num1"><span id="like-count-{{ post.id }}">{{ post.get_like | length |add:"1" }}</span></a> -->
+    <a class="num2"><span id="like-count-{{ post.id }}">{{ post.get_like | length }}</span></a>
+    <!-- <a class="num3"><span id="like-count-{{ post.id }}">{{ post.get_like | length |add:"-1" }}</span></a> -->
   {% else %}
-    <a class="num1"><span id="like-count-{{ post.id }}">{{ post.get_like | length }}</span></a>
-    <a class="num2"><span id="like-count-{{ post.id }}">{{ post.get_like | length |add:"-1"}}</span></a>
+    <!-- <a class="num1"><span id="like-count-{{ post.id }}">{{ post.get_like | length |add:"1" }}</span></a> -->
+    <a class="num2"><span id="like-count-{{ post.id }}">{{ post.get_like | length }}</span></a>
+    <!-- <a class="num3"><span id="like-count-{{ post.id }}">{{ post.get_like | length |add:"-1" }}</span></a> -->
   {% endif %}
 </div>
 

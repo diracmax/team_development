@@ -70,6 +70,8 @@ $(document).on("click", ".post-liked", function () {
 	},
 	success: function (data) {
 		$("#post-like-" + id).removeClass("post-liked a_liked liked").addClass("post-like");
+		var like_count = data["like_count"]
+		$("#like-count-" + id).html(like_count);
 	}
 	});
 });
@@ -84,6 +86,8 @@ $(document).on("click", ".post-like", function () {
 	},
 	success: function (data) {
 		$("#post-like-" + id).removeClass("post-like").addClass("post-liked liked");
+		var like_count = data["like_count"]
+		$("#like-count-" + id).html(like_count);
 	}
 	});
 });
