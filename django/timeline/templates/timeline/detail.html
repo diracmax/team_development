@@ -3,19 +3,17 @@
 {% block title %}投稿詳細 | seekiee{% endblock %}
 {% block contents %}
 
-<h1>ディテイルだよー</h1>
 
-<h1>You are {{user}}</h1>
+<h1>{{ object.title }}</h1>
+<h1>投稿者 is {{object.author}}</h1>
 
-<h1>タイトル is {{ object.title }}</h1>
+<img class="card-img-bottom" src="{{ object.post_photo.url }}" alt="Card image cap">
 
 <h1>内容 is {{object.text}}</h1>
 
 <h1>募集条件 is {{ object.recruitment_conditions }}</h1>
 
-<h1>募集人数 is {{ object.capacity }}</h1>
-
-<h1>投稿者 is {{object.author}}</h1>
+<h1>募集人数:{{ object.capacity }}人</h1>
 
 <h1>応募者 is {{object.get_applicant}}</h1>
 
