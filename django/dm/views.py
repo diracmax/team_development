@@ -44,7 +44,7 @@ class ListThreads(generic.View):
         threads = ThreadModel.objects.filter(
             Q(user=request.user) | Q(receiver=request.user))
         context = {
-            'threads': threads
+            'threads': threads,
         }
         return render(request, 'dm/inbox.html', context)
 
@@ -62,7 +62,12 @@ class CreateMessage(generic.View):
             receiver_user=receiver,
             body=request.POST.get('message'),
         )
+        if len(message.body) <= 25:
+            thread.last_message = message.body
+        else:
+            thread.last_message = message.body[:24]+"..."
         message.save()
+        thread.save()
 
         if receiver.is_active == True:
 

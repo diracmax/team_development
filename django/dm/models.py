@@ -9,6 +9,7 @@ class ThreadModel(models.Model):
     receiver = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name='+')
     has_unread = models.BooleanField(default=False)
+    last_message = models.CharField(max_length=1000, default="")
 
 
 class MessageModel(models.Model):
