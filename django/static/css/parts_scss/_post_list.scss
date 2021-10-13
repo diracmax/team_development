@@ -3,7 +3,6 @@ $bg: rgba(255,255,255, 1);
 $boxShadowColor: rgba(58,58,58,0.1);
 $boxShadow: 0px -1px 2px $boxShadowColor, 1px 1px 2px $boxShadowColor;
 
-
 .dynamic-grid {
   position: relative;
   z-index: 1;
@@ -12,12 +11,18 @@ $boxShadow: 0px -1px 2px $boxShadowColor, 1px 1px 2px $boxShadowColor;
   &.my_container {
     padding-top: 9rem;
   }
+  line-height: 1.4rem;
 }
 
 .my_container {
   width: 90%;
   max-width: 1280px;
   margin: 0 auto;
+  line-height: 1.4rem;
+
+  * {
+    line-height: 1.4rem;
+  }
 
   .grid-item {
     position: relative;

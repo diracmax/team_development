@@ -109,11 +109,13 @@
   50% { background-position: -2800px; }
   100% { background-position: -2800px; } }
 
-.dynamic-grid { position: relative; z-index: 1; columns: 240px 3; column-gap: 0.7rem; }
+.dynamic-grid { position: relative; z-index: 1; columns: 240px 3; column-gap: 0.7rem; line-height: 1.4rem; }
 
 .dynamic-grid.my_container { padding-top: 9rem; }
 
-.my_container { width: 90%; max-width: 1280px; margin: 0 auto; }
+.my_container { width: 90%; max-width: 1280px; margin: 0 auto; line-height: 1.4rem; }
+
+.my_container * { line-height: 1.4rem; }
 
 .my_container .grid-item { position: relative; display: inline-block; margin: 0.5rem 0rem; max-width: 100%; }
 
