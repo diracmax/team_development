@@ -1,0 +1,65 @@
+{% load static %}
+
+<div class="MobileNav" data-mobile-nav>
+	<div class="MobileNav-overlay" data-mobile-nav-overlay></div>
+	<div class="MobileNav-inner">
+	  <div class="MobileNav-trigger" data-mobile-nav-trigger>
+		<div class="MobileNav-trigger-inner"></div>
+	  </div>
+	  <li class="MobileNav-item" data-mobile-nav-item="1">
+		<div class="MobileNav-item-title">
+			<a href="{% url 'timeline:create' %}">Post</a>
+		</div>
+	  </li>
+	  <ul class="MobileNav-nav" data-mobile-nav-list>
+		<li class="MobileNav-item" data-mobile-nav-item="2">
+		  <div class="MobileNav-item-title">
+			<a href="{% url 'accounts:detail' user.id %}">Profile</a>
+		  </div>
+		</li>
+		<li class="MobileNav-item" data-mobile-nav-item="3">
+		  <div class="MobileNav-item-title">
+			<a href="#">Nortification</a>
+		  </div>
+		</li>
+		<li class="MobileNav-item" data-mobile-nav-item="4">
+		  <div class="MobileNav-item-title">
+			<a href="{% url 'dm:inbox' %}">DM</a>
+		  </div>
+		</li>
+		<li class="MobileNav-item" data-mobile-nav-item="5">
+		  <div class="MobileNav-item-title">
+			<a href="{% url 'account_logout' %}">Logout</a>
+		  </div>
+		</li>
+	  </ul>
+	</div>
+  </div>
+
+  <header class="Header" data-header>
+	<div class="Header-inner" data-header-nav>
+	  <div class="logo">
+		<a href="{% url 'timeline:index' %}"><img src="{% static 'images/Seekiee_logo3.png' %}" alt="Logo"></a>
+	  </div>
+	  <nav class="Header-nav" data-nav>
+		<div class="Header-nav-item" data-nav-item="1">
+			<a href="{% url 'timeline:create' %}">Post</a>
+		</div>
+		<div class="Header-nav-item" data-nav-item="2">
+			<a href="{% url 'accounts:detail' user.id %}">Profile</a>
+		</div>
+		<div class="Header-nav-item" data-nav-item="3">
+			<a href="#">Nortification</a>
+		</div>
+		<div class="Header-nav-item" data-nav-item="4">
+			<a href="{% url 'dm:inbox' %}">DM</a>
+		</div>
+		<div class="Header-nav-item" data-nav-item="5">
+			<a href="{% url 'account_logout' %}">Logout</a>
+		</div>
+	  </nav>
+	  <button class="MobileNav-trigger" data-mobile-nav-trigger>
+		<div class="MobileNav-trigger-inner"></div>
+	  </button>
+	</div>
+  </header>

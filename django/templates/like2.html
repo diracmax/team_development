@@ -1,0 +1,19 @@
+{% load static %}
+
+{% if not user in post.get_like %}
+<span  class="post-like-button post-like" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
+  <div class="twitter-like"></div>
+</span>
+{% else %}
+<span  class="post-like-button post-liked a_liked" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
+  <div class="twitter-like"></div>
+</span>
+{% endif %}
+
+<div class="post-like-count numbers">
+  {% if not user in post.get_like %}
+    <a class="num2"><span id="like-count-{{ post.id }}">{{ post.get_like | length }}</span></a>
+  {% else %}
+    <a class="num2"><span id="like-count-{{ post.id }}">{{ post.get_like | length }}</span></a>
+  {% endif %}
+</div>

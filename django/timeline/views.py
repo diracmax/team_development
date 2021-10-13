@@ -12,7 +12,8 @@ from django.http import HttpResponse
 
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'timeline/index.html'
-    paginate_by = 10
+    template_name = 'index2.html'
+    paginate_by = 24
 
     def get_queryset(self):
         posts = Post.objects.order_by('-created_at')
@@ -22,6 +23,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 class CreateView(LoginRequiredMixin, generic.CreateView):
     form_class = PostForm
     template_name = 'timeline/create_post.html'
+    template_name = 'create_post2.html'
     success_url = reverse_lazy('timeline:index')
 
     def form_valid(self, form):
@@ -61,15 +63,13 @@ class LikeView(LoginRequiredMixin, generic.View):
             notification.save()
 
             like_count = Like.objects.filter(post=post).count()
-            data = {'message': 'いいねしました',
-                    'like_count': like_count}
+            data = {'like_count': like_count}
             return JsonResponse(data)
         except:
             like = Like.objects.get(user=self.request.user, post=post)
             like.delete()
             like_count = Like.objects.filter(post=post).count()
-            data = {'message': 'いいねを取り消しました',
-                    'like_count': like_count}
+            data = {'like_count': like_count}
             return JsonResponse(data)
 
 
@@ -124,8 +124,9 @@ class PostDetail(LoginRequiredMixin, generic.DetailView):
 
 class UpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Post
-    fields = ('text', 'photo', 'is_recruited')
+    fields = ('title', 'text', 'photo', 'recruitment_conditions', 'capacity', 'is_recruited')
     template_name = 'timeline/update.html'
+    template_name = 'post_update2.html'
     success_url = reverse_lazy('timeline:index')
 
 
