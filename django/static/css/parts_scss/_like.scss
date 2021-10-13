@@ -1,0 +1,36 @@
+.numbers {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	font-size: 19px;
+	color: #5b7083;
+	overflow: hidden;
+	padding-left: 3px;
+	display: flex;
+	flex-flow: column;
+	transition: .2s ease;
+	user-select: none;
+	position: relative;
+}
+
+.twitter-like {
+	cursor: pointer;
+	width: 100px;
+	height: 100px;
+	background-image: url('https://abs.twimg.com/a/1446686284/img/t1/web_heart_animation.png');
+	background-position: left center;
+
+	.liked  &{
+	  animation: twit-like 2s steps(28);
+	  background-position: right center;
+	}
+
+	.a_liked &{
+		animation: twit-like;
+		background-position: right center;
+	}
+}
+
+@keyframes twit-like {
+	0% { background-position: 0; }
+	50% { background-position: -2800px; }
+	100% { background-position: -2800px; }
+}

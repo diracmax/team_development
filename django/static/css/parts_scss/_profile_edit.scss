@@ -1,0 +1,137 @@
+$ruler: 16px;
+$color-bg: #EBECF0;
+$color-shadow: #BABECC;
+$color-white: #FFF;
+
+.profile-edit {
+
+	z-index: 3;
+	padding-top: 9rem;
+
+	h1, h2 {
+	  text-shadow: 1px 1px 1px $color-white;
+	}
+
+	h1 {
+		border-bottom: black solid 1px;
+		width: 50%;
+		margin: 0px auto 40px auto;
+	}
+
+	p {
+		color: #AE1100;
+		align-self: center;
+		margin-left: 6px;
+		margin-bottom: 0;
+	}
+
+	form {
+	  padding: $ruler;
+	  width: 50%;
+	  margin: 0 auto;
+	}
+
+	.profile-edit-segment {
+	  text-align: center;
+	}
+
+	button, input{
+	  border: 0;
+	  outline: 0;
+	  font-size: $ruler;
+	  border-radius: $ruler*20;
+	  padding: $ruler;
+	  background-color:$color-bg;
+	  text-shadow: 1px 1px 0 $color-white;
+	}
+
+	textarea {
+		border: 0;
+		outline: 0;
+		font-size: $ruler;
+		border-radius: $ruler*2;
+		padding: $ruler;
+		background-color:$color-bg;
+		text-shadow: 1px 1px 0 $color-white;
+
+		box-shadow:  inset 2px 2px 5px $color-shadow, inset -5px -5px 10px $color-white;
+		width: 100%;
+		transition: all 0.2s ease-in-out;
+
+		&:focus {
+		  box-shadow:  inset 1px 1px 2px $color-shadow, inset -1px -1px 2px $color-white;
+		}
+	}
+
+	label {
+	  width: 100%;
+	  margin-bottom: $ruler;
+	}
+
+	input {
+	  box-shadow:  inset 2px 2px 5px $color-shadow, inset -5px -5px 10px $color-white;
+	  width: 70%;
+	  transition: all 0.2s ease-in-out;
+
+	  &:focus {
+		box-shadow:  inset 1px 1px 2px $color-shadow, inset -1px -1px 2px $color-white;
+	  }
+	}
+
+	.photo-update {
+		input {
+			margin-top: 8px;
+			height: 60px;
+		}
+	}
+
+	#photo-clear_id {
+		width: auto;
+		height: auto;
+	}
+
+	button {
+	  display: flex;
+	  color:#61677C;
+	  font-weight: bold;
+	  box-shadow: -5px -5px 20px $color-white,  5px 5px 20px $color-shadow;
+	  transition: all 0.2s ease-in-out;
+	  cursor: pointer;
+	  font-weight: 600;
+
+	  &:hover {
+		box-shadow: -2px -2px 5px $color-white, 2px 2px 5px $color-shadow;
+	  }
+
+	  &:active {
+		box-shadow: inset 1px 1px 2px $color-shadow, inset -1px -1px 2px $color-white;
+	  }
+
+
+	  &.unit {
+		border-radius: $ruler/2;
+		width: $ruler*8;
+		height: $ruler*3;
+		margin: 0 auto;
+	  }
+
+	  img {
+		object-fit: contain;
+		width: $ruler*1.5;
+		height: $ruler*1.5;
+		margin-right: 8px;
+	  }
+	}
+
+	.flex-icon{
+		display: flex;
+		align-self: center;
+
+		img {
+			object-fit: contain;
+			width: $ruler*2;
+			height: $ruler*2;
+			margin: 2px 6px 2px 2px;
+		}
+	}
+}
