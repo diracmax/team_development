@@ -36,3 +36,4 @@ libsass==0.21.0
 django-sass-processor==1.1
 rcssmin==1.0.6
 rjsmin==1.1.0
+django-widget-tweaks==1.4.8

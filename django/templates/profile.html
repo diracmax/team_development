@@ -1,0 +1,68 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}{{ customuser.username }} | seekiee{% endblock %}
+{% block contents %}
+
+<div class="profile-detail">
+
+	<div class="profile-info">
+		<div class="profile-photo">
+			<img src="{% if customuser.thumbnail %}{{ customuser.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo">
+		</div>
+		<h1 class="profile-username">{% render_field customuser.username %}</h1>
+		<div class="profile-github">
+			{% if customuser.github_id  %}
+				<a href="https://github.com/{{ customuser.github_id }}"><img src="../../static/images/GitHub-Mark-120px-plus.png"></a>
+			{% endif %}
+		</div>
+		{% if customuser.id == user.id %}
+			<a href="{% url 'accounts:edit' %}">
+				<button class="btn profile-edit-btn">Edit Profile</button>
+			</a>
+		{% endif %}
+		<p class="profile-bio">{% if customuser.description %}{% render_field customuser.description %}{% else %}本文はありません。{% endif %}</p>
+	</div>
+
+  <!-- <img src="{% if customuser.thumbnail %}{{ customuser.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo">
+  自己紹介：{% if customuser.description %}{% render_field customuser.description %}{% else %}本文はありません。{% endif %}
+  GitHub_id：{% if customuser.github_id  %}<a href="https://github.com/{{ customuser.github_id}}">{% render_field customuser.github_id %}</a>{% else %}-{% endif %}
+  年齢：{% if customuser.age %}{% render_field customuser.age %}歳{% else %}-{% endif %}
+  学校：{% if customuser.school %}{% render_field customuser.school %}{% else %}-{% endif %}
+
+  {% for key, value in QUERY_DICT.items %}
+  	<a href="{% url 'accounts:posts' customuser.id key %}" class="btn btn-link p-0">{{value}}一覧</a>
+  {% endfor %}
+
+  {% if customuser.id == user.id %}
+    <form method="post" action="{% url 'accounts:quit' %}" class="d-inline">
+      {% csrf_token %}
+      <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("本当に退会しますか？");'>
+        退会
+      </button>
+    </form>
+    <a href="{% url 'accounts:edit' %}"class="btn btn-link p-0">プロフィール編集</a>
+  {% else %}
+    {% if user in customuser.get_follower %}
+    <button class="btn btn-link p-0 user-follow" id="user-follow-{{ customuser.id }}" data-id="{{ customuser.id }}">
+      フォロー解除
+    </button>
+    {% else %}
+    <button class="btn btn-link p-0 user-disfollow" id="user-follow-{{ customuser.id }}" data-id="{{ customuser.id }}">
+      フォロー
+    </button>
+    {% endif %}
+    <span class="badge badge-info" id="follow-count-{{ customuser.id }}">{% if customuser.get_follower %}{{ customuser.get_follower | length }}{% endif %}</span>
+  {% endif %}
+
+  <div class="col-md-12 p-5">
+      <form method="POST" action="{% url 'dm:create-thread' customuser.id %}">
+        {% csrf_token %}
+        <button class="btn btn-light p-3" type="submit">Start a Conversation</button>
+      </form>
+  </div> -->
+
+</div>
+
+
+{% endblock %}

@@ -4,6 +4,7 @@ from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill
 
 class CustomUser(AbstractUser):
+    username = models.CharField(verbose_name='ユーザーネーム', max_length=40, unique=True)
     description = models.TextField(verbose_name='プロフィール', null=True, blank=True)
     photo = models.ImageField(verbose_name='写真', blank=True, null=True, upload_to='images/')
     thumbnail = ImageSpecField(source='photo',

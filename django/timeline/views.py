@@ -23,6 +23,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 class CreateView(LoginRequiredMixin, generic.CreateView):
     form_class = PostForm
     template_name = 'timeline/create_post.html'
+    template_name = 'create_post2.html'
     success_url = reverse_lazy('timeline:index')
 
     def form_valid(self, form):
@@ -125,6 +126,7 @@ class UpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Post
     fields = ('title', 'text', 'photo', 'recruitment_conditions', 'capacity', 'is_recruited')
     template_name = 'timeline/update.html'
+    template_name = 'post_update2.html'
     success_url = reverse_lazy('timeline:index')
 
 

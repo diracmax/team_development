@@ -1,0 +1,68 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}プロフィール編集 | seekiee{% endblock %}
+{% block contents %}
+<div class="profile-edit">
+	<form  method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		<div class="profile-edit-segment">
+		  <h1>プロフィール編集</h1>
+		</div>
+
+		<div class="input-group">
+			<label>
+				<div class="flex-icon">
+					<a href="{% if customuser.thumbnail %}{{ customuser.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}">
+					<img src="{% if customuser.thumbnail %}{{ customuser.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-photo">
+					</a>
+					<h2>プロフィール画像</h2>
+				</div>
+				<div class="photo-update">
+					現在の画像をクリア <input type="checkbox" name="photo-clear" id="photo-clear_id"><br>
+					<input type="file" name="photo">
+				</div>
+			</label>
+			<label>
+				<div class="flex-icon">
+					<img src="../../static/images/鉛筆の無料アイコン7.png">
+					<h2>ユーザーネーム</h2>
+					<p>※必須項目</p>
+				</div>
+				{% render_field form.username %}
+			</label>
+			<label>
+				<div class="flex-icon">
+					<img src="../../static/images/記事アイコン2.png">
+					<h2>自己紹介</h2>
+				</div>
+				{% render_field form.description placeholder="自己紹介文" rows="3" %}
+			</label>
+			<label>
+				<div class="flex-icon">
+					<img src="../../static/images/GitHub-Mark-120px-plus.png">
+					<h2>GitHub ID</h2>
+				</div>
+				{% render_field form.github_id %}
+			</label>
+			<label>
+				<div class="flex-icon">
+					<img src="../../static/images/人物の無料素材.png">
+					<h2>年齢</h2>
+				</div>
+				{% render_field form.age %}
+			</label>
+			<label>
+				<div class="flex-icon">
+					<img src="../../static/images/学校のアイコン2.png">
+					<h2>学校</h2>
+				</div>
+				{% render_field form.school %}
+			</label>
+			<button class="unit" type="submit"><img src="../../static/images/save_icon.png">保存する</button>
+		</div>
+
+	  </form>
+</div>
+
+{% endblock %}

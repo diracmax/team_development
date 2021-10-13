@@ -1,59 +1,55 @@
 {% load static %}
 
-<div id="contentBoxApp" ng-app="contentBoxApp">
-  <div id="GridCtrl" ng-controller="GridCtrl">
+<div class="my_container dynamic-grid">
+  {% for post in object_list %}
+  <article class="grid-item content-box">
+  <div class="inner">
 
-    <div class="my_container dynamic-grid">
-      {% for post in object_list %}
-      <article class="grid-item content-box">
-      <div class="inner">
-
-        <div class="post-head">
-          <a href="{% url 'accounts:detail' post.author.id %}">
-          <img src="{% if post.author.thumbnail %}{{ post.author.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo post-thumbnail">
-          </a>
-          <div ="post-author">
-            <p><a class="text-secondary" href="{% url 'accounts:detail' post.author.id %}">{{ post.author }}</a>
-            {% if post.author != user %}
-              {% if user in post.author.get_follower %}
-                <small>(フォロー中)</small>
-              {% endif %}
-            {% endif %}
-            </p>
-          </div>
-          <small class="post-title">{{ post.title }}</small>
-            {% include "like2.html" %}
-        </div>
-
-        <div class="post-info">
-          <a href="{% url 'timeline:detail' post.id %}">
-            <span class="mask">
-              {% if post.post_photo %}
-              <img class="card-img-bottom content-box-thumb" src="{{ post.post_photo.url }}" alt="Card image cap">
-              {% endif %}
-              <span class="cap">
-                <p class="post-info1">
-                  投稿日時: {{ post.created_at | date:"n月j日 H時i分" }}<br>
-                  タイトル: {{ post.title }}<br>
-                  コメント: {{ post.text }}
-                </p>
-                <p class="post-info2">
-                  募集条件: {{ post.recruitment_conditions }}<br>
-                  募集人数: {{ post.capacity }}人
-                </p>
-                <div class="post-info-detail">
-                  投稿詳細は<span>こちら</span>
-                </div>
-              </span>
-            </span>
-          </a>
-        </div>
-
+    <div class="post-head">
+      <a href="{% url 'accounts:detail' post.author.id %}">
+      <img src="{% if post.author.thumbnail %}{{ post.author.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo post-thumbnail">
+      </a>
+      <div class="post-author">
+        <p><a class="text-secondary" href="{% url 'accounts:detail' post.author.id %}">{{ post.author }}</a>
+        {% if post.author != user %}
+          {% if user in post.author.get_follower %}
+            <small>(フォロー中)</small>
+          {% endif %}
+        {% endif %}
+        </p>
       </div>
-      </article>
-      {% endfor %}
+      <small class="post-title">{{ post.title }}</small>
+        {% include "like2.html" %}
     </div>
+
+    <div class="post-info">
+      <a href="{% url 'timeline:detail' post.id %}">
+        <span class="mask">
+          {% if post.post_photo %}
+          <img class="card-img-bottom content-box-thumb" src="{{ post.post_photo.url }}" alt="Card image cap">
+          {% endif %}
+          <span class="cap">
+            <p class="post-info1">
+              投稿日時: {{ post.created_at | date:"n月j日 H時i分" }}<br>
+              タイトル: {{ post.title }}<br>
+              コメント: {{ post.text }}
+            </p>
+            <p class="post-info2">
+              募集条件: {{ post.recruitment_conditions }}<br>
+              募集人数: {{ post.capacity }}人
+            </p>
+            <div class="post-info-detail">
+              投稿詳細は<span>こちら</span>
+            </div>
+          </span>
+        </span>
+      </a>
+    </div>
+
   </div>
+  </article>
+  {% endfor %}
 </div>
+
 
 {% include 'search_button2.html' %}
