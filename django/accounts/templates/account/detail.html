@@ -17,7 +17,7 @@
         退会
       </button>
     </form>
-    <a href="{% url 'accounts:edit' %}"class="btn btn-link p-0">プロフィール編集</a>
+    <a href="{% url 'accounts:edit' %}">プロフィール編集</a>
   {% else %}
     {% if user in customuser.get_follower %}
     <button class="btn btn-link p-0 user-follow" id="user-follow-{{ customuser.id }}" data-id="{{ customuser.id }}">

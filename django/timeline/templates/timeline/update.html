@@ -5,7 +5,13 @@
 <br>
 <form method="POST" enctype="multipart/form-data">
 	{% csrf_token %}
+	{{ form.title }}
+	<br>
 	{{ form.text }}
+	<br>
+	{{ form.recruitment_conditions }}
+	<br>
+	{{ form.capacity }}
 	<br>
 	{{ form.photo }}
 	<br>

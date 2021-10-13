@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'bootstrap4',
 
+    'sass_processor',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [
@@ -145,6 +147,12 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 STATIC_ROOT =  os.path.join(BASE_DIR, 'staticfiles')
+
+SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR, 'static')
+SASS_PROCESSOR_INCLUDE_FILE_PATTERN = r'^.+\.(sass|scss)$'
+SASS_PRECISION = 8
+SASS_OUTPUT_STYLE = 'compact'
+SASS_TEMPLATE_EXTS = ['.html', '.haml']
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

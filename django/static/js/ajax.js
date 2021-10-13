@@ -22,6 +22,43 @@ $.ajaxSetup({
 });
 
 // like
+// $(document).on("click", ".post-liked", function () {
+// 	var id = $(this).data('id');
+// 	$.ajax({
+// 	type: "post",
+// 	url: "/like/",
+// 	data: {
+// 		id: id,
+// 		csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+// 	},
+// 	success: function (data) {
+// 		$("#post-like-" + id).removeClass("post-liked text-secondary").addClass("post-like text-dark");
+// 		$("#post-like-" + id).html("いいね")
+// 		var like_count = data["like_count"]
+// 		$("#like-count-" + id).html(like_count);
+// 		alert(data["message"])
+// 	}
+// 	});
+// });
+// $(document).on("click", ".post-like", function () {
+// 	var id = $(this).data('id');
+// 	$.ajax({
+// 	type: "post",
+// 	url: "/like/",
+// 	data: {
+// 		id: id,
+// 		csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+// 	},
+// 	success: function (data) {
+// 		$("#post-like-" + id).removeClass("post-like text-dark").addClass("post-liked text-secondary");
+// 		$("#post-like-" + id).html("いいねしました")
+// 		var like_count = data["like_count"]
+// 		$("#like-count-" + id).html(like_count);
+// 		alert(data["message"])
+// 	}
+// 	});
+// });
+
 $(document).on("click", ".post-liked", function () {
 	var id = $(this).data('id');
 	$.ajax({
@@ -32,11 +69,9 @@ $(document).on("click", ".post-liked", function () {
 		csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
 	},
 	success: function (data) {
-		$("#post-like-" + id).removeClass("post-liked text-secondary").addClass("post-like text-dark");
-		$("#post-like-" + id).html("いいね")
+		$("#post-like-" + id).removeClass("post-liked a_liked liked").addClass("post-like");
 		var like_count = data["like_count"]
 		$("#like-count-" + id).html(like_count);
-		alert(data["message"])
 	}
 	});
 });
@@ -50,11 +85,9 @@ $(document).on("click", ".post-like", function () {
 		csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
 	},
 	success: function (data) {
-		$("#post-like-" + id).removeClass("post-like text-dark").addClass("post-liked text-secondary");
-		$("#post-like-" + id).html("いいねしました")
+		$("#post-like-" + id).removeClass("post-like").addClass("post-liked liked");
 		var like_count = data["like_count"]
 		$("#like-count-" + id).html(like_count);
-		alert(data["message"])
 	}
 	});
 });
@@ -96,7 +129,7 @@ $(document).on("click", ".user-follow", function () {
 	  }
 	});
   });
-  
+
 // apply
 $(document).on("click", ".post-apply", function () {
 	var id = $(this).data('id');

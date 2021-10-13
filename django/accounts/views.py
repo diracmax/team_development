@@ -51,6 +51,7 @@ class ProfileEdit(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     model = CustomUser
     form_class = ProfileForm
     template_name = 'account/edit.html'
+    template_name = 'profile_edit.html'
     success_url = '/accounts/edit/'
     success_message = 'プロフィールを更新しました。'
 
@@ -61,6 +62,7 @@ class ProfileEdit(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
 class ProfileDetail(LoginRequiredMixin, generic.DetailView):
     model = CustomUser
     template_name = 'account/detail.html'
+    template_name = 'profile.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
