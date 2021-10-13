@@ -1,10 +1,10 @@
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, CommentReplyForm
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
-from .models import Post, Like, Apply, Comment, Notification
+from .models import Post, Like, Apply, Comment, CommentReply, Notification
 from accounts.models import CustomUser
 from django.http.response import JsonResponse
 from django.http import HttpResponse
@@ -162,7 +162,82 @@ class DeleteCommentView(LoginRequiredMixin, generic.DeleteView):
             return super().delete(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse('timeline:detail', kwargs={'pk': self.kwargs['pk']})
+        pk = self.kwargs['pk']
+        comment = Comment.objects.get(pk=pk)
+        return reverse('timeline:detail', kwargs={'pk': comment.post.id})
+
+
+class DeleteCommentReplyView(LoginRequiredMixin, generic.DeleteView):
+    model = CommentReply
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.author == request.user:
+            messages.success(self.request, '削除しました。')
+            return super().delete(request, *args, **kwargs)
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        comment_reply = CommentReply.objects.get(pk=pk)
+        return reverse('timeline:comment_reply_list', kwargs={'pk': comment_reply.parent.id})
+
+
+class CommentReplyList(LoginRequiredMixin, generic.ListView):
+    template_name = 'timeline/comment_list.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        parent = Comment.objects.get(pk=pk)
+        comment_replys = CommentReply.objects.filter(
+            parent=parent).order_by('created_at')
+        return comment_replys
+
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs.get('pk')
+        parent = Comment.objects.get(pk=pk)
+        context = super().get_context_data(**kwargs)
+        context['parent'] = parent
+        return context
+
+
+class CommentReplyView(LoginRequiredMixin, generic.CreateView):
+    form_class = CommentReplyForm
+
+    def form_valid(self, form):
+        form.instance.author_id = self.request.user.id
+        pk = self.kwargs.get('pk')
+        form.instance.parent = Comment.objects.get(pk=pk)
+        messages.success(self.request, 'コメントが完了しました。')
+        return super(CommentReplyView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        messages.warning(self.request, 'コメントが失敗しました。')
+        return redirect('timeline:comment_reply_list', pk=self.kwargs['pk'])
+
+    def get_success_url(self):
+        return reverse('timeline:comment_reply_list', kwargs={'pk': self.kwargs['pk']})
+
+
+class UpdateCommentView(LoginRequiredMixin, generic.UpdateView):
+    model = Comment
+    fields = ('text',)
+    template_name = 'timeline/update_comment.html'
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        comment = Comment.objects.get(pk=pk)
+        post = Post.objects.get(pk=comment.id)
+        return reverse('timeline:detail', kwargs={'pk': post.id})
+
+
+class UpdateCommentReplyView(LoginRequiredMixin, generic.UpdateView):
+    model = CommentReply
+    fields = ('text',)
+    template_name = 'timeline/update_comment.html'
+
+    def get_success_url(self):
+        return reverse('timeline:comment_reply_list', kwargs={'pk': self.kwargs['pk']})
 
 
 class PostNotification(generic.View):
@@ -172,12 +247,14 @@ class PostNotification(generic.View):
         notification.save()
         return redirect('timeline:detail', pk=object_pk)
 
+
 class MessageNotification(generic.View):
     def get(self, request, notification_pk, object_pk, *args, **kwargs):
         notification = Notification.objects.get(pk=notification_pk)
         notification.user_has_seen = True
         notification.save()
         return redirect('dm:thread', pk=object_pk)
+
 
 class FollowNotification(generic.View):
     def get(self, request, notification_pk, object_pk, *args, **kwargs):
@@ -205,3 +282,8 @@ accept = AcceptApplicationView.as_view()
 update = UpdateView.as_view()
 comment = CommentView.as_view()
 delete_comment = DeleteCommentView.as_view()
+delete_comment_reply = DeleteCommentReplyView.as_view()
+comment_reply = CommentReplyView.as_view()
+comment_reply_list = CommentReplyList.as_view()
+update_comment = UpdateCommentView.as_view()
+update_comment_reply = UpdateCommentReplyView.as_view()

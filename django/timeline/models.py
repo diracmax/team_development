@@ -85,3 +85,12 @@ class Notification(models.Model):
         ThreadModel, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
     date = models.DateTimeField(default=timezone.now)
     user_has_seen = models.BooleanField(default=False)
+
+
+class CommentReply(models.Model):
+    author = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
+    parent = models.ForeignKey(
+        'Comment', verbose_name='親コメント', on_delete=models.CASCADE, related_name='parent_comment')
+    text = models.TextField(verbose_name='コメント')
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)

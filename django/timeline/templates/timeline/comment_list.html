@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}投稿詳細 | seekiee{% endblock %}
+{% block contents %}
+
+<div class="comment-list-parent">
+    <p>{{parent.text}}</p>
+    <div class="comment-list-parent-underpart">
+      <p class="detail-comment-created_at">{{parent.created_at}}</p>
+      <a class="comment-list-posturl" href="{% url 'timeline:detail' parent.post.id %}">投稿詳細に戻る</a>
+    </div>
+</div>
+
+<div class="comment-list-reply-form">
+  <form method="post" action="{% url 'timeline:comment_reply' parent.id %}" class="d-inline">
+      {% csrf_token %}
+      <textarea class="comment-list-comment-create" name="text" rows="3" placeholder="返信"></textarea>
+      <button class="btn btn-dark btn-block" type="submit">返信</button>
+  </form>
+</div>
+
+
+{% for comment in object_list %}
+  <div class="detail-comment">
+    <p>{{comment.text}}</p>
+    <div class="detail-comment-underpart">
+      <p class="detail-comment-created_at">{{comment.created_at}}</p>
+      <div class="detail-comment-button">
+      {% if comment.author.id == user.id %}
+        <form method="post" action="{% url 'timeline:delete_comment' comment.id %}" class="d-inline">
+        {% csrf_token %}
+        <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("このコメントを本当に削除しますか？");'>
+          削除
+        </button>
+        </form>
+        <form method="post" action="{% url 'timeline:update_comment' comment.id %}" class="d-inline">
+          {% csrf_token %}
+          <button class="btn btn-link text-dark p-0 ml-3" type="submit">
+            編集
+          </button>
+        </form>
+      {% endif %}
+      </div>
+    </div>
+  </div>
+  <hr>
+{% endfor %}
+
+{% endblock %}
