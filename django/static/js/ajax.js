@@ -21,8 +21,7 @@ $.ajaxSetup({
 	}
 });
 
-
-
+// like
 $(document).on("click", ".post-liked", function () {
 	var id = $(this).data('id');
 	$.ajax({
