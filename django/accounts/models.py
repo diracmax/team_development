@@ -2,8 +2,21 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill
+from django.contrib.auth.validators import UnicodeUsernameValidator
 
 class CustomUser(AbstractUser):
+    username_validator = UnicodeUsernameValidator()
+
+    username = models.CharField(
+        ('username'),
+        max_length=40,
+        unique=True,
+        help_text=('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+        validators=[username_validator],
+        error_messages={
+            'unique': ("このユーザーネームはすでに使用されています。"),
+        },
+    )
     description = models.TextField(verbose_name='プロフィール', null=True, blank=True)
     photo = models.ImageField(verbose_name='写真', blank=True, null=True, upload_to='images/')
     thumbnail = ImageSpecField(source='photo',
