@@ -62,10 +62,10 @@ class CreateMessage(generic.View):
             receiver_user=receiver,
             body=request.POST.get('message'),
         )
-        if len(message.body) <= 25:
+        if len(message.body) <= 60:
             thread.last_message = message.body
         else:
-            thread.last_message = message.body[:24]+"..."
+            thread.last_message = message.body[:59]+"..."
         message.save()
         thread.save()
 

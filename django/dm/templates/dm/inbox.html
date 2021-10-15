@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block contents %}
-<div class="container">
+<div class="container dm">
 {% for thread in threads.all %}
 
   {% if thread.receiver == user %}
-    <div class="card mb-5 text-left">
+    <div class="card mb-3 text-left">
       <div class="card-body">
         <div class="row">
           <div class="col-1">
@@ -15,14 +15,14 @@
           <div class="col-10 ml-3">
             <a href="{% url 'accounts:detail' thread.user.id %}" class="text-secondary">{{ thread.user }}</a>
             <br>
-            <small class="text-muted">{{ thread.last_message }}</small>
+            <small>{{ thread.last_message }}</small>
           </div>
         </div>
         <a href="{% url 'dm:thread' thread.pk %}" class="stretched-link"></a>
       </div>
     </div>
   {% else %}
-    <div class="card mb-5 text-left">
+    <div class="card mb-3 text-left">
       <div class="card-body">
         <div class="row">
           <div class="col-1">
@@ -31,7 +31,7 @@
           <div class="col-10 ml-3">
             <a href="{% url 'accounts:detail' thread.receiver.id %}" class="text-secondary">{{ thread.receiver }}</a>
             <br>
-            <small class="text-muted">{{ thread.last_message }}</small>
+            <small>{{ thread.last_message }}</small>
           </div>
         </div>
         <a href="{% url 'dm:thread' thread.pk %}" class="stretched-link"></a>

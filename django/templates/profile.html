@@ -53,15 +53,18 @@
     </button>
     {% endif %}
     <span class="badge badge-info" id="follow-count-{{ customuser.id }}">{% if customuser.get_follower %}{{ customuser.get_follower | length }}{% endif %}</span>
-  {% endif %}
+  {% endif %} -->
 
   <div class="col-md-12 p-5">
-      <form method="POST" action="{% url 'dm:create-thread' customuser.id %}">
-        {% csrf_token %}
-        <button class="btn btn-light p-3" type="submit">Start a Conversation</button>
-      </form>
-  </div> -->
-
+    <form method="POST" action="{% url 'dm:create-thread' customuser.id %}">
+      {% csrf_token %}
+      <button class="btn btn-light p-3" type="submit">
+        <div class="img-rounded">
+          <img src="{% static 'images/dm.png' %}" class="img-responsive" width="64px">
+        </div>
+      </button>
+    </form>
+  </div>
 </div>
 
 
