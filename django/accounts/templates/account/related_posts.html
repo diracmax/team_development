@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
 {% load static %}
 {% block title %}{{title}} | seekiee{% endblock %}
 {% block contents %}
@@ -26,7 +26,7 @@
 {% if view.kwargs.query == "follow" or view.kwargs.query == "follower" %}
   {% include "account/account_list.html" %}
 {% else %}
-    {% include "timeline/post_list.html" %}
+    {% include "post_list2.html" %}
 {% endif %}
 {% include "timeline/pagination.html" %}
 
