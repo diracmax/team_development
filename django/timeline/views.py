@@ -124,7 +124,8 @@ class PostDetail(LoginRequiredMixin, generic.DetailView):
 
 class UpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Post
-    fields = ('title', 'text', 'photo', 'recruitment_conditions', 'capacity', 'is_recruited')
+    fields = ('title', 'text', 'photo', 'recruitment_conditions',
+              'capacity', 'is_recruited')
     template_name = 'timeline/update.html'
     template_name = 'post_update2.html'
     success_url = reverse_lazy('timeline:index')
@@ -272,6 +273,16 @@ class RemoveNotification(generic.View):
         notification.save()
         return HttpResponse('Success', content_type='text/plain')
 
+
+class NotificationView(LoginRequiredMixin, generic.ListView):
+    template_name = 'timeline/notification_list.html'
+    paginate_by = 24
+
+    def get_queryset(self):
+        request_user = self.request.user
+        notifications = Notification.objects.filter(
+        to_user=request_user).exclude(user_has_seen=True).order_by('-date')
+        return notifications
 
 index = IndexView.as_view()
 create = CreateView.as_view()

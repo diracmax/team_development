@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import PostNotification, FollowNotification, RemoveNotification, MessageNotification
+from .views import PostNotification, FollowNotification, RemoveNotification, MessageNotification, NotificationView
 
 app_name = 'timeline'
 
@@ -33,4 +33,5 @@ urlpatterns = [
          views.update_comment_reply, name="update_comment_reply"),
     path('comment/<int:pk>/delete',
          views.delete_comment_reply, name="delete_comment_reply"),
+    path('notification/', NotificationView.as_view(), name='notification'),
 ]

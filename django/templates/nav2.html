@@ -1,4 +1,6 @@
 {% load static %}
+{% load custom_tags %}
+
 
 <div class="MobileNav" data-mobile-nav>
 	<div class="MobileNav-overlay" data-mobile-nav-overlay></div>
@@ -19,7 +21,8 @@
 		</li>
 		<li class="MobileNav-item" data-mobile-nav-item="3">
 		  <div class="MobileNav-item-title">
-			<a href="#">Nortification</a>
+			<a href="{% url 'timeline:notification' %}">Notification</a>
+			{% show_notifications %}
 		  </div>
 		</li>
 		<li class="MobileNav-item" data-mobile-nav-item="4">
@@ -49,7 +52,8 @@
 			<a href="{% url 'accounts:detail' user.id %}">Profile</a>
 		</div>
 		<div class="Header-nav-item" data-nav-item="3">
-			<a href="#">Nortification</a>
+			<a href="{% url 'timeline:notification' %}">Notification</a>
+			{% show_notifications %}
 		</div>
 		<div class="Header-nav-item" data-nav-item="4">
 			<a href="{% url 'dm:inbox' %}">DM</a>

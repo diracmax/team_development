@@ -1,22 +1,44 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
+{% load static %}
+
 {% block contents %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-12 p-5">
-      <h3>メッセージ一覧</h3>
+<div class="container dm">
+{% for thread in threads.all %}
+
+  {% if thread.receiver == user %}
+    <div class="card mb-3 text-left">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-1">
+            <a href="{% url 'accounts:detail' thread.user.id %}"><img src="{% if thread.user.thumbnail %}{{ thread.user.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
+          </div>
+          <div class="col-10 ml-3">
+            <a href="{% url 'accounts:detail' thread.user.id %}" class="text-secondary">{{ thread.user }}</a>
+            <br>
+            <small>{{ thread.last_message }}</small>
+          </div>
+        </div>
+        <a href="{% url 'dm:thread' thread.pk %}" class="stretched-link"></a>
+      </div>
     </div>
-  </div>
-  {% for thread in threads.all %}
-  <div class="row mb-3">
-    <div class="card col-md-12 p-5 shadow-sm">
-      {% if thread.receiver == user %}
-      {{ thread.user }}
-      {% else %}
-      {{ thread.receiver }}
-      {% endif %}
-      <a class="stretched-link" href="{% url 'dm:thread' thread.pk %}"></a>
+  {% else %}
+    <div class="card mb-3 text-left">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-1">
+            <a href="{% url 'accounts:detail' thread.receiver.id %}"><img src="{% if thread.receiver.thumbnail %}{{ thread.receiver.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
+          </div>
+          <div class="col-10 ml-3">
+            <a href="{% url 'accounts:detail' thread.receiver.id %}" class="text-secondary">{{ thread.receiver }}</a>
+            <br>
+            <small>{{ thread.last_message }}</small>
+          </div>
+        </div>
+        <a href="{% url 'dm:thread' thread.pk %}" class="stretched-link"></a>
+      </div>
     </div>
-  </div>
-  {% endfor %}
+  {% endif %}
+
+{% endfor %}
 </div>
 {% endblock %}

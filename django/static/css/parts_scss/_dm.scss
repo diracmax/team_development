@@ -1,0 +1,140 @@
+.dm {
+	padding: 8rem 1.5rem 3rem 1.5rem;
+	text-align: center;
+	max-width: 536px;
+	margin: auto;
+  }
+  
+  .messages {
+	list-style: none;
+	padding: 0;
+  }
+  
+  .post-photo {
+	width: 50px;
+	height: 50px;
+  }
+  
+  .form-content {
+	max-width: 330px;
+	margin: auto;
+  }
+  
+  .form-group label {
+	display: none;
+  }
+  
+  .form-group .form-check label {
+	display: inline-block;
+  }
+  
+  .form-group {
+	word-break: break-all;
+  }
+  
+  .profile-post-photo {
+	width: 50px;
+	height: 50px;
+  }
+  
+
+/* dm */
+.inbox-icon-container {
+	margin-right: 15px;
+  }
+  .inbox-icon {
+	color: #333;
+	transition: 0.5s;
+  }
+  .inbox-icon:hover {
+	transition: 0.5s;
+  }
+  .sent-message {
+	float: left;
+	background: #f5f5f5;
+	background-attachment: fixed;
+	color: #000;
+	border-radius: 0.2rem 0.5rem 0.5rem 0.2rem;
+	height: fit-content;
+	width: fit-content;
+	padding: 0.5rem 1rem;
+	margin: 0;
+	text-align: left;
+  }
+  .received-message {
+	float: right;
+  
+	background: linear-gradient(
+		180deg,
+		rgba(139, 47, 184, 1) 0%,
+		rgba(103, 88, 205, 1) 51%,
+		rgba(89, 116, 219, 1) 92%
+	  )
+	  no-repeat center;
+	background-attachment: fixed;
+	color: #fff;
+	border-radius: 0.5rem 0.2rem 0.2rem 0.5rem;
+	height: fit-content;
+	width: fit-content;
+	display:inline;
+	padding: 0.5rem 0.4rem 0.5rem 0.5rem;
+	margin: 0;
+	text-align: left;
+  }
+  .empty-text {
+	color: #777;
+	font-size: 1.5rem;
+	text-align: center;
+  }
+  
+  
+  .dropdown {
+	position: relative;
+	display: inline-block;
+  }
+  
+  .dropdown-content {
+	position: absolute;
+	background-color: #f1f1f1;
+	min-width: 300px;
+	box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+	font-size: 0.9rem;
+  }
+  
+  .dropdown-content a {
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+  }
+  
+  .dropdown-content a:hover {background-color: #ddd;}
+  .dropdown-item-parent {
+	position: relative;
+	display: block;
+  }
+  
+  .dropdown-item-close {
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 1.8rem;
+	padding-right: 5px;
+	transition: 0.3s;
+  }
+  .dropdown-item-close:hover {
+	color: rgb(180, 25, 25);
+	transition: 0.3s;
+	cursor: pointer;
+  }
+  
+  .notification-badge {
+	transition: 0.3s;
+  }
+  .notification-badge:hover {
+	cursor: pointer;
+	opacity: 0.75;
+	transition: 0.3s;
+  }
+  
