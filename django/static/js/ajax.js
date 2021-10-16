@@ -69,8 +69,12 @@ $(document).on("click", ".user-follow", function () {
 		$("#user-follow-" + id).removeClass("user-follow").addClass("user-disfollow");
 		var targetSrc = $("#user-follow-" + id+' img').attr('src'); // 画像URLを取得
 		// var replaceURL = targetSrc.replace('watch_gray.png','watch_white.png');
-		var replaceURL = targetSrc.replace('watch_white.png', 'watch_gray.png');
-		$("#user-follow-" + id + ' img').attr({src:replaceURL});
+		if(targetSrc){
+			var replaceURL = targetSrc.replace('watch_white.png', 'watch_gray.png');
+			$("#user-follow-" + id + ' img').attr({src:replaceURL});
+		} else{
+			$("#user-follow-" + id).html("フォロー")
+		}
 		var follow_count = data["follow_count"]
 		$("#follow-count-" + id).html(follow_count);
 		alert(data["message"])
@@ -90,8 +94,12 @@ $(document).on("click", ".user-disfollow", function () {
 		$("#user-follow-" + id).removeClass("user-disfollow").addClass("user-follow");
 		var targetSrc = $("#user-follow-" + id + ' img').attr('src'); // 画像URLを取得
 		// var replaceURL = targetSrc.replace('watch_white.png', 'watch_gray.png');
-		var replaceURL = targetSrc.replace('watch_gray.png','watch_white.png');
-		$("#user-follow-" + id + ' img').attr({src:replaceURL});
+		if(targetSrc){
+			var replaceURL = targetSrc.replace('watch_gray.png','watch_white.png');
+			$("#user-follow-" + id + ' img').attr({src:replaceURL});
+		} else{
+			$("#user-follow-" + id).html("フォロー解除")
+		}
 		var follow_count = data["follow_count"]
 		$("#follow-count-" + id).html(follow_count);
 		alert(data["message"])
