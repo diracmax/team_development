@@ -35,7 +35,6 @@ class CustomUser(AbstractUser):
         followings = Follow.objects.filter(follower=self)
         return [following.follower for following in followings]
 
-
     class Meta:
         verbose_name_plural = 'CustomUser'
 
