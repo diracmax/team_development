@@ -6,33 +6,99 @@
 
 <div class="profile-detail">
 
-	<div class="profile-info">
-		<div class="profile-photo">
-			<img src="{% if customuser.thumbnail %}{{ customuser.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo">
-		</div>
-		<h1 class="profile-username">{% render_field customuser.username %}</h1>
-		<div class="profile-github">
-			{% if customuser.github_id  %}
-				<a href="https://github.com/{{ customuser.github_id }}"><img src="{% static 'images/GitHub-Mark-120px-plus.png' %}"></a>
-			{% endif %}
-		</div>
-		{% if customuser.id == user.id %}
-			<a href="{% url 'accounts:edit' %}">
-				<button class="btn profile-edit-btn">Edit Profile</button>
-			</a>
-		{% endif %}
-		<p class="profile-bio">{% if customuser.description %}{% render_field customuser.description %}{% else %}本文はありません。{% endif %}</p>
-	</div>
+  <div class="wrapper">
+    <div class="profile-card">
+      <div class="profile-card__img">
+        <img src="{% if customuser.thumbnail %}{{ customuser.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" alt="profile-photo" class="rounded-circle post-photo">
+      </div>
 
-  <!-- <img src="{% if customuser.thumbnail %}{{ customuser.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo">
-  自己紹介：{% if customuser.description %}{% render_field customuser.description %}{% else %}本文はありません。{% endif %}
-  GitHub_id：{% if customuser.github_id  %}<a href="https://github.com/{{ customuser.github_id}}">{% render_field customuser.github_id %}</a>{% else %}-{% endif %}
-  年齢：{% if customuser.age %}{% render_field customuser.age %}歳{% else %}-{% endif %}
-  学校：{% if customuser.school %}{% render_field customuser.school %}{% else %}-{% endif %}
+      <div class="profile-card__cnt">
+        <div class="profile-card-name">{% render_field customuser.username %}</div>
+        <div class="profile-card-bio">{% if customuser.description %}{% render_field customuser.description %}{% else %}本文はありません。{% endif %}</div>
+        <div class="profile-card-personal">
+          <div class="profile-age">
+            年齢：{% if customuser.age %}{% render_field customuser.age %}歳{% else %}-{% endif %}
+          </div>
+          <div class="profile-school">
+            学校：{% if customuser.school %}{% render_field customuser.school %}{% else %}-{% endif %}
+          </div>
+        </div>
 
-  {% for key, value in QUERY_DICT.items %}
-  	<a href="{% url 'accounts:posts' customuser.id key %}" class="btn btn-link p-0">{{value}}一覧</a>
-  {% endfor %}
+        <div class="profile-card-inf">
+          <div class="profile-card-inf__item">
+            <a href="{% url 'accounts:posts' customuser.id 'follower' %}">
+              <div class="profile-card-inf__title">
+                  <span id="follow-count-{{ customuser.id }}">{{ customuser.get_follower | length }}</span>
+              </div>
+              <div class="profile-card-inf__txt">Followers</div>
+            </a>
+          </div>
+
+          <div class="profile-card-inf__item">
+            <a href="{% url 'accounts:posts' customuser.id 'follow' %}">
+              <div class="profile-card-inf__title">
+                  <span id="follow-count-{{ customuser.id }}">{{ customuser.get_follower | length }}</span>
+              </div>
+              <div class="profile-card-inf__txt">Followings</div>
+            </a>
+          </div>
+
+          <div class="profile-card-inf__item">
+            <a href="{% url 'accounts:posts' customuser.id 'recruit' %}">
+              <div class="profile-card-inf__title">
+                  <span id="follow-count-{{ customuser.id }}">{{ customuser.get_follower | length }}</span>
+              </div>
+              <div class="profile-card-inf__txt">Posts</div>
+            </a>
+          </div>
+        </div>
+
+        <div class="profile-card-social">
+
+          <a href="{% url 'accounts:posts' customuser.id 'recruit' %}">
+            <button class="unit" type="button"><img src="{% static 'images/拡声器のアイコンその3青.png' %}"></button>
+          </a>
+
+          <a href="{% url 'accounts:posts' customuser.id 'like' %}">
+            <button class="unit" type="button"><img src="{% static 'images/ハートのマーク赤.png' %}"></button>
+          </a>
+
+          <a href="{% url 'accounts:posts' customuser.id 'entry' %}">
+            <button class="unit" type="button"><img src="{% static 'images/記事アイコン3.png' %}"></button>
+          </a>
+
+          <a href="{% url 'accounts:posts' customuser.id 'join' %}">
+            <button class="unit" type="button"><img src="{% static 'images/チームアイコン3.png' %}"></button>
+          </a>
+
+          {% if customuser.github_id  %}
+          <a href="https://github.com/{{ customuser.github_id }}">
+            <button class="unit" type="button"><img src="{% static 'images/GitHub-Mark-120px-plus.png' %}"></button>
+          </a>
+          {% endif %}
+
+        </div>
+
+        <div class="profile-card-ctr">
+            <form method="POST" action="{% url 'dm:create-thread' customuser.id %}">
+              {% csrf_token %}
+              <button type="submit" class="profile-card__button button--blue" alt="DM">Message</button>
+            </form>
+          {% if customuser.id == user.id %}
+            <a href="{% url 'accounts:edit' %}">
+              <button class="profile-card__button button--orange">Edit Profile</button>
+            </a>
+          {% else %}
+            {% if user in customuser.get_follower %}
+              <button class="user-follow profile-card__button button--orange" id="user-follow-{{ customuser.id }}" data-id="{{ customuser.id }}">フォロー解除</button>
+            {% else %}
+              <button class="user-disfollow profile-card__button button--orange" id="user-follow-{{ customuser.id }}" data-id="{{ customuser.id }}">フォロー</button>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
 
   {% if customuser.id == user.id %}
     <form method="post" action="{% url 'accounts:quit' %}" class="d-inline">
@@ -41,26 +107,7 @@
         退会
       </button>
     </form>
-    <a href="{% url 'accounts:edit' %}"class="btn btn-link p-0">プロフィール編集</a>
-  {% else %}
-    {% if user in customuser.get_follower %}
-    <button class="btn btn-link p-0 user-follow" id="user-follow-{{ customuser.id }}" data-id="{{ customuser.id }}">
-      フォロー解除
-    </button>
-    {% else %}
-    <button class="btn btn-link p-0 user-disfollow" id="user-follow-{{ customuser.id }}" data-id="{{ customuser.id }}">
-      フォロー
-    </button>
-    {% endif %}
-    <span class="badge badge-info" id="follow-count-{{ customuser.id }}">{% if customuser.get_follower %}{{ customuser.get_follower | length }}{% endif %}</span>
   {% endif %}
-
-  <div class="col-md-12 p-5">
-      <form method="POST" action="{% url 'dm:create-thread' customuser.id %}">
-        {% csrf_token %}
-        <button class="btn btn-light p-3" type="submit">Start a Conversation</button>
-      </form>
-  </div> -->
 
 </div>
 

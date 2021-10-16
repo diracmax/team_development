@@ -25,7 +25,7 @@
 			</label>
 			<label>
 				<div class="flex-icon">
-					<img src="../../static/images/鉛筆の無料アイコン7.png">
+					<img src="{% static 'images/鉛筆の無料アイコン7.png' %}">
 					<h2>ユーザーネーム</h2>
 					<p>※必須項目</p>
 				</div>
@@ -33,33 +33,33 @@
 			</label>
 			<label>
 				<div class="flex-icon">
-					<img src="../../static/images/記事アイコン2.png">
+					<img src="{% static 'images/記事アイコン2.png' %}">
 					<h2>自己紹介</h2>
 				</div>
 				{% render_field form.description placeholder="自己紹介文" rows="3" %}
 			</label>
 			<label>
 				<div class="flex-icon">
-					<img src="../../static/images/GitHub-Mark-120px-plus.png">
+					<img src="{% static 'images/GitHub-Mark-120px-plus.png' %}">
 					<h2>GitHub ID</h2>
 				</div>
 				{% render_field form.github_id %}
 			</label>
 			<label>
 				<div class="flex-icon">
-					<img src="../../static/images/人物の無料素材.png">
+					<img src="{% static 'images/人物の無料素材.png' %}">
 					<h2>年齢</h2>
 				</div>
 				{% render_field form.age %}
 			</label>
 			<label>
 				<div class="flex-icon">
-					<img src="../../static/images/学校のアイコン2.png">
+					<img src="{% static 'images/学校のアイコン2.png' %}">
 					<h2>学校</h2>
 				</div>
 				{% render_field form.school %}
 			</label>
-			<button class="unit" type="submit"><img src="../../static/images/save_icon.png">保存する</button>
+			<button class="unit" type="submit"><img src="{% static 'images/save_icon.png' %}">保存する</button>
 		</div>
 
 	  </form>
