@@ -67,14 +67,17 @@ $(document).on("click", ".user-follow", function () {
 	  },
 	  success: function (data) {
 		$("#user-follow-" + id).removeClass("user-follow").addClass("user-disfollow");
-		$("#user-follow-" + id).html("フォロー")
+		var targetSrc = $("#user-follow-" + id+' img').attr('src'); // 画像URLを取得
+		// var replaceURL = targetSrc.replace('watch_gray.png','watch_white.png');
+		var replaceURL = targetSrc.replace('watch_white.png', 'watch_gray.png');
+		$("#user-follow-" + id + ' img').attr({src:replaceURL});
 		var follow_count = data["follow_count"]
 		$("#follow-count-" + id).html(follow_count);
 		alert(data["message"])
 	  }
 	});
-  });
-  $(document).on("click", ".user-disfollow", function () {
+});
+$(document).on("click", ".user-disfollow", function () {
 	var id = $(this).data('id');
 	$.ajax({
 	  type: "post",
@@ -85,13 +88,16 @@ $(document).on("click", ".user-follow", function () {
 	  },
 	  success: function (data) {
 		$("#user-follow-" + id).removeClass("user-disfollow").addClass("user-follow");
-		$("#user-follow-" + id).html("フォロー解除")
+		var targetSrc = $("#user-follow-" + id + ' img').attr('src'); // 画像URLを取得
+		// var replaceURL = targetSrc.replace('watch_white.png', 'watch_gray.png');
+		var replaceURL = targetSrc.replace('watch_gray.png','watch_white.png');
+		$("#user-follow-" + id + ' img').attr({src:replaceURL});
 		var follow_count = data["follow_count"]
 		$("#follow-count-" + id).html(follow_count);
 		alert(data["message"])
 	  }
 	});
-  });
+});
 
 // apply
 $(document).on("click", ".post-apply", function () {

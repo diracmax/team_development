@@ -1,83 +1,163 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
 {% load static %}
 {% block title %}投稿詳細 | seekiee{% endblock %}
 {% block contents %}
 
-<h1>ディテイルだよー</h1>
-
-<h1>You are {{user}}</h1>
-
-<h1>タイトル is {{ object.title }}</h1>
-
-<h1>内容 is {{object.text}}</h1>
-
-<h1>募集条件 is {{ object.recruitment_conditions }}</h1>
-
-<h1>募集人数 is {{ object.capacity }}</h1>
-
-<h1>投稿者 is {{object.author}}</h1>
-
-<h1>応募者 is {{object.get_applicant}}</h1>
-
-<h1>メンバー is {{object.get_member}}</h1>
-
-
-{% if post.author.id == user.id %}
-<p>メンバー</p>
-{% for user in object.get_member %}
-    <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
-      {% csrf_token %}
-      <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("このユーザーをメンバーから外しますか？");'>
-        {{user}}
-      </button>
-    </form>
-{% endfor %}
-
-<p>応募者</p>
-{% for user in object.get_applicant %}
-    <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
-      {% csrf_token %}
-      <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("このユーザーをメンバーにしますか？");'>
-        {{user}}
-      </button>
-    </form>
-{% endfor %}
-
-{% endif %}
-
-<hr>
-
-{% include "timeline/like_apply_delete.html" %}
-
-{% if post.author.id == user.id %}
-<a href="{% url 'timeline:update' object.pk %}" class="btn btn-primary my-2">編集する</a>
-{% endif %}
+<div class="detail-template">
 
 <div>
+  {% if post.author.id == user.id %}
+  <a href="{% url 'timeline:update' object.pk %}" class="btn btn-primary my-2">編集する</a>
+  <form method="post" action="{% url 'timeline:delete' post.id %}" class="d-inline">
+    {% csrf_token %}
+    <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("この投稿を本当に削除しますか？");'>
+    削除
+    </button>
+  </form>
+  {% endif %}
+</div>
+
+<h1 class="detail-post-title">{{ object.title }}</h1>
+<div class="detail-author-info">
+  <div class="detail-author-left">
+    <div class="detail-author-img">
+      <img class="detail-author-photo" src="{% if object.author.thumbnail %}{{ object.author.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}">
+    </div>
+    <div class="detail-author-name">
+      <p class="detail-author-name-p"><a href="{% url 'accounts:detail' post.author.id %}">{{object.author}}</a></p>
+    </div>
+  </div>
+  <div class="detail-author-right">
+    {% include "like2.html" %}
+  </div>
+</div>
+
+<div class="detail-photo-box"><img class="detail-post-photo card-img-bottom" src="{{ object.post_photo.url }}" alt="Card image cap"></div>
+
+<div class="detail-post-content">
+  <div class="detail-post-main-content">
+    <div class="detail-post-text">
+      <h2>内容</h2>
+      <p>{{object.text}}</p>
+    </div>
+    <div class="detail-post-text">
+      <h2>募集条件</h2>
+      <p>{{object.recruitment_conditions}}</p>
+    </div>
+  </div>
+  <div class="detail-post-sidebar">
+      {% if post.author.id != user.id %}
+      <div class="detail-post-apply">
+      {% if not post.is_recruited %}
+      <p>現在募集していません</p>
+      {% else %}
+        {% if user in post.get_applicant or user in post.get_member %}
+        <button class="btn btn-link p-0 post-apply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
+          <span class="detail-button">取り下げ</span>
+        </button>
+        {% else %}
+        <button class="detail-application btn btn-link p-3 post-disapply btn-primary btn-lg btn-outline-info" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
+          <span class="detail-button">応募</span>
+        </button>
+        {% endif %}
+        <span class="badge badge-info" id="apply-count-{{ post.id }}">{% if post.get_applicant %}{{ post.get_apply_number }}{% endif %}</span>
+        {% endif %}
+      </div>
+      {% endif %}
+    <p class="detail-sidebar-title">募集人数</p>
+    <p>{{ object.capacity }}人</p>
+
+    <p class="detail-sidebar-title">応募者</p>
+    <p>{% if object.get_applicant.count %}{{object.get_applicant.count}}人{% else %}まだいません{% endif %}</p>
+
+    <p class="detail-sidebar-title">メンバー</p>
+    <p>{% if object.get_member.count %}{{object.get_member.count}}人{% else %}まだいません{% endif %}</p>
+  </div>
+</div>
+
+
+{% if post.author.id == user.id %}
+<div class="detail-list">
+  <div class="detail-applicant-list">
+    <h2>応募者</h2>
+    {% for user in object.get_applicant %}
+    <div class="detail-applicant-info">
+      <div class="detail-applicant-photo">
+        <a href="{% url 'accounts:detail' user.id %}"><img src="{% if user.thumbnail %}{{ user.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle detail-profile-post-photo"></a>
+      </div>
+          <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
+            {% csrf_token %}
+            <button class="btn btn-link text-dark p-0" type="submit" onclick='return confirm("このユーザーをメンバーにしますか？");'>
+              {{user}}
+            </button>
+          </form>
+    </div>
+    {% empty %}
+      <p class="detail-null">まだいません。</p>
+    {% endfor %}
+  </div>
+  <div class="detail-member-list">
+    <h2>メンバー</h2>
+    {% for user in object.get_member %}
+    <div class="detail-applicant-info">
+      <div class="detail-applicant-photo">
+        <a href="{% url 'accounts:detail' user.id %}"><img src="{% if user.thumbnail %}{{ user.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle detail-profile-post-photo"></a>
+      </div>
+          <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
+            {% csrf_token %}
+            <button class="btn btn-link text-dark p-0" type="submit" onclick='return confirm("このユーザーをメンバーから外しますか？");'>
+              {{user}}
+            </button>
+          </form>
+    </div>
+    {% empty %}
+        <p class="detail-null">まだいません。</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endif %}
+
+
+<div class="detail-comment-box">
   <form method="post" action="{% url 'timeline:comment' object.id %}" class="d-inline">
     {% csrf_token %}
-    <textarea name="text" rows="3" placeholder="コメント"></textarea>
+    <textarea class="detail-comment-create" name="text" rows="3" placeholder="コメント"></textarea>
     <button class="btn btn-dark btn-block" type="submit">コメントを送信</button>
   </form>
 </div>
 
 {% for comment in object.get_comment %}
-  <div>
-    {% if comment.author.id == object.id %}
-      <p style="color: blue">投稿者</p>
-    {% endif %}
+  <div class="detail-comment">
     <p>{{comment.text}}</p>
-    <p>{{comment.created_at}}</p>
-    {% if comment.author.id == user.id %}
-      <form method="post" action="{% url 'timeline:delete_comment' object.id %}" class="d-inline">
-      {% csrf_token %}
-      <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("このコメントを本当に削除しますか？");'>
-        削除
-      </button>
-      </form>
-    {% endif %}
+    <div class="detail-comment-underpart">
+      <p class="detail-comment-created_at">{{comment.created_at}}</p>
+      <div class="detail-comment-button">
+      {% if comment.author.id == user.id %}
+        <form method="post" action="{% url 'timeline:delete_comment' comment.id %}" class="d-inline">
+        {% csrf_token %}
+        <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("このコメントを本当に削除しますか？");'>
+          削除
+        </button>
+        </form>
+        <form method="post" action="{% url 'timeline:update_comment' comment.id %}" class="d-inline">
+          {% csrf_token %}
+          <button class="btn btn-link text-dark p-0 ml-3" type="submit">
+            編集
+          </button>
+        </form>
+      {% endif %}
+        <form method="get" action="{% url 'timeline:comment_reply_list' comment.id %}" class="d-inline">
+          {% csrf_token %}
+          <button class="btn btn-link text-dark p-0 ml-3" type="submit">
+            {% if comment.parent_comment.all %}詳細{% else %}リプライ{% endif %}
+          </button>
+        </form>
+      </div>
+    </div>
   </div>
+  <hr>
 {% endfor %}
 
-<img class="card-img-bottom" src="{{ object.post_photo.url }}" alt="Card image cap">
+</div>
 {% endblock %}
