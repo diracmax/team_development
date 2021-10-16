@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}投稿編集 | seekiee{% endblock %}
+{% block contents %}
+<br>
+<form method="POST" enctype="multipart/form-data">
+	{% csrf_token %}
+	{{ form.text }}
+	<hr>
+	<button type="submit">編集する</button>
+</form>
+{% endblock %}
