@@ -448,7 +448,7 @@
 .sort-select::after { content: ""; display: block; width: 10px; height: 10px; position: absolute; right: 5%; top: 35%; transform: rotate(45deg) translateY(-30%); border-bottom: #fff 5px solid; border-right: #fff 5px solid; }
 
 /* .user-follow{ color: white; font-weight: 600; background-color: blue; } .user-follow:hover{ text-decoration: none; background-color: skyblue; } .user-disfollow{ color: white; font-weight: 600; background-color: red; } */
-.detail-template { text-align: left; width: 70%; margin: auto; margin-top: 100px; }
+.detail-template { text-align: left; width: 70%; margin: auto; margin-top: 9rem; }
 
 .detail-template p { margin: 0px; white-space: pre-wrap; }
 

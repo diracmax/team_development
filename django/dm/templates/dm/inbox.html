@@ -3,6 +3,10 @@
 
 {% block contents %}
 <div class="container dm">
+
+{% if threads.all.count == 0 %}
+<p>You don't have a message.</p>
+{% endif %}
 {% for thread in threads.all %}
 
   {% if thread.receiver == user %}
