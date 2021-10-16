@@ -69,7 +69,6 @@ class ProfileDetail(LoginRequiredMixin, generic.DetailView):
         context["QUERY_DICT"] = QUERY_DICT
         return context
 
-
 class FollowView(LoginRequiredMixin, generic.View):
     model = Follow
 
