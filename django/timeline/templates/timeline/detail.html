@@ -1,7 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
 {% load static %}
 {% block title %}投稿詳細 | seekiee{% endblock %}
 {% block contents %}
+
+<div class="detail-template">
 
 <div>
   {% if post.author.id == user.id %}
@@ -18,28 +20,19 @@
 <h1 class="detail-post-title">{{ object.title }}</h1>
 <div class="detail-author-info">
   <div class="detail-author-left">
-    <div>
-      <img class="detail-author-photo" src="{{ object.author.thumbnail.url }}">
+    <div class="detail-author-img">
+      <img class="detail-author-photo" src="{% if object.author.thumbnail %}{{ object.author.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}">
     </div>
     <div class="detail-author-name">
       <p class="detail-author-name-p"><a href="{% url 'accounts:detail' post.author.id %}">{{object.author}}</a></p>
     </div>
   </div>
   <div class="detail-author-right">
-    {% if not user in post.get_like %}
-    <button class="btn btn-link p-0 post-like text-dark" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
-      いいね
-    </button>
-    {% else %}
-    <button class="btn btn-link p-0 post-liked text-secondary" id="post-like-{{ post.id }}" data-id="{{ post.id }}">
-      いいねしました
-    </button>
-    {% endif %}
-    <span class="badge badge-info" id="like-count-{{ post.id }}">{% if post.get_like %}{{ post.get_like | length }}{% endif %}</span>
+    {% include "like2.html" %}
   </div>
 </div>
 
-<div><img class="detail-post-photo card-img-bottom" src="{{ object.post_photo.url }}" alt="Card image cap"></div>
+<div class="detail-photo-box"><img class="detail-post-photo card-img-bottom" src="{{ object.post_photo.url }}" alt="Card image cap"></div>
 
 <div class="detail-post-content">
   <div class="detail-post-main-content">
@@ -60,11 +53,11 @@
       {% else %}
         {% if user in post.get_applicant or user in post.get_member %}
         <button class="btn btn-link p-0 post-apply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
-        取り下げ
+          <span class="detail-button">取り下げ</span>
         </button>
         {% else %}
-        <button class="detail-application btn btn-link p-0 post-disapply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
-        応募
+        <button class="detail-application btn btn-link p-3 post-disapply btn-primary btn-lg btn-outline-info" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
+          <span class="detail-button">応募</span>
         </button>
         {% endif %}
         <span class="badge badge-info" id="apply-count-{{ post.id }}">{% if post.get_applicant %}{{ post.get_apply_number }}{% endif %}</span>
@@ -166,4 +159,5 @@
   <hr>
 {% endfor %}
 
+</div>
 {% endblock %}
