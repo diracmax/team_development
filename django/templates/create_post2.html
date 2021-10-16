@@ -14,7 +14,7 @@
 		<div class="input-group">
 			<label>
 				<div class="flex-icon">
-					<img src="../static/images/鉛筆の無料アイコン7.png">
+					<img src="{% static 'images/鉛筆の無料アイコン7.png' %}">
 					<h2>タイトル</h2>
 					<p>※必須項目</p>
 				</div>
@@ -22,7 +22,7 @@
 			</label>
 			<label>
 				<div class="flex-icon">
-					<img src="../static/images/記事アイコン2.png">
+					<img src="{% static 'images/記事アイコン2.png' %}">
 					<h2>コメント</h2>
 					<p>※必須項目</p>
 				</div>
@@ -30,26 +30,26 @@
 			</label>
 			<label>
 				<div class="flex-icon">
-					<img src="../static/images/拡声器のアイコンその3.png">
+					<img src="{% static 'images/拡声器のアイコンその3.png' %}">
 					<h2>募集条件</h2>
 				</div>
 				{% render_field form.recruitment_conditions placeholder="募集条件：例)〇〇に詳しい方募集！" rows="3" %}
 			</label>
 			<label>
 				<div class="flex-icon">
-					<img src="../static/images/チームアイコン3.png">
+					<img src="{% static 'images/チームアイコン3.png' %}">
 					<h2>募集人数</h2>
 				</div>
 				{% render_field form.capacity placeholder="募集人数" %}
 			</label>
 			<label>
 				<div class="flex-icon">
-					<img src="../static/images/JPGアイコン.png">
+					<img src="{% static 'images/JPGアイコン.png' %}">
 					<h2>投稿写真</h2>
 				</div>
 				{% render_field form.photo %}
 			</label>
-			<button class="unit" type="submit"><img src="../static/images/紙飛行機アイコン.png">投稿する</button>
+			<button class="unit" type="submit"><img src="{% static 'images/紙飛行機アイコン.png' %}">投稿する</button>
 		</div>
 
 	  </form>
