@@ -5,7 +5,7 @@
 
 {% with f_type=view.kwargs.query %}
 <div style="width:auto; height:100px; "></div>
-<div style="height:55px; background:ghostwhite;"class="ur-header">
+<div style="height:55px; background:ghostwhite; z-index:6;"class="ur-header">
   <div style="float:left; height:100%; width:33%;">
     <div style="text-align: center;">
       <a href="{% url 'accounts:detail' view.kwargs.pk %}" class="btn btn-link p-0">
@@ -13,7 +13,7 @@
       <span> のリスト</span>
     </div>
   </div>
-  <div style="float:left; height:100%; width:34%;" class="link-list">
+  <div style="float:left; height:100%; width:34%;padding: 0px 10px;" class="link-list">
     <div style="hight:50%;" class="related-post">
     {% for key, value in QUERY_DICT.items %}
     {% if key != "follow" and key != "follower" %}
