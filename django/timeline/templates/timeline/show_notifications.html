@@ -1,35 +1,3 @@
-<div class="dropdown">
-	<span class="badge bg-primary notification-badge" onclick="showNotifications()">{{ notifications.count }}</span>
-	<div class="dropdown-content d-none" id="notification-container">
-		{% for notification in notifications %}
-			{% if notification.post %}
-				{% if notification.notification_type == 1 %}
-				<div class="dropdown-item-parent">
-					<a href="{% url 'timeline:post-notification' notification.pk notification.post.pk %}">{{ notification.from_user }}さんがあなたの投稿にいいねしました。</a>
-					<span class="dropdown-item-close" onclick="removeNotification(`{% url 'timeline:notification-delete' notification.pk %}`, `{{ request.path }}`)">&times;</span>
-				</div>
-				{% elif notification.notification_type == 2 %}
-				<div class="dropdown-item-parent">
-					<a href="{% url 'timeline:post-notification' notification.pk notification.post.pk %}">{{ notification.from_user }}さんがあなたの投稿にコメントしました。</a>
-					<span class="dropdown-item-close" onclick="removeNotification(`{% url 'timeline:notification-delete' notification.pk %}`, `{{ request.path }}`)">&times;</span>
-				</div>
-				{% elif notification.notification_type == 4 %}
-				<div class="dropdown-item-parent">
-					<a href="{% url 'timeline:post-notification' notification.pk notification.post.pk %}">{{ notification.from_user }}さんがあなたの投稿に応募しました。</a>
-					<span class="dropdown-item-close" onclick="removeNotification(`{% url 'timeline:notification-delete' notification.pk %}`, `{{ request.path }}`)">&times;</span>
-				</div>
-				{% endif %}
-			{% elif notification.notification_type == 5 %}
-				<div class="dropdown-item-parent">
-					<a href="{% url 'timeline:message-notification' notification.pk notification.thread.pk %}">{{ notification.from_user }}さんから新規メッセージが届きました。</a>
-					<span class="dropdown-item-close" onclick="removeNotification(`{% url 'timeline:notification-delete' notification.pk %}`, `{{ request.path }}`)">&times;</span>
-				</div>
-			{% else %}
-			<div class="dropdown-item-parent">
-					<a href="{% url 'timeline:follow-notification' notification.pk notification.from_user.pk %}">{{ notification.from_user }}さんがあなたをフォローしました。</a>
-					<span class="dropdown-item-close" onclick="removeNotification(`{% url 'timeline:notification-delete' notification.pk %}`, `{{ request.path }}`)">&times;</span>
-			</div>
-			{% endif %}
-		{% endfor %}
-	</div>
-</div>
+{% if notifications_num > 0 %}
+<span class="badge bg-danger notification-badge">{{ notifications_num }}</span>
+{% endif %}

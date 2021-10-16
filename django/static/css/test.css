@@ -11,7 +11,7 @@
 
 .Header-nav { display: flex; flex-wrap: wrap; height: 0; justify-content: space-between; max-height: 105px; max-width: 940px; overflow: hidden; width: 100%; }
 
-.Header-nav-item { align-items: center; align-self: center; color: red; display: flex; flex-shrink: 0; font-family: Lato, sans-serif; font-size: 20px; font-weight: bold; height: 100%; line-height: 32px; margin: 0 40px; transition: font-size 0.4s ease, padding 0.4s ease; }
+.Header-nav-item { align-items: center; align-self: center; color: white; display: flex; flex-shrink: 0; font-family: Lato, sans-serif; font-size: 20px; font-weight: bold; height: 100%; line-height: 32px; margin: 0 40px; transition: font-size 0.4s ease, padding 0.4s ease; }
 
 .Header-nav-item:last-child { margin-right: 0; }
 
@@ -19,7 +19,7 @@
 
 .Header-nav-item a:hover { color: orange; text-decoration: none; }
 
-.Header-nav-item:hover { color: red !important; }
+.Header-nav-item:hover { color: white !important; }
 
 .Header-nav:hover .Header-nav-item { color: white; }
 
@@ -360,5 +360,9 @@
 .notification-badge { transition: 0.3s; }
 
 .notification-badge:hover { cursor: pointer; opacity: 0.75; transition: 0.3s; }
+
+.notification-badge { transition: 0.3s; }
+
+.notification-badge:hover { opacity: 0.75; transition: 0.3s; }
 
 /*# sourceMappingURL=test.css.map */

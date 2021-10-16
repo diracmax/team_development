@@ -1,0 +1,65 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% load sass_tags %}
+
+{% block contents %}
+
+<div class="container dm">
+{% for notification in object_list %}
+    <div class="card mb-3 text-left">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-1">
+            <a href="{% url 'accounts:detail' notification.from_user.id %}"><img src="{% if notification.from_user.thumbnail %}{{ notification.from_user.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
+          </div>
+
+	{% if notification.post %}
+		{% if notification.notification_type == 1 %}
+          <div class="col-10 ml-3">
+            <a href="{% url 'accounts:detail' notification.from_user.id %}" class="text-secondary">{{ notification.from_user }}</a>
+            <br>
+            <h6>{{ notification.from_user }}さんがあなたの投稿にいいねしました。</h6>
+          </div>
+          </div>
+          <a href="{% url 'timeline:post-notification' notification.pk notification.post.pk %}" class="stretched-link"></a>
+		{% elif notification.notification_type == 2 %}
+		<div class="col-10 ml-3">
+            <a href="{% url 'accounts:detail' notification.from_user.id %}" class="text-secondary">{{ notification.from_user }}</a>
+            <br>
+            <h6>{{ notification.from_user }}さんがあなたの投稿にコメントしました。</h6>
+          </div>
+          </div>
+          <a href="{% url 'timeline:post-notification' notification.pk notification.post.pk %}" class="stretched-link"></a>
+		{% elif notification.notification_type == 4 %}
+		<div class="col-10 ml-3">
+            <a href="{% url 'accounts:detail' notification.from_user.id %}" class="text-secondary">{{ notification.from_user }}</a>
+            <br>
+            <h6>{{ notification.from_user }}さんがあなたの投稿に応募しました。</h6>
+          </div>
+          </div>
+          <a href="{% url 'timeline:post-notification' notification.pk notification.post.pk %}" class="stretched-link"></a>
+		{% endif %}
+	  {% elif notification.notification_type == 5 %}
+	  <div class="col-10 ml-3">
+		<a href="{% url 'accounts:detail' notification.from_user.id %}" class="text-secondary">{{ notification.from_user }}</a>
+		<br>
+		<h6>{{ notification.from_user }}さんから新規メッセージが届きました。</h6>
+	  </div>
+	  </div>
+	  <a href="{% url 'timeline:message-notification' notification.pk notification.thread.pk %}" class="stretched-link"></a>
+      </div>
+	  {% else %}
+	  <div class="col-10 ml-3">
+		<a href="{% url 'accounts:detail' notification.from_user.id %}" class="text-secondary">{{ notification.from_user }}</a>
+		<br>
+		<h6>{{ notification.from_user }}さんがあなたをフォローしました。</h6>
+	  </div>
+	  </div>
+	  <a href="{% url 'timeline:follow-notification' notification.pk notification.from_user.pk %}" class="stretched-link"></a>
+      </div>
+	  {% endif %}
+    </div>
+
+{% endfor %}
+</div>
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import PostNotification, FollowNotification, RemoveNotification, MessageNotification
+from .views import PostNotification, FollowNotification, RemoveNotification, MessageNotification, NotificationView
 
 app_name = 'timeline'
 
@@ -19,4 +19,5 @@ urlpatterns = [
     path('notification/<int:notification_pk>/message/<int:object_pk>', MessageNotification.as_view(), name='message-notification'),
     path('notification/<int:notification_pk>/follow/<int:object_pk>', FollowNotification.as_view(), name='follow-notification'),
     path('notification/delete/<int:notification_pk>', RemoveNotification.as_view(), name='notification-delete'),
+    path('notification/', NotificationView.as_view(), name='notification'),
 ]
