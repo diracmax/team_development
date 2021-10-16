@@ -38,7 +38,7 @@
                 <li class="nav-item">
                     <a class="nav-link">通知</a>
                 </li>
-                {% show_notifications %}
+                {% comment %} {% show_notifications %} {% endcomment %}
                 {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'account_login' %}">ログイン</a>

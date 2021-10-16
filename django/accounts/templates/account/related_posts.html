@@ -1,32 +1,61 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
 {% load static %}
 {% block title %}{{title}} | seekiee{% endblock %}
 {% block contents %}
 
 {% with f_type=view.kwargs.query %}
-<a href="{% url 'accounts:detail' view.kwargs.pk %}" class="btn btn-link p-0">{{account.username}}</a>
-{% for key, value in QUERY_DICT.items %}
-  <span> / </span>
-  {% if key == f_type %}
-    <span class="btn p-0">{{value}}</span>
-  {% else %}
-    <a href="{% url 'accounts:posts' view.kwargs.pk key %}" class="btn btn-link p-0">{{value}}</a>
-  {% endif %}
-{% endfor %}
-{% for key, value in SORT_DICT.items %}
-{% if f_type in value.allowed %}
-<p>{{value.display}}</p>
-  <form action="" method="get">
-    <button name="order" value="{{value.method}}" type="submit">昇順</button>
-    <button name="order" value="-{{value.method}}" type="submit">降順</button>
-  </form>
-{% endif %}
-{% endfor %}
+<div style="width:auto; height:100px; "></div>
+<div style="height:55px; background:ghostwhite; z-index:6;"class="ur-header">
+  <div style="float:left; height:100%; width:33%;">
+    <div style="text-align: center;">
+      <a href="{% url 'accounts:detail' view.kwargs.pk %}" class="btn btn-link p-0">
+      <img style="width:50px; height:50px;"src="{% if account.thumbnail %}{{ account.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo">{{account.username}}</a>
+      <span> のリスト</span>
+    </div>
+  </div>
+  <div style="float:left; height:100%; width:34%;padding: 0px 10px;" class="link-list">
+    <div style="hight:50%;" class="related-post">
+    {% for key, value in QUERY_DICT.items %}
+    {% if key != "follow" and key != "follower" %}
+      {% if key == f_type %}
+      <span class="link-list-current">{{value}}</span>
+      {% else %}
+      <a href="{% url 'accounts:posts' view.kwargs.pk key %}" class="link-list-children">{{value}}</a>
+      {% endif %}
+    {% endif %}
+    {% endfor %}
+    </div>
+    <div style="hight:50%;" class="related-user">
+    {% for key, value in QUERY_DICT.items %}
+    {% if key == "follow" or key == "follower" %}
+      {% if key == f_type %}
+      <span class="link-list-current">{{value}}</span>
+      {% else %}
+      <a href="{% url 'accounts:posts' view.kwargs.pk key %}" class="link-list-children">{{value}}</a>
+      {% endif %}
+    {% endif %}
+    {% endfor %}
+    </div>
+  </div>
+  <div style="float:right;text-align: center; hight:100%; width:33%;" class="sort-list">
+    <form style="margin: 10px;"action="" method="get">
+      <select class="sort-select"name="order" onchange="submit(this.form)">
+      {% for key, value in SORT_DICT.items %}
+      {% if f_type in value.allowed %}
+        <option value="{{value.method}}">{{value.display}}古い順</option>
+        <option value="-{{value.method}}">{{value.display}}新しい順</option>
+      {% endif %}
+      {% endfor %}
+      </select>
+    </form>
+  </div>
+</div>
+
 
 {% if view.kwargs.query == "follow" or view.kwargs.query == "follower" %}
   {% include "account/account_list.html" %}
 {% else %}
-    {% include "timeline/post_list.html" %}
+    {% include "post_list2.html" %}
 {% endif %}
 {% include "timeline/pagination.html" %}
 
