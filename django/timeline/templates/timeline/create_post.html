@@ -13,6 +13,13 @@
       <form method="post" action="{% url 'timeline:create' %}" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="form-group">
+        <select class="form-control" id="exampleFormControlTextarea1"  name="category" placeholder="カテゴリー">
+        {% for category in categorys %}
+          <option style="color:black;"value="{{category.pk}}">{{category}}</option>
+        {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
         <textarea class="form-control" id="exampleFormControlTextarea1"  name="title" rows="3" placeholder="タイトル"></textarea>
       </div>
       <div class="form-group">

@@ -6,8 +6,28 @@ from django.utils import timezone
 from dm.models import ThreadModel
 
 
+class Category(models.Model):
+    display = models.CharField(max_length=10, verbose_name='カテゴリー')
+    parent = models.ForeignKey("self", verbose_name='親カテゴリー', on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        name = self.display
+        current = self.parent
+        while current:
+            name = current.display+" > "+name
+            current = current.parent
+        return name
+    
+    class Meta:
+        unique_together = ("display", "parent")
+
+def get_deleted_category():
+    return Category.objects.get_or_create(display="その他")[0]
+        
 class Post(models.Model):
     author = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, blank=True, null=True)
+    # category = models.ForeignKey('Category',default=get_deleted_category() on_delete=models.SET(get_deleted_category()), blank=True, null=True)
     title = models.CharField(verbose_name='タイトル', max_length=128)
     text = models.TextField(verbose_name='本文')
     photo = models.ImageField(

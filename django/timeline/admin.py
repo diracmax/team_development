@@ -1,13 +1,13 @@
 from django.contrib import admin
-from .models import Post, Apply, Comment, CommentReply, Notification
+from .models import Post, Apply, Comment, CommentReply, Notification, Category
 
 # Register your models here.
 
 
 class PostAdmin(admin.ModelAdmin):
-    fields = ['text', 'title', 'photo', 'is_recruited',
+    fields = ['author', 'category', 'title', 'text', 'photo', 'is_recruited',
               'recruitment_conditions', 'capacity']
-    list_display = ('id', 'title', 'author', 'text', 'photo', 'created_at',
+    list_display = ('id', 'category', 'title', 'author', 'text', 'photo',
                     'is_recruited', 'recruitment_conditions', 'capacity', 'created_at', 'updated_at')
 
 
@@ -27,9 +27,14 @@ class CommentReplyAdmin(admin.ModelAdmin):
     list_display = ('id', 'author', 'parent', 'text',
                     'created_at', 'updated_at')
 
+class CategoryAdmin(admin.ModelAdmin):
+    fields = ["parent", "display"]
+    list_display = ('id', "parent", "display")
+
 
 admin.site.register(Post, PostAdmin)
 admin.site.register(Apply, ApplyAdmin)
 admin.site.register(Notification)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(CommentReply, CommentReplyAdmin)
+admin.site.register(Category, CategoryAdmin)

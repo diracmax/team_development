@@ -4,7 +4,7 @@ from .forms import PostForm, CommentForm, CommentReplyForm
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
-from .models import Post, Like, Apply, Comment, CommentReply, Notification
+from .models import Post, Like, Apply, Comment, CommentReply, Notification, Category
 from accounts.models import CustomUser
 from django.http.response import JsonResponse
 from django.http import HttpResponse
@@ -23,8 +23,12 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 class CreateView(LoginRequiredMixin, generic.CreateView):
     form_class = PostForm
     template_name = 'timeline/create_post.html'
-    template_name = 'create_post2.html'
+    # template_name = 'create_post2.html'
     success_url = reverse_lazy('timeline:index')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["categorys"] = Category.objects.all()
+        return context
 
     def form_valid(self, form):
         form.instance.author_id = self.request.user.id
