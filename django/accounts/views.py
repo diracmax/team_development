@@ -133,44 +133,54 @@ class PostList(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         id = self.kwargs.get('pk', 0)
         query = self.kwargs.get('query', 0)
-        if query == "recruit":
-            posts = Post.objects.filter(author_id=id)
-            if self.request.GET.get("order"):
-                return posts.order_by(self.request.GET.get("order"))
-            return posts.order_by('-created_at')
-        if query == "like":
-            posts = Post.objects.filter(like__user_id=id)
-            if self.request.GET.get("order"):
-                return posts.order_by(self.request.GET.get("order"))
-            return posts.order_by('-like__created_at')
-        if query == "entry":
-            posts = Post.objects.filter(
-                apply__user_id=id, apply__is_member=False)
-            if self.request.GET.get("order"):
-                return posts.order_by(self.request.GET.get("order"))
-            return posts.order_by('-apply__created_at')
-        if query == "join":
-            posts = Post.objects.filter(
-                apply__user_id=id, apply__is_member=True)
-            if self.request.GET.get("order"):
-                return posts.order_by(self.request.GET.get("order"))
-            return posts.order_by('-apply__updated_at')
-        if query == "follower":
-            if self.request.GET.get("order"):
-                sort = self.request.GET.get("order")
+
+        if query in ["recruit", "like", "entry", "join"]:
+            # 並べ替えを特定
+            if self.request.GET.get("sort"):
+                method = SORT_DICT[self.request.GET.get("sort")]["method"]
             else:
-                sort = SORT_DICT[query]["method"]
-            accounts = CustomUser.objects.raw(
-                'SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id WHERE following_id = %s ORDER BY %s DESC', [str(id), sort])
-            return accounts
-        if query == "follow":
-            if self.request.GET.get("order"):
-                sort = self.request.GET.get("order")
+                method = SORT_DICT[query]["method"]
+
+            # レコードを取得
+            if query == "recruit":
+                posts = Post.objects.filter(author_id=id)
+            if query == "like":
+                posts = Post.objects.filter(like__user_id=id)
+            if query == "entry":
+                posts = Post.objects.filter(
+                    apply__user_id=id, apply__is_member=False)
+            if query == "join":
+                posts = Post.objects.filter(
+                    apply__user_id=id, apply__is_member=True)
+            return posts.order_by(method)
+        
+        if query in ["follow", "follower"]:
+            # 並べ替えの取得
+            if self.request.GET.get("sort"):
+                method = SORT_DICT[self.request.GET.get("sort")]["method"]
             else:
-                sort = SORT_DICT[query]["method"]
-            accounts = CustomUser.objects.raw(
-                'SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id WHERE follower_id = %s ORDER BY %s DESC', [str(id), sort])
+                method = SORT_DICT[query]["method"]
+
+            # レコードを取得
+            # バグ: desc 反映されていない, method反映されていない id順で取って来てる感
+            if query == "follower":
+                accounts = CustomUser.objects.raw(
+                    "SELECT * FROM accounts_customuser "\
+                    "JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id "\
+                    "WHERE following_id = %s ORDER BY %s DESC",
+                    [str(id), method]
+                    )
+            if query == "follow":
+                accounts = CustomUser.objects.raw(
+                    "SELECT * FROM accounts_customuser "\
+                    "JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id "\
+                    "WHERE follower_id = %s ORDER BY %s DESC",
+                    [str(id), method]
+                    )
+            # debug
+            # print(accounts)
             return accounts
+
         # page not found
         raise ValueError("invarid url")
 

@@ -39,10 +39,10 @@
   </div>
   <div style="float:right;text-align: center; hight:100%; width:33%;" class="sort-list">
     <form style="margin: 10px;"action="" method="get">
-      <select class="sort-select"name="order" onchange="submit(this.form)">
+      <select class="sort-select"name="sort" onchange="submit(this.form)">
       {% for key, value in SORT_DICT.items %}
       {% if f_type in value.allowed %}
-        <option value="{{value.method}}">{{value.display}}</option>
+        <option value="{{key}}">{{value.display}}</option>
       {% endif %}
       {% endfor %}
       </select>
