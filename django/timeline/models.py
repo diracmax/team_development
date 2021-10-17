@@ -4,6 +4,7 @@ from imagekit.processors import ResizeToFill, ResizeToFit
 from accounts.models import CustomUser
 from django.utils import timezone
 from dm.models import ThreadModel
+import datetime
 
 
 class Category(models.Model):
@@ -11,6 +12,7 @@ class Category(models.Model):
     parent = models.ForeignKey("self", verbose_name='親カテゴリー', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
+        # 親カテゴリ名をさかのぼって表示
         name = self.display
         current = self.parent
         while current:
@@ -19,6 +21,7 @@ class Category(models.Model):
         return name
     
     class Meta:
+        # 同じカテゴリ名は親が違う場合には許す
         unique_together = ("display", "parent")
 
 def get_deleted_category():
@@ -63,6 +66,13 @@ class Post(models.Model):
         members = Apply.objects.filter(post=self)
         return [member.user for member in members if member.is_member == False]
 
+    def is_applyable(self):
+        # deadline_flag: 締切りが設定されていない場合True, 設定している場合は締切り当日までTrue
+        # capacity_flag: 募集人数が設定されていない場合True、設定されている場合はメンバー数より多い場合のみTrue
+        deadliine_flag = not self.deadline or (self.deadline <= datetime.date.today())
+        capacity_flag = not self.capacity or (int(self.capacity) > len(self.get_member())) 
+        return self.is_recruited and deadliine_flag and capacity_flag
+        
 
 class Like(models.Model):
     user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
