@@ -19,31 +19,46 @@ QUERY_DICT = {
 }
 
 SORT_DICT = {
-    "post": {
-        "allowed": ["like", "entry", "join", "recruit"],
-        "display": "投稿日時",
-        "method": "created_at"
-    },
-    "edit": {
-        "allowed": ["like", "entry", "join", "recruit"],
-        "display": "更新日時",
-        "method": "updated_at"
-    },
     "like": {
         "allowed": ["like"],
-        "display": "いいね日時",
-        "method": "like__created_at"
-    },
-    "entry": {
-        "allowed": ["entry", "join"],
-        "display": "応募日時",
-        "method": "apply__created_at"
+        "display": "いいね順",
+        "method": "-like__created_at"
     },
     "join": {
         "allowed": ["join"],
-        "display": "参加日時",
-        "method": "apply__updated_at"
+        "display": "参加承認順",
+        "method": "-apply__updated_at"
     },
+    "entry": {
+        "allowed": ["entry", "join"],
+        "display": "応募順",
+        "method": "-apply__created_at"
+    },
+    "recruit": {
+        "allowed": ["like", "entry", "join", "recruit"],
+        "display": "投稿順",
+        "method": "-created_at"
+    },
+    "edit": {
+        "allowed": ["like", "entry", "join", "recruit"],
+        "display": "更新順",
+        "method": "-updated_at"
+    },
+    "follow": {
+        "allowed": ["follow"],
+        "display": "フォローした順",
+        "method": "accounts_follow.created_at"
+    },
+    "follower": {
+        "allowed": ["follower"],
+        "display": "フォローされた順",
+        "method": "accounts_follow.created_at"
+    },
+    "register": {
+        "allowed": ["follow", "follower"],
+        "display": "サインアップ順",
+        "method": "accounts_customuser.id"
+    }
 }
 
 
@@ -141,13 +156,22 @@ class PostList(LoginRequiredMixin, generic.ListView):
                 return posts.order_by(self.request.GET.get("order"))
             return posts.order_by('-apply__updated_at')
         if query == "follower":
+            if self.request.GET.get("order"):
+                sort = self.request.GET.get("order")
+            else:
+                sort = SORT_DICT[query]["method"]
             accounts = CustomUser.objects.raw(
-                'SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id WHERE following_id = %s', str(id))
+                'SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id WHERE following_id = %s ORDER BY %s DESC', [str(id), sort])
             return accounts
         if query == "follow":
+            if self.request.GET.get("order"):
+                sort = self.request.GET.get("order")
+            else:
+                sort = SORT_DICT[query]["method"]
             accounts = CustomUser.objects.raw(
-                'SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id WHERE follower_id = %s', str(id))
+                'SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id WHERE follower_id = %s ORDER BY %s DESC', [str(id), sort])
             return accounts
+        # page not found
         raise ValueError("invarid url")
 
 

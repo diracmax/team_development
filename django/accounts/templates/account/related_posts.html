@@ -42,8 +42,7 @@
       <select class="sort-select"name="order" onchange="submit(this.form)">
       {% for key, value in SORT_DICT.items %}
       {% if f_type in value.allowed %}
-        <option value="{{value.method}}">{{value.display}}古い順</option>
-        <option value="-{{value.method}}">{{value.display}}新しい順</option>
+        <option value="{{value.method}}">{{value.display}}</option>
       {% endif %}
       {% endfor %}
       </select>
