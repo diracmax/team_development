@@ -28,8 +28,8 @@ class CommentReplyAdmin(admin.ModelAdmin):
                     'created_at', 'updated_at')
 
 class CategoryAdmin(admin.ModelAdmin):
-    fields = ["parent", "display"]
-    list_display = ('id', "parent", "display")
+    fields = ["parent", "display", "depth"]
+    list_display = ('id', "parent", "display", "depth")
 
 
 admin.site.register(Post, PostAdmin)

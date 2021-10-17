@@ -9,7 +9,16 @@ import datetime
 
 class Category(models.Model):
     display = models.CharField(max_length=10, verbose_name='カテゴリー')
-    parent = models.ForeignKey("self", verbose_name='親カテゴリー', on_delete=models.CASCADE, blank=True, null=True)
+    parent = models.ForeignKey("self", verbose_name='親カテゴリー', on_delete=models.CASCADE, blank=True, null=True, limit_choices_to={"depth__lt": 3})
+    depth = models.IntegerField(default=0)
+
+    # def __init__(self):
+    #     try:
+    #         self.depth = self.parent.depth + 1
+    #         self.save
+    #     except:
+    #         self.depth = 0
+    #     return
 
     def __str__(self):
         # 親カテゴリ名をさかのぼって表示
@@ -67,8 +76,10 @@ class Post(models.Model):
         return [member.user for member in members if member.is_member == False]
 
     def is_applyable(self):
-        # deadline_flag: 締切りが設定されていない場合True, 設定している場合は締切り当日までTrue
-        # capacity_flag: 募集人数が設定されていない場合True、設定されている場合はメンバー数より多い場合のみTrue
+        """
+        deadline_flag: 締切り過ぎている場合のみFalse
+        capacity_flag: 定員満たしている場合のみFalse
+        """
         deadliine_flag = not self.deadline or (self.deadline <= datetime.date.today())
         capacity_flag = not self.capacity or (int(self.capacity) > len(self.get_member())) 
         return self.is_recruited and deadliine_flag and capacity_flag
