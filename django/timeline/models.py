@@ -36,6 +36,8 @@ class Post(models.Model):
         1080, 1080)], format='JPEG', options={'quality': 60})
     recruitment_conditions = models.TextField(
         verbose_name='募集条件', blank=True, null=True)
+    deadline = models.DateField(
+        verbose_name='応募期限', blank=True, null=True)
     capacity = models.PositiveIntegerField(
         verbose_name='定員', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)

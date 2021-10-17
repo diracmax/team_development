@@ -6,9 +6,9 @@ from .models import Post, Apply, Comment, CommentReply, Notification, Category
 
 class PostAdmin(admin.ModelAdmin):
     fields = ['author', 'category', 'title', 'text', 'photo', 'is_recruited',
-              'recruitment_conditions', 'capacity']
+              'recruitment_conditions', 'deadline', 'capacity']
     list_display = ('id', 'category', 'title', 'author', 'text', 'photo',
-                    'is_recruited', 'recruitment_conditions', 'capacity', 'created_at', 'updated_at')
+                    'is_recruited', 'recruitment_conditions', 'deadline', 'capacity', 'created_at', 'updated_at')
 
 
 class ApplyAdmin(admin.ModelAdmin):

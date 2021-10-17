@@ -4,6 +4,12 @@
 {% block title %}新規投稿 | seekiee{% endblock %}
 {% block contents %}
 
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}"/>
+<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+{{ form.media }}
+<script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
+
 <div class="create-post">
 	<form  method="POST" enctype="multipart/form-data">
 		{% csrf_token %}
@@ -41,6 +47,13 @@
 					<h2>募集条件</h2>
 				</div>
 				{% render_field form.recruitment_conditions placeholder="募集条件：例)〇〇に詳しい方募集！" rows="3" %}
+			</label>
+			<label>
+				<div class="flex-icon">
+					<img src="{% static 'images/鉛筆の無料アイコン7.png' %}">
+					<h2>応募期限</h2>
+				</div>
+				{% render_field form.deadline %}
 			</label>
 			<label>
 				<div class="flex-icon">
