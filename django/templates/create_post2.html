@@ -64,6 +64,13 @@
 			</label>
 			<label>
 				<div class="flex-icon">
+					<img src="{% static 'images/チームアイコン3.png' %}">
+					<h2>募集状態</h2>
+				</div>
+				{% render_field form.state_control_type %}
+			</label>
+			<label>
+				<div class="flex-icon">
 					<img src="{% static 'images/JPGアイコン.png' %}">
 					<h2>投稿写真</h2>
 				</div>
