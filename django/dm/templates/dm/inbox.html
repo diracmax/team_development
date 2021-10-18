@@ -5,12 +5,15 @@
 <div class="container dm">
 
 {% if threads.all.count == 0 %}
-<p>You don't have a message.</p>
+<img width="296px" src="{% static 'images/no_message.png'%}" alt="メッセージがありません">
+<h1>メッセージがありません</h1>
+<small>送りたいユーザーのプロフィールからメッセージを送れます</small>
 {% endif %}
+
 {% for thread in threads.all %}
 
   {% if thread.receiver == user %}
-    <div class="card mb-3 text-left">
+    <div class="card mb-2 text-left">
       <div class="card-body">
         <div class="row">
           <div class="col-1">
@@ -26,7 +29,7 @@
       </div>
     </div>
   {% else %}
-    <div class="card mb-3 text-left">
+    <div class="card mb-2 text-left">
       <div class="card-body">
         <div class="row">
           <div class="col-1">
