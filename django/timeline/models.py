@@ -62,11 +62,11 @@ class Post(models.Model):
         verbose_name='定員', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # class itemchoice(models.IntegerChoices):
-    #    自動で更新=1
-    #    強制的にオープン=2
-    #    強制的にクローズ=3
-    # state_judgement_type = models.IntegerChoices(choices=itemchoice, default=1)
+    class itemchoice(models.IntegerChoices):
+       自動的に更新=1
+       強制的にオープン=2
+       強制的にクローズ=3
+    state_control_type = models.IntegerField(verbose_name='募集状態',default=1, choices=[(1,"自動的に更新"),(2,"強制的にオープン"),(3,"強制的にクローズ")])
     is_recruited = models.BooleanField(verbose_name='募集中', default=True)
 
     def get_member(self):
@@ -95,7 +95,7 @@ class Post(models.Model):
         """
         deadliine_flag = not self.deadline or (self.deadline <= datetime.date.today())
         capacity_flag = not self.capacity or (int(self.capacity) > len(self.get_member())) 
-        return self.is_recruited and deadliine_flag and capacity_flag
+        return deadliine_flag and capacity_flag
         
 
 class Like(models.Model):
