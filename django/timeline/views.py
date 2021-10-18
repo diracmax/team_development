@@ -124,7 +124,19 @@ class AcceptApplicationView(LoginRequiredMixin, generic.View):
 class PostDetail(LoginRequiredMixin, generic.DetailView):
     model = Post
     template_name = 'timeline/detail.html'
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # ↓2回呼び出してるので処理がもったいない
+        post = Post.objects.get(pk=self.kwargs.get('pk'))
+        # 
+        category = post.category
+        categorys = list()
+        while category:
+            categorys.append(category.display)
+            category=category.parent
+        categorys.reverse()
+        context["categorys"]=categorys
+        return context
 
 class UpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Post

@@ -4,6 +4,13 @@
 {% block contents %}
 
 <div class="detail-template">
+<span>カテゴリー: </span>
+{% for category in categorys %}
+  {% if not forloop.first %}
+  <span> > </span>
+  {% endif %}
+  <a href="{% url 'search:post' %}?category={{category}}" >{{category}}</a>
+{% endfor %}
 
 <div>
   {% if post.author.id == user.id %}
