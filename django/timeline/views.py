@@ -281,7 +281,8 @@ class NotificationView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         request_user = self.request.user
         notifications = Notification.objects.filter(
-        to_user=request_user).exclude(user_has_seen=True).order_by('-date')
+        to_user=request_user).order_by('-date')
+        # to_user=request_user).exclude(user_has_seen=True).order_by('-date')
         return notifications
 
 index = IndexView.as_view()
