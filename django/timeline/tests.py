@@ -20,9 +20,10 @@ class TimelineTestCase(TestCase):
         response = client.get('/')
         self.assertEqual(response.status_code, 200)
         
-        tmp = category.objects.create(
-                display="a")
-        client.post('/create/', {'category': tmp, 'title': 'タイトル', 'text': '本文', 'photo': ''})
+        tmp = Category.objects.create(
+                display="カテゴリー")
+        tmp.save()
+        client.post('/create/', {'category': tmp.pk, 'title': 'タイトル', 'text': '本文', 'photo': '', "state_control_type": "auto"})
         latest_post = Post.objects.latest('created_at')
         self.assertEqual(latest_post.text, '本文')
 
