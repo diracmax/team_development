@@ -31,11 +31,23 @@
             <p class="post-info1">
               投稿日時: {{ post.created_at | date:"n月j日 H時i分" }}<br>
               タイトル: {{ post.title }}<br>
-              コメント: {{ post.text }}
+              内容: {{ post.text }}
             </p>
             <p class="post-info2">
-              応募条件: {{ post.restriction }}<br>
-              募集人数: {{ post.capacity }}人
+              {% if not post.restriction %}
+                募集条件: -<br>
+              {% else %}
+                募集条件: {{ post.restriction }}<br>
+              {% endif %}
+              {% if post.capacity is None %}
+                募集人数: -
+              {% else %}
+                募集人数: {{ post.capacity }}人
+              {% endif %}
+              {% if not post.is_recruited %}
+                <br>
+                この投稿は現在募集されていません。
+              {% endif %}
             </p>
             <div class="post-info-detail">
               投稿詳細は<span>こちら</span>
@@ -49,6 +61,5 @@
   </article>
   {% endif %}{% endfor %}
 </div>
-
 
 {% include 'search_button2.html' %}

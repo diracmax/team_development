@@ -12,12 +12,12 @@
   <a href="{% url 'search:post' %}?category={{category}}" >{{category}}</a>
 {% endfor %}
 
-<div>
+<div class="detail-author-manage">
   {% if post.author.id == user.id %}
   <a href="{% url 'timeline:update' object.pk %}" class="btn btn-primary my-2">編集する</a>
   <form method="post" action="{% url 'timeline:delete' post.id %}" class="d-inline">
     {% csrf_token %}
-    <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("この投稿を本当に削除しますか？");'>
+    <button class="btn btn-link text-white ml-3 btn-danger" type="submit" onclick='return confirm("この投稿を本当に削除しますか？");'>
     削除
     </button>
   </form>
@@ -48,8 +48,12 @@
       <p>{{object.text}}</p>
     </div>
     <div class="detail-post-text">
-      <h2>応募条件</h2>
-      <p>{{object.restriction}}</p>
+      <h2>募集条件</h2>
+      {% if not object.restriction %}
+        <p>募集条件は現在設定されていません</p>
+      {% else %}
+        <p>{{object.restriction}}</p>
+      {% endif %}
     </div>
   </div>
   <div class="detail-post-sidebar">
@@ -59,7 +63,7 @@
       <p>現在募集していません</p>
       {% else %}
         {% if user in post.get_applicant or user in post.get_member %}
-        <button class="btn btn-link p-0 post-apply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
+        <button class="detail-kick btn btn-link p-0 post-apply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
           <span class="detail-button">取り下げ</span>
         </button>
         {% else %}
@@ -72,14 +76,18 @@
       </div>
       {% endif %}
     <p class="detail-sidebar-title">募集人数</p>
-    <p>{{ object.capacity }}人</p>
+    {% if object.capacity is None %}
+      <p>現在設定されていません</p>
+    {% else %}
+      <p>{{ object.capacity }}人</p>
+    {% endif %}
 
     <p class="detail-sidebar-title">応募者</p>
-    <p>{% if object.get_applicant.count %}{{object.get_applicant.count}}人{% else %}まだいません{% endif %}</p>
+    <p>{% if object.get_applicant %}{{object.get_applicant | length}}人{% else %}まだいません{% endif %}</p>
     <a href="{% url 'timeline:account' post.pk 'entry' %}" >応募者一覧</a>
 
     <p class="detail-sidebar-title">メンバー</p>
-    <p>{% if object.get_member.count %}{{object.get_member.count}}人{% else %}まだいません{% endif %}</p>
+    <p>{% if object.get_member %}{{object.get_member | length}}人{% else %}まだいません{% endif %}</p>
     <a href="{% url 'timeline:account' post.pk 'join' %}" >メンバー一覧</a>
   </div>
 </div>
@@ -159,7 +167,7 @@
         <form method="get" action="{% url 'timeline:comment_reply_list' comment.id %}" class="d-inline">
           {% csrf_token %}
           <button class="btn btn-link text-dark p-0 ml-3" type="submit">
-            {% if comment.parent_comment.all %}詳細{% else %}リプライ{% endif %}
+            {% if comment.parent_comment.all %}{{comment.parent_comment.all | length}}件の返信{% else %}返信する{% endif %}
           </button>
         </form>
       </div>
@@ -169,4 +177,6 @@
 {% endfor %}
 
 </div>
+
+<script src="{% static 'js/confirm.js' %}"></script>
 {% endblock %}

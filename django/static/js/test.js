@@ -93,3 +93,21 @@ showMobileNavButton();
 }
 
 init();
+
+
+
+$(function() {
+
+	$(".button-link").click(function(e) {
+	  e.preventDefault();
+
+	  $(".search-overlay").toggleClass("open");
+	  $(".button-element").toggleClass("open");
+	  $(".search-button").toggleClass("open");
+	  $(".search-text").toggleClass("open");
+	  $(".fullscreen-animation").toggleClass("open");
+
+
+	});
+
+  });

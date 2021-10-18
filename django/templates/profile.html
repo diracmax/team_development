@@ -37,7 +37,7 @@
           <div class="profile-card-inf__item">
             <a href="{% url 'accounts:posts' customuser.id 'follow' %}">
               <div class="profile-card-inf__title">
-                  <span id="follow-count-{{ customuser.id }}">{{ customuser.get_follower | length }}</span>
+                  <span>{{ customuser.get_following | length }}</span>
               </div>
               <div class="profile-card-inf__txt">Followings</div>
             </a>
@@ -46,7 +46,7 @@
           <div class="profile-card-inf__item">
             <a href="{% url 'accounts:posts' customuser.id 'recruit' %}">
               <div class="profile-card-inf__title">
-                  <span id="follow-count-{{ customuser.id }}">{{ customuser.get_follower | length }}</span>
+                  <span>{{ customuser.get_follower | length }}</span>
               </div>
               <div class="profile-card-inf__txt">Posts</div>
             </a>
