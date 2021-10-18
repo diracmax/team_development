@@ -4,11 +4,11 @@
 {% block title %}新規投稿 | seekiee{% endblock %}
 {% block contents %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}"/>
+{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}"/>
 <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
 {{ form.media }}
 <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
-<script type="text/javascript" src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script> {% endcomment %}
 
 <div class="create-post">
 	<form  method="POST" enctype="multipart/form-data">
@@ -16,7 +16,6 @@
 		<div class="create-segment">
 		  <h1>新規投稿</h1>
 		</div>
-
 		<div class="input-group">
 			<label>
 				<div class="flex-icon">

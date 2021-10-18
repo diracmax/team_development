@@ -4,11 +4,11 @@
 {% block title %}投稿編集 | seekiee{% endblock %}
 {% block contents %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}"/>
+{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}"/>
 <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
 {{ form.media }}
 <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
-<script type="text/javascript" src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script> {% endcomment %}
 
 <div class="post-update">
 	<form  method="POST" enctype="multipart/form-data">
