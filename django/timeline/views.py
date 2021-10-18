@@ -58,9 +58,10 @@ class LikeView(LoginRequiredMixin, generic.View):
             like = Like(user=self.request.user, post=post)
             like.save()
 
-            notification = Notification.objects.create(
-                notification_type=1, from_user=request.user, to_user=post.author, post=post)
-            notification.save()
+            # Like notification is too anoying
+            # notification = Notification.objects.create(
+            #     notification_type=1, from_user=request.user, to_user=post.author, post=post)
+            # notification.save()
 
             like_count = Like.objects.filter(post=post).count()
             data = {'like_count': like_count}
