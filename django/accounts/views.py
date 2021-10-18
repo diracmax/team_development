@@ -99,9 +99,10 @@ class FollowView(LoginRequiredMixin, generic.View):
             follow.save()
             follow_count = Follow.objects.filter(following=following).count()
 
-            notification = Notification.objects.create(
-                notification_type=3, from_user=self.request.user, to_user=following)
-            notification.save()
+            # follow notification is too anoying
+            # notification = Notification.objects.create(
+            #     notification_type=3, from_user=self.request.user, to_user=following)
+            # notification.save()
 
             data = {'message': 'フォローしました',
                     'follow_count': follow_count}

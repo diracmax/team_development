@@ -5,7 +5,7 @@ from accounts.models import CustomUser
 from django.utils import timezone
 from dm.models import ThreadModel
 import datetime
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Category(models.Model):
     display = models.CharField(max_length=10, verbose_name='カテゴリー')

@@ -4,25 +4,17 @@
   bottom:20px;
   width: 300px;
   height: 100px;
-  z-index: 9;
+  z-index: 10;
+  transform: scale(1);
+  transition: transform 0.3s ease-in-out;
 
   .button-link {
     display: inline-block;
   }
 
-  .small.button-container {
-    left: 110px;
-    width: 80px;
-  }
-
   .medium.button-container {
     left: 80px;
     width: 140px;
-  }
-
-  .large.button-container {
-    left: 65px;
-    width: 170px;
   }
 
   .button-container {
@@ -32,14 +24,28 @@
     overflow: hidden;
   }
 
+  &.open {
+    .search-icon {
+      opacity: 0;
+    }
+    .close-icon {
+      opacity: 1;
+    }
+  }
+
   .search-button {
+    border: white solid 1px;
+    &.open{
+      border: none;
+    }
     max-width: 60px;
     width: 100%;
     height: 100%;
     margin-left: calc(50% - 30px);
     border-radius: 50%;
     overflow: hidden;
-    background-color: #F34046;
+      // background-color: #F34046;
+    background-color: #022b43;
     color: white;
     -moz-transition: max-width 0.3s ease, margin-left 0.3s ease, border-radius 0.3s ease;
     -o-transition: max-width 0.3s ease, margin-left 0.3s ease, border-radius 0.3s ease;
@@ -58,7 +64,7 @@
       &:hover .search-icon {
         opacity: 0;
       }
-      &:hover .search-text {
+      &:hover .search-text:not(.open) {
         opacity: 1;
       }
     }
@@ -70,14 +76,33 @@
     left: 0;
     right: 0;
     line-height: 55px;
-    width: 100%;
-    height: 100%;
     text-align: center;
     font-size: 28px;
     -moz-transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
     -o-transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
     -webkit-transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
     transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+
+    img {
+      object-fit: contain;
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  .close-icon {
+    position: absolute;
+    opacity: 0;
+    left: 0;
+    right: 0;
+    line-height: 55px;
+    text-align: center;
+
+    img {
+      object-fit: contain;
+      width: 40px;
+      height: 40px;
+    }
   }
 
   .search-text {
@@ -93,5 +118,118 @@
     -o-transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
     -webkit-transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
     transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+}
+
+.fullscreen-animation {
+  z-index: 6;
+  position: fixed;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  // background-color: #F34046;
+  background-color: #022b43;
+  right:140px;
+  bottom:40px;
+  transform: scale(1);
+  transition: transform 0.3s ease-in-out;
+  &.open {
+    transform: scale(60);
+    z-index: 8;
+  }
+}
+
+
+
+.search-overlay {
+    // background-color: #F34046;
+  background-color:#022b43;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  text-align: center;
+  transition: opacity 0.7s ease-in-out;
+  z-index: 9;
+  top: 0;
+  opacity: 0;
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
+}
+.search-overlay.open {
+  opacity: 1;
+  visibility: visible;
+
+  .overlay-info {
+    text-align: center;
+    color: white;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    img {
+      height: 5rem;
+      width: 15rem;
+      object-fit: contain;
+    }
+  }
+
+  #search-box {
+    background: transparent;
+    border-radius: 20px;
+    color: #fff;
+    display: inline;
+    width: 50vw;
+  }
+
+  a#clear-btn {
+    background: none;
+    color: #fff;
+    display: inline;
+    border: none;
+    padding: 0;
+    margin: 0;
+    margin-left: -30px;
+  }
+
+  a#clear-btn:hover {
+    opacity: 0.5;
+  }
+
+  a#search-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    img {
+      object-fit: contain;
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  a#search-btn:hover {
+    opacity: 0.7;
+  }
+
+  .category-search {
+    display: flex;
+    width: 50vw;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .category-btn {
+    margin: 5px;
+    background: none;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    border: 0.1rem solid #fff;
+    border-radius: 0.3rem;
+    color: white;
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+    }
   }
 }

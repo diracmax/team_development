@@ -61,9 +61,10 @@ class LikeView(LoginRequiredMixin, generic.View):
             like = Like(user=self.request.user, post=post)
             like.save()
 
-            notification = Notification.objects.create(
-                notification_type=1, from_user=request.user, to_user=post.author, post=post)
-            notification.save()
+            # Like notification is too anoying
+            # notification = Notification.objects.create(
+            #     notification_type=1, from_user=request.user, to_user=post.author, post=post)
+            # notification.save()
 
             like_count = Like.objects.filter(post=post).count()
             data = {'like_count': like_count}
@@ -296,7 +297,8 @@ class NotificationView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         request_user = self.request.user
         notifications = Notification.objects.filter(
-        to_user=request_user).exclude(user_has_seen=True).order_by('-date')
+        to_user=request_user).order_by('-date')
+        # to_user=request_user).exclude(user_has_seen=True).order_by('-date')
         return notifications
 
 
