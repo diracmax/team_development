@@ -55,11 +55,11 @@ SORT_DICT = {
         "display": "フォローされた順",
         "method": "accounts_follow.created_at"
     },
-    "register": {
-        "allowed": ["follow", "follower"],
-        "display": "サインアップ順",
-        "method": "accounts_customuser.id"
-    }
+    # "register": {
+    #     "allowed": ["follow", "follower"],
+    #     "display": "サインアップ順",
+    #     "method": "accounts_customuser.id"
+    # }
 }
 
 
@@ -179,7 +179,7 @@ class PostList(LoginRequiredMixin, generic.ListView):
                     [str(id), method]
                     )
             # debug
-            # print(accounts)
+            print(accounts)
             return accounts
 
         # page not found

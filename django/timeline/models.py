@@ -16,15 +16,6 @@ class Category(models.Model):
     post_photo = ImageSpecField(source='default_img', processors=[ResizeToFit(
         1080, 1080)], format='JPEG', options={'quality': 60})
 
-    # depth自動で入力したい
-    # def __init__(self):
-    #     try:
-    #         self.depth = self.parent.depth + 1
-    #         self.save
-    #     except:
-    #         self.depth = 0
-    #     return
-
     def __str__(self):
         # 親カテゴリ名をさかのぼって表示
         name = self.display
@@ -38,9 +29,9 @@ class Category(models.Model):
         # 同じカテゴリ名は親が違う場合には許す
         unique_together = ("display", "parent")
 
-def get_deleted_category():
-    # 親カテゴリーを返し、無かったらその他を返すようにしたい
-    return Category.objects.get_or_create(display="その他")[0]
+# def get_deleted_category():
+#     # 親カテゴリーを返し、無かったらその他を返すようにしたい
+#     return Category.objects.get_or_create(display="その他")[0]
         
 class Post(models.Model):
     author = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
@@ -52,8 +43,6 @@ class Post(models.Model):
         verbose_name='写真', upload_to='images/', null=True, blank=True)
     post_photo = ImageSpecField(source='photo', processors=[ResizeToFit(
         1080, 1080)], format='JPEG', options={'quality': 60})
-    # ↓論理名を 募集条件→応募条件、物理名をrecruitment_conditions→restrictionに変更しました。
-    # ↓読んだらこのコメントを消してください
     restriction = models.TextField(
         verbose_name='応募条件', blank=True, null=True)
     deadline = models.DateField(
@@ -62,11 +51,7 @@ class Post(models.Model):
         verbose_name='定員', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
-    class itemchoice(models.IntegerChoices):
-       自動的に更新=1
-       強制的にオープン=2
-       強制的にクローズ=3
-    state_control_type = models.IntegerField(verbose_name='募集状態',default=1, choices=[(1,"自動的に更新"),(2,"強制的にオープン"),(3,"強制的にクローズ")])
+    state_control_type = models.CharField(max_length=10, verbose_name='募集ステータス', default="auto", choices=[("auto","自動的に更新"),("open","強制的にオープン"),("close","強制的にクローズ")])
     is_recruited = models.BooleanField(verbose_name='募集中', default=True)
 
     def get_member(self):
@@ -93,6 +78,10 @@ class Post(models.Model):
         deadline_flag: 締切り過ぎている場合のみFalse
         capacity_flag: 定員満たしている場合のみFalse
         """
+        if self.state_control_type=="open":
+            return True
+        if self.state_control_type=="close":
+            return False
         deadliine_flag = not self.deadline or (self.deadline <= datetime.date.today())
         capacity_flag = not self.capacity or (int(self.capacity) > len(self.get_member())) 
         return deadliine_flag and capacity_flag

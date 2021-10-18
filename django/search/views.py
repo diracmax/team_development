@@ -16,6 +16,8 @@ class PostList(LoginRequiredMixin, generic.ListView):
         q = dict()
         q["word"] = self.request.GET.get('word')
         q["category"] = self.request.GET.get('category')
+        # print("word=" + q["word"])
+        # print("category=" + q["category"])
         if q["word"] and q["category"]:
             object_list = Post.objects.filter(
                     Q(title__icontains=q["word"]) | Q(text__icontains=q["word"]),

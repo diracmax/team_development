@@ -22,6 +22,7 @@
 				<div class="flex-icon">
 					<img src="{% static 'images/鉛筆の無料アイコン7.png' %}">
 					<h2>カテゴリー</h2>
+					<p>※必須項目</p>
 				</div>
 				{% render_field form.category %}
 			</label>
@@ -65,7 +66,8 @@
 			<label>
 				<div class="flex-icon">
 					<img src="{% static 'images/チームアイコン3.png' %}">
-					<h2>募集状態</h2>
+					<h2>募集ステータス</h2>
+					<p>※必須項目</p>
 				</div>
 				{% render_field form.state_control_type %}
 			</label>
