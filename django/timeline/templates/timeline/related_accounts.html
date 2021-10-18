@@ -1,0 +1,28 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% block title %}{{title}} | seekiee{% endblock %}
+{% block contents %}
+
+<div style="width:auto; height:100px; "></div>
+<div style="height:55px; background:ghostwhite; z-index:6;"class="ur-header">
+  <div style="float:left; height:100%; width:49%;">
+    <div style="text-align: center;">
+      <a href="{% url 'timeline:detail' post.pk %}" class="btn btn-link p-0">{{post.title}}</a>
+    </div>
+  </div>
+  <div style="float:left; height:100%; width:49%;padding: 0px 10px;" class="link-list">
+    <div style="hight:100%;" class="related-user">
+    {% for key, value in FILTER_DICT.items %}
+      {% if key == filter %}
+      <span class="link-list-current">{{value}}</span>
+      {% else %}
+      <a href="{% url 'timeline:account' post.pk key %}" class="link-list-children">{{value}}</a>
+      {% endif %}
+    {% endfor %}
+    </div>
+  </div>
+</div>
+{% include "account/account_list.html" %}
+{% include "timeline/pagination.html" %}
+
+{% endblock %}
