@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from .forms import ProfileForm
 from django.contrib.messages.views import SuccessMessageMixin
 from timeline.models import Post, Apply
+from django.http import Http404
 from django.http.response import JsonResponse
 from django.db import connection
 from timeline.models import Notification
@@ -182,7 +183,7 @@ class PostList(LoginRequiredMixin, generic.ListView):
             return accounts
 
         # page not found
-        raise ValueError("invarid url")
+        raise Http404("Question does not exist")
 
 
 class QuitView(LoginRequiredMixin, generic.View):

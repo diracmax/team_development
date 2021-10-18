@@ -1,11 +1,12 @@
 {% extends 'base2.html' %}
 {% load static %}
-{% block title %}投稿検索 | seekiee{% endblock %}
+{% block title %}アカウント検索 | seekiee{% endblock %}
 {% block contents %}
+<div style="height:100px; width:auto;">
 <form action="" method="get">
   <input name="word" value="{{ request.GET.word }}" type="text">
-  <button type="submit">投稿検索</button>
+  <button type="submit">アカウント検索</button>
 </form>
-{% include "post_list2.html" %}
+{% include "account/account_list.html" %}
 {% include "timeline/pagination.html" %}
 {% endblock %}

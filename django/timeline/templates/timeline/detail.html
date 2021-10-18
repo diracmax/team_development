@@ -74,10 +74,10 @@
     <p class="detail-sidebar-title">募集人数</p>
     <p>{{ object.capacity }}人</p>
 
-    <p class="detail-sidebar-title">応募者</p>
+    <p class="detail-sidebar-title"><a href="{% url 'timeline:account' post.pk 'entry' %}" >応募者</a></p>
     <p>{% if object.get_applicant.count %}{{object.get_applicant.count}}人{% else %}まだいません{% endif %}</p>
 
-    <p class="detail-sidebar-title">メンバー</p>
+    <p class="detail-sidebar-title"><a href="{% url 'timeline:account' post.pk 'join' %}" >メンバー</a></p>
     <p>{% if object.get_member.count %}{{object.get_member.count}}人{% else %}まだいません{% endif %}</p>
   </div>
 </div>

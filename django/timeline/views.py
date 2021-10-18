@@ -7,8 +7,7 @@ from django.urls import reverse_lazy, reverse
 from .models import Post, Like, Apply, Comment, CommentReply, Notification, Category
 from accounts.models import CustomUser
 from django.http.response import JsonResponse
-from django.http import HttpResponse
-
+from django.http import HttpResponse, Http404
 
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'timeline/index.html'
@@ -299,6 +298,36 @@ class NotificationView(LoginRequiredMixin, generic.ListView):
         notifications = Notification.objects.filter(
         to_user=request_user).exclude(user_has_seen=True).order_by('-date')
         return notifications
+
+
+class PostRelatedAccountList(LoginRequiredMixin, generic.ListView):
+    template_name = 'timeline/related_accounts.html'
+    paginate_by = 10
+    FILTER_DICT = {
+        "like" : {"display": "いいね", "id": "like__post_id", "option": None, "sort": "-like__created_at"},
+        "entry": {"display": "応募者", "id": "apply__post_id", "option": {"apply__is_member": False}, "sort": "-apply__created_at"},
+        "join" : {"display": "メンバー", "id": "apply__post_id", "option": {"apply__is_member": True}, "sort": "-apply__updated_at"},
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        FILTER = {key: value["display"] for key, value in self.FILTER_DICT.items()}
+        context["FILTER_DICT"]= FILTER
+        context["filter"]= self.kwargs.get('filter')
+        context["post"]= Post.objects.get(pk=self.kwargs.get('pk'))
+        return context
+
+    def get_queryset(self):
+        post_id = self.kwargs.get('pk')
+        filter = self.kwargs.get('filter')
+        if filter in self.FILTER_DICT:
+            dict_ = self.FILTER_DICT[filter]
+            kwargs = dict_["option"] if dict_["option"] else dict()
+            kwargs[dict_["id"]] = post_id
+            return CustomUser.objects.filter(**kwargs).order_by(dict_["sort"])
+        raise Http404("Question does not exist")
+
+
 
 index = IndexView.as_view()
 create = CreateView.as_view()
