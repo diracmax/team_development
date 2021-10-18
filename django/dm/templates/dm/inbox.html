@@ -5,9 +5,9 @@
 <div class="container dm">
 
 {% if threads.all.count == 0 %}
-<img width="256px" src="{% static 'images/no_message.png'%}" alt="メッセージがありません">
+<img width="296px" src="{% static 'images/no_message.png'%}" alt="メッセージがありません">
 <h1>メッセージがありません</h1>
-<small>ユーザーのプロフィールからメッセージを送れます</small>
+<small>送りたいユーザーのプロフィールからメッセージを送れます</small>
 {% endif %}
 
 {% for thread in threads.all %}
