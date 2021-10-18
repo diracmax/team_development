@@ -64,14 +64,14 @@
 					{% render_field form.photo %}
 				</div>
 			</label>
-			<label>
+			{% comment %} <label>
 				<div class="flex-icon">
 					<img src="{% static 'images/チームアイコン3.png' %}">
 					<h2>募集ステータス</h2>
 					<p>※必須項目</p>
 				</div>
 				{% render_field form.state_control_type %}
-			</label>
+			</label> {% endcomment %}
 			<label>
 				<div class="flex-icon">
 					<img src="{% static 'images/チェックボックスアイコン.png' %}">

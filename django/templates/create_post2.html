@@ -48,13 +48,13 @@
 				</div>
 				{% render_field form.restriction placeholder="応募条件：例)〇〇に詳しい方募集！" rows="3" %}
 			</label>
-			<label>
+			{% comment %} <label>
 				<div class="flex-icon">
 					<img src="{% static 'images/鉛筆の無料アイコン7.png' %}">
 					<h2>応募期限</h2>
 				</div>
 				{% render_field form.deadline %}
-			</label>
+			</label> {% endcomment %}
 			<label>
 				<div class="flex-icon">
 					<img src="{% static 'images/チームアイコン3.png' %}">
@@ -62,14 +62,14 @@
 				</div>
 				{% render_field form.capacity placeholder="募集人数" %}
 			</label>
-			<label>
+			{% comment %} <label>
 				<div class="flex-icon">
 					<img src="{% static 'images/チームアイコン3.png' %}">
 					<h2>募集ステータス</h2>
 					<p>※必須項目</p>
 				</div>
 				{% render_field form.state_control_type %}
-			</label>
+			</label> {% endcomment %}
 			<label>
 				<div class="flex-icon">
 					<img src="{% static 'images/イメージ画像のアイコン素材.png' %}">

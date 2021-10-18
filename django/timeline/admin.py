@@ -6,9 +6,17 @@ from .models import Post, Apply, Comment, CommentReply, Notification, Category
 
 class PostAdmin(admin.ModelAdmin):
     fields = ['author', 'category', 'title', 'text', 'photo', 'is_recruited',
-              'restriction', 'deadline', 'capacity', 'state_control_type']
+              'restriction', 
+            #   'deadline', 
+              'capacity', 
+            #   'state_control_type'
+              ]
     list_display = ('id', 'category', 'title', 'author', 'text', 'photo',
-                    'is_recruited', 'restriction', 'deadline', 'capacity', 'created_at', 'updated_at', 'state_control_type')
+                    'is_recruited', 'restriction', 
+                    # 'deadline', 
+                    'capacity', 'created_at', 'updated_at', 
+                    # 'state_control_type'
+                    )
 
 
 class ApplyAdmin(admin.ModelAdmin):

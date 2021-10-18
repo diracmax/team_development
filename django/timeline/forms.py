@@ -7,11 +7,11 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('category', 'title', 'text', 'photo',
-                  'restriction', 'deadline', 'capacity',
-                  'state_control_type')
-        widgets = {
-            'deadline': AdminDateWidget(),
-        }
+                  'restriction', 'capacity',
+                  )
+        # widgets = {
+        #     'deadline': AdminDateWidget(),
+        # }
 
 class CommentForm(forms.ModelForm):
     class Meta:

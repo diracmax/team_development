@@ -45,13 +45,13 @@ class Post(models.Model):
         1080, 1080)], format='JPEG', options={'quality': 60})
     restriction = models.TextField(
         verbose_name='応募条件', blank=True, null=True)
-    deadline = models.DateField(
-        verbose_name='応募期限', blank=True, null=True)
+    # deadline = models.DateField(
+    #     verbose_name='応募期限', blank=True, null=True)
     capacity = models.PositiveIntegerField(
         verbose_name='定員', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
-    state_control_type = models.CharField(max_length=10, verbose_name='募集ステータス', default="auto", choices=[("auto","自動的に更新"),("open","強制的にオープン"),("close","強制的にクローズ")])
+    # state_control_type = models.CharField(max_length=10, verbose_name='募集ステータス', default="auto", choices=[("auto","自動的に更新"),("open","強制的にオープン"),("close","強制的にクローズ")])
     is_recruited = models.BooleanField(verbose_name='募集中', default=True)
 
     def get_member(self):
@@ -73,18 +73,18 @@ class Post(models.Model):
         members = Apply.objects.filter(post=self)
         return [member.user for member in members if member.is_member == False]
 
-    def is_applyable(self):
-        """
-        deadline_flag: 締切り過ぎている場合のみFalse
-        capacity_flag: 定員満たしている場合のみFalse
-        """
-        if self.state_control_type=="open":
-            return True
-        if self.state_control_type=="close":
-            return False
-        deadliine_flag = not self.deadline or (self.deadline <= datetime.date.today())
-        capacity_flag = not self.capacity or (int(self.capacity) > len(self.get_member())) 
-        return deadliine_flag and capacity_flag
+    # def is_applyable(self):
+    #     """
+    #     deadline_flag: 締切り過ぎている場合のみFalse
+    #     capacity_flag: 定員満たしている場合のみFalse
+    #     """
+    #     if self.state_control_type=="open":
+    #         return True
+    #     if self.state_control_type=="close":
+    #         return False
+    #     deadliine_flag = not self.deadline or (self.deadline <= datetime.date.today())
+    #     capacity_flag = not self.capacity or (int(self.capacity) > len(self.get_member())) 
+    #     return deadliine_flag and capacity_flag
         
 
 class Like(models.Model):
