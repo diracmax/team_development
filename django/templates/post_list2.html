@@ -1,7 +1,7 @@
 {% load static %}
 
 <div class="my_container dynamic-grid">
-  {% for post in object_list %}{% if post.is_applyable %}
+  {% for post in object_list %}
   <article class="grid-item content-box">
   <div class="inner">
 
@@ -59,7 +59,7 @@
 
   </div>
   </article>
-  {% endif %}{% endfor %}
+  {% endfor %}
 </div>
 
 {% include 'search_button2.html' %}
