@@ -10,8 +10,13 @@ import datetime
 class Category(models.Model):
     display = models.CharField(max_length=10, verbose_name='カテゴリー')
     parent = models.ForeignKey("self", verbose_name='親カテゴリー', on_delete=models.CASCADE, blank=True, null=True, limit_choices_to={"depth__lt": 3})
-    depth = models.IntegerField(default=0)
+    depth = models.IntegerField(default=0, verbose_name='世代', help_text=('先祖の数を手動で入力してください'),)
+    default_img = models.ImageField(
+        verbose_name='デフォルト画像', upload_to='images/', default="images/default.jpeg")
+    post_photo = ImageSpecField(source='default_img', processors=[ResizeToFit(
+        1080, 1080)], format='JPEG', options={'quality': 60})
 
+    # depth自動で入力したい
     # def __init__(self):
     #     try:
     #         self.depth = self.parent.depth + 1
@@ -38,12 +43,12 @@ def get_deleted_category():
         
 class Post(models.Model):
     author = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, blank=True, null=True)
+    category = models.ForeignKey('Category', on_delete=models.PROTECT)
     # category = models.ForeignKey('Category',default=get_deleted_category() on_delete=models.SET(get_deleted_category()), blank=True, null=True)
     title = models.CharField(verbose_name='タイトル', max_length=128)
     text = models.TextField(verbose_name='本文')
     photo = models.ImageField(
-        verbose_name='写真', upload_to='images/', default="images/default.jpeg")
+        verbose_name='写真', upload_to='images/', null=True, blank=True)
     post_photo = ImageSpecField(source='photo', processors=[ResizeToFit(
         1080, 1080)], format='JPEG', options={'quality': 60})
     recruitment_conditions = models.TextField(

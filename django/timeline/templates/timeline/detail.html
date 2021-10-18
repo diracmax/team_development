@@ -39,7 +39,7 @@
   </div>
 </div>
 
-<div class="detail-photo-box"><img class="detail-post-photo card-img-bottom" src="{{ object.post_photo.url }}" alt="Card image cap"></div>
+<div class="detail-photo-box"><img class="detail-post-photo card-img-bottom" src="{% if object.post_photo %}{{ object.post_photo.url }}{% else %}{{ object.category.post_photo.url }}{% endif %}" alt="Card image cap"></div>
 
 <div class="detail-post-content">
   <div class="detail-post-main-content">

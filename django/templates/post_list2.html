@@ -25,9 +25,8 @@
     <div class="post-info">
       <a href="{% url 'timeline:detail' post.id %}">
         <span class="mask">
-          {% if post.post_photo %}
-          <img class="card-img-bottom content-box-thumb" src="{{ post.post_photo.url }}" alt="Card image cap">
-          {% endif %}
+          
+          <img class="card-img-bottom content-box-thumb" src="{% if post.post_photo %}{{ post.post_photo.url }}{% else %}{{ post.category.post_photo.url }}{% endif %}" alt="Card image cap">
           <span class="cap">
             <p class="post-info1">
               投稿日時: {{ post.created_at | date:"n月j日 H時i分" }}<br>
