@@ -39,6 +39,7 @@ class Category(models.Model):
         unique_together = ("display", "parent")
 
 def get_deleted_category():
+    # 親カテゴリーを返し、無かったらその他を返すようにしたい
     return Category.objects.get_or_create(display="その他")[0]
         
 class Post(models.Model):
@@ -51,14 +52,21 @@ class Post(models.Model):
         verbose_name='写真', upload_to='images/', null=True, blank=True)
     post_photo = ImageSpecField(source='photo', processors=[ResizeToFit(
         1080, 1080)], format='JPEG', options={'quality': 60})
-    recruitment_conditions = models.TextField(
-        verbose_name='募集条件', blank=True, null=True)
+    # ↓論理名を 募集条件→応募条件、物理名をrecruitment_conditions→restrictionに変更しました。
+    # ↓読んだらこのコメントを消してください
+    restriction = models.TextField(
+        verbose_name='応募条件', blank=True, null=True)
     deadline = models.DateField(
         verbose_name='応募期限', blank=True, null=True)
     capacity = models.PositiveIntegerField(
         verbose_name='定員', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
+    # class itemchoice(models.IntegerChoices):
+    #    自動で更新=1
+    #    強制的にオープン=2
+    #    強制的にクローズ=3
+    # state_judgement_type = models.IntegerChoices(choices=itemchoice, default=1)
     is_recruited = models.BooleanField(verbose_name='募集中', default=True)
 
     def get_member(self):
