@@ -460,6 +460,10 @@
 
 .detail-template .post-like-count { margin: auto 0; }
 
+.detail-author-manage { padding-bottom: 2rem; }
+
+.detail-author-manage button { background: red; }
+
 .detail-photo-box { height: 450px; overflow: scroll; }
 
 .detail-author-info { display: flex; padding: 15px 0; justify-content: space-between; }
