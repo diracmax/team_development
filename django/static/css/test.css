@@ -425,6 +425,8 @@
 
 .notification-badge:hover { opacity: 0.75; transition: 0.3s; }
 
+.special-card { opacity: .3; }
+
 .link-list { background-color: #eee; }
 
 .link-list-children:not(:first-child) { margin-left: 16px; }
