@@ -33,7 +33,7 @@ class CustomUser(AbstractUser):
         return [follower.follower for follower in followers]
     def get_following(self):
         followings = Follow.objects.filter(follower=self)
-        return [following.follower for following in followings]
+        return [following.following for following in followings]
 
     class Meta:
         verbose_name_plural = 'CustomUser'

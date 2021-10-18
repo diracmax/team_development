@@ -1,9 +1,14 @@
+{% load static %}
+
 <div class="button-element">
-	<a class="button-link" href="{% url 'timeline:create' %}">
+	<a class="button-link" href="#">
 	  <div class="button-container medium">
 		<div class="search-button">
 		  <div class="search-icon">
-			+
+			<img src="{% static 'images/虫眼鏡アイコン11.png' %}" alt="search">
+		  </div>
+		  <div class="close-icon">
+			  <img src="{% static 'images/ノーマルの太さのバツアイコン2.png' %}" alt="close">
 		  </div>
 		  <div class="search-text">
 			Search
@@ -11,4 +16,24 @@
 		</div>
 	  </div>
 	</a>
+</div>
+
+<div class="fullscreen-animation"></div>
+
+<div class="search-overlay">
+	<h1 class="overlay-info">
+		<img src="{% static 'images/Seekiee_logo3.png' %}" alt="Logo">
+	</h1>
+	<input id="search-box" class="form-control" placeholder="Search for ..." type="search">
+    <a class="btn btn-default" id="clear-btn"><span class="glyphicon glyphicon-remove"></span></a>
+	<a class="btn btn-default" id="search-btn"><span class="glyphicon glyphicon-search"></span><img src="{% static 'images/虫眼鏡アイコン11.png' %}" alt="search">&nbsp;&nbsp;Search</a>
+	<h1 class="overlay-info">
+		Category
+	</h1>
+	<div class="category-search">
+		<button class="category-btn">ハッカソン</button>
+		<button class="category-btn">チーム開発</button>
+		<button class="category-btn">勉強会</button>
+		<button class="category-btn">その他</button>
+	</div>
 </div>

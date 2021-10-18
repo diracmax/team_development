@@ -4,7 +4,7 @@ from imagekit.processors import ResizeToFill, ResizeToFit
 from accounts.models import CustomUser
 from django.utils import timezone
 from dm.models import ThreadModel
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Post(models.Model):
     author = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
