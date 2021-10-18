@@ -6,8 +6,8 @@
 
 <div class="container dm">
 {% for notification in object_list %}
-    <div class="card mb-3 text-left">
-      <div class="card-body ">
+    <div class="card mb-2 text-left">
+      <div class="card-body {% if notification.user_has_seen %}special-card{% endif %}">
         <div class="row">
           <div class="col-1">
             <a href="{% url 'accounts:detail' notification.from_user.id %}"><img src="{% if notification.from_user.thumbnail %}{{ notification.from_user.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
