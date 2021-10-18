@@ -27,6 +27,7 @@ class PostList(LoginRequiredMixin, generic.ListView):
                     )
             return object_list
         if q["category"]:
+            # 子カテゴリも含めて表示したい
             object_list = Post.objects.filter(
                     Q(category__display=q["category"])
                     )
