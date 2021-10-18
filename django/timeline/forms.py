@@ -1,3 +1,4 @@
+from django.contrib.admin.widgets import AdminDateWidget
 from django import forms
 from .models import Post, Comment, CommentReply
 
@@ -5,9 +6,12 @@ from .models import Post, Comment, CommentReply
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'text', 'photo',
-                  'recruitment_conditions', 'capacity')
-
+        fields = ('category', 'title', 'text', 'photo',
+                  'restriction', 'deadline', 'capacity',
+                  'state_control_type')
+        widgets = {
+            'deadline': AdminDateWidget(),
+        }
 
 class CommentForm(forms.ModelForm):
     class Meta:

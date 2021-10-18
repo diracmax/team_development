@@ -4,11 +4,10 @@ from .forms import PostForm, CommentForm, CommentReplyForm
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
-from .models import Post, Like, Apply, Comment, CommentReply, Notification
+from .models import Post, Like, Apply, Comment, CommentReply, Notification, Category
 from accounts.models import CustomUser
 from django.http.response import JsonResponse
-from django.http import HttpResponse
-
+from django.http import HttpResponse, Http404
 
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'timeline/index.html'
@@ -25,6 +24,10 @@ class CreateView(LoginRequiredMixin, generic.CreateView):
     template_name = 'timeline/create_post.html'
     template_name = 'create_post2.html'
     success_url = reverse_lazy('timeline:index')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["categorys"] = Category.objects.all()
+        return context
 
     def form_valid(self, form):
         form.instance.author_id = self.request.user.id
@@ -121,12 +124,24 @@ class AcceptApplicationView(LoginRequiredMixin, generic.View):
 class PostDetail(LoginRequiredMixin, generic.DetailView):
     model = Post
     template_name = 'timeline/detail.html'
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # ↓2回呼び出してるので処理がもったいない
+        post = Post.objects.get(pk=self.kwargs.get('pk'))
+        # 
+        category = post.category
+        categorys = list()
+        while category:
+            categorys.append(category.display)
+            category=category.parent
+        categorys.reverse()
+        context["categorys"]=categorys
+        return context
 
 class UpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Post
-    fields = ('title', 'text', 'photo', 'recruitment_conditions',
-              'capacity', 'is_recruited')
+    fields = ('title', 'text', 'photo', 'restriction',
+              'capacity', 'is_recruited', 'deadline', 'state_control_type')
     template_name = 'timeline/update.html'
     template_name = 'post_update2.html'
     success_url = reverse_lazy('timeline:index')
@@ -285,6 +300,36 @@ class NotificationView(LoginRequiredMixin, generic.ListView):
         to_user=request_user).order_by('-date')
         # to_user=request_user).exclude(user_has_seen=True).order_by('-date')
         return notifications
+
+
+class PostRelatedAccountList(LoginRequiredMixin, generic.ListView):
+    template_name = 'timeline/related_accounts.html'
+    paginate_by = 10
+    FILTER_DICT = {
+        "like" : {"display": "いいね", "id": "like__post_id", "option": None, "sort": "-like__created_at"},
+        "entry": {"display": "応募者", "id": "apply__post_id", "option": {"apply__is_member": False}, "sort": "-apply__created_at"},
+        "join" : {"display": "メンバー", "id": "apply__post_id", "option": {"apply__is_member": True}, "sort": "-apply__updated_at"},
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        FILTER = {key: value["display"] for key, value in self.FILTER_DICT.items()}
+        context["FILTER_DICT"]= FILTER
+        context["filter"]= self.kwargs.get('filter')
+        context["post"]= Post.objects.get(pk=self.kwargs.get('pk'))
+        return context
+
+    def get_queryset(self):
+        post_id = self.kwargs.get('pk')
+        filter = self.kwargs.get('filter')
+        if filter in self.FILTER_DICT:
+            dict_ = self.FILTER_DICT[filter]
+            kwargs = dict_["option"] if dict_["option"] else dict()
+            kwargs[dict_["id"]] = post_id
+            return CustomUser.objects.filter(**kwargs).order_by(dict_["sort"])
+        raise Http404("Question does not exist")
+
+
 
 index = IndexView.as_view()
 create = CreateView.as_view()

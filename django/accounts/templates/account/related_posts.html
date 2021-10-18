@@ -2,7 +2,6 @@
 {% load static %}
 {% block title %}{{title}} | seekiee{% endblock %}
 {% block contents %}
-
 {% with f_type=view.kwargs.query %}
 <div style="width:auto; height:100px; "></div>
 <div style="height:55px; background:ghostwhite; z-index:6;"class="ur-header">
@@ -39,11 +38,10 @@
   </div>
   <div style="float:right;text-align: center; hight:100%; width:33%;" class="sort-list">
     <form style="margin: 10px;"action="" method="get">
-      <select class="sort-select"name="order" onchange="submit(this.form)">
+      <select class="sort-select"name="sort" onchange="submit(this.form)">
       {% for key, value in SORT_DICT.items %}
       {% if f_type in value.allowed %}
-        <option value="{{value.method}}">{{value.display}}古い順</option>
-        <option value="-{{value.method}}">{{value.display}}新しい順</option>
+        <option value="{{key}}">{{value.display}}</option>
       {% endif %}
       {% endfor %}
       </select>

@@ -4,6 +4,13 @@
 {% block contents %}
 
 <div class="detail-template">
+<span>カテゴリー: </span>
+{% for category in categorys %}
+  {% if not forloop.first %}
+  <span> > </span>
+  {% endif %}
+  <a href="{% url 'search:post' %}?category={{category}}" >{{category}}</a>
+{% endfor %}
 
 <div class="detail-author-manage">
   {% if post.author.id == user.id %}
@@ -32,7 +39,7 @@
   </div>
 </div>
 
-<div class="detail-photo-box"><img class="detail-post-photo card-img-bottom" src="{{ object.post_photo.url }}" alt="Card image cap"></div>
+<div class="detail-photo-box"><img class="detail-post-photo card-img-bottom" src="{% if object.post_photo %}{{ object.post_photo.url }}{% else %}{{ object.category.post_photo.url }}{% endif %}" alt="Card image cap"></div>
 
 <div class="detail-post-content">
   <div class="detail-post-main-content">
@@ -42,10 +49,10 @@
     </div>
     <div class="detail-post-text">
       <h2>募集条件</h2>
-      {% if not object.recruitment_conditions %}
+      {% if not object.restriction %}
         <p>募集条件は現在設定されていません</p>
       {% else %}
-        <p>{{object.recruitment_conditions}}</p>
+        <p>{{object.restriction}}</p>
       {% endif %}
     </div>
   </div>
@@ -77,9 +84,11 @@
 
     <p class="detail-sidebar-title">応募者</p>
     <p>{% if object.get_applicant %}{{object.get_applicant | length}}人{% else %}まだいません{% endif %}</p>
+    <a href="{% url 'timeline:account' post.pk 'entry' %}" >応募者一覧</a>
 
     <p class="detail-sidebar-title">メンバー</p>
     <p>{% if object.get_member %}{{object.get_member | length}}人{% else %}まだいません{% endif %}</p>
+    <a href="{% url 'timeline:account' post.pk 'join' %}" >メンバー一覧</a>
   </div>
 </div>
 

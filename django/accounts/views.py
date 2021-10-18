@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from .forms import ProfileForm
 from django.contrib.messages.views import SuccessMessageMixin
 from timeline.models import Post, Apply
+from django.http import Http404
 from django.http.response import JsonResponse
 from django.db import connection
 from timeline.models import Notification
@@ -19,31 +20,46 @@ QUERY_DICT = {
 }
 
 SORT_DICT = {
-    "post": {
-        "allowed": ["like", "entry", "join", "recruit"],
-        "display": "投稿日時",
-        "method": "created_at"
-    },
-    "edit": {
-        "allowed": ["like", "entry", "join", "recruit"],
-        "display": "更新日時",
-        "method": "updated_at"
-    },
     "like": {
         "allowed": ["like"],
-        "display": "いいね日時",
-        "method": "like__created_at"
-    },
-    "entry": {
-        "allowed": ["entry", "join"],
-        "display": "応募日時",
-        "method": "apply__created_at"
+        "display": "いいね順",
+        "method": "-like__created_at"
     },
     "join": {
         "allowed": ["join"],
-        "display": "参加日時",
-        "method": "apply__updated_at"
+        "display": "参加承認順",
+        "method": "-apply__updated_at"
     },
+    "entry": {
+        "allowed": ["entry", "join"],
+        "display": "応募順",
+        "method": "-apply__created_at"
+    },
+    "recruit": {
+        "allowed": ["like", "entry", "join", "recruit"],
+        "display": "投稿順",
+        "method": "-created_at"
+    },
+    "edit": {
+        "allowed": ["like", "entry", "join", "recruit"],
+        "display": "更新順",
+        "method": "-updated_at"
+    },
+    "follow": {
+        "allowed": ["follow"],
+        "display": "フォローした順",
+        "method": "accounts_follow.created_at"
+    },
+    "follower": {
+        "allowed": ["follower"],
+        "display": "フォローされた順",
+        "method": "accounts_follow.created_at"
+    },
+    # "register": {
+    #     "allowed": ["follow", "follower"],
+    #     "display": "サインアップ順",
+    #     "method": "accounts_customuser.id"
+    # }
 }
 
 
@@ -119,37 +135,56 @@ class PostList(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         id = self.kwargs.get('pk', 0)
         query = self.kwargs.get('query', 0)
-        if query == "recruit":
-            posts = Post.objects.filter(author_id=id)
-            if self.request.GET.get("order"):
-                return posts.order_by(self.request.GET.get("order"))
-            return posts.order_by('-created_at')
-        if query == "like":
-            posts = Post.objects.filter(like__user_id=id)
-            if self.request.GET.get("order"):
-                return posts.order_by(self.request.GET.get("order"))
-            return posts.order_by('-like__created_at')
-        if query == "entry":
-            posts = Post.objects.filter(
-                apply__user_id=id, apply__is_member=False)
-            if self.request.GET.get("order"):
-                return posts.order_by(self.request.GET.get("order"))
-            return posts.order_by('-apply__created_at')
-        if query == "join":
-            posts = Post.objects.filter(
-                apply__user_id=id, apply__is_member=True)
-            if self.request.GET.get("order"):
-                return posts.order_by(self.request.GET.get("order"))
-            return posts.order_by('-apply__updated_at')
-        if query == "follower":
-            accounts = CustomUser.objects.raw(
-                'SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id WHERE following_id = %s', str(id))
+
+        if query in ["recruit", "like", "entry", "join"]:
+            # 並べ替えを特定
+            if self.request.GET.get("sort"):
+                method = SORT_DICT[self.request.GET.get("sort")]["method"]
+            else:
+                method = SORT_DICT[query]["method"]
+
+            # レコードを取得
+            if query == "recruit":
+                posts = Post.objects.filter(author_id=id)
+            if query == "like":
+                posts = Post.objects.filter(like__user_id=id)
+            if query == "entry":
+                posts = Post.objects.filter(
+                    apply__user_id=id, apply__is_member=False)
+            if query == "join":
+                posts = Post.objects.filter(
+                    apply__user_id=id, apply__is_member=True)
+            return posts.order_by(method)
+        
+        if query in ["follow", "follower"]:
+            # 並べ替えの取得
+            if self.request.GET.get("sort"):
+                method = SORT_DICT[self.request.GET.get("sort")]["method"]
+            else:
+                method = SORT_DICT[query]["method"]
+
+            # レコードを取得
+            # バグ: desc 反映されていない, method反映されていない id順で取って来てる感
+            if query == "follower":
+                accounts = CustomUser.objects.raw(
+                    "SELECT * FROM accounts_customuser "\
+                    "JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id "\
+                    "WHERE following_id = %s ORDER BY %s DESC",
+                    [str(id), method]
+                    )
+            if query == "follow":
+                accounts = CustomUser.objects.raw(
+                    "SELECT * FROM accounts_customuser "\
+                    "JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id "\
+                    "WHERE follower_id = %s ORDER BY %s DESC",
+                    [str(id), method]
+                    )
+            # debug
+            print(accounts)
             return accounts
-        if query == "follow":
-            accounts = CustomUser.objects.raw(
-                'SELECT * FROM accounts_customuser JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id WHERE follower_id = %s', str(id))
-            return accounts
-        raise ValueError("invarid url")
+
+        # page not found
+        raise Http404("Question does not exist")
 
 
 class QuitView(LoginRequiredMixin, generic.View):
