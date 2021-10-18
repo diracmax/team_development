@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
-from .models import Post
+from .models import Post, Category
 
 class TimelineTestCase(TestCase):
 
@@ -19,7 +19,10 @@ class TimelineTestCase(TestCase):
         client.login(email='test@example.com',password='password')
         response = client.get('/')
         self.assertEqual(response.status_code, 200)
-
-        client.post('/create/', {'title': 'タイトル', 'text': '本文', 'photo': ''})
+        
+        tmp = category.objects.create(
+                display="a")
+        client.post('/create/', {'category': tmp, 'title': 'タイトル', 'text': '本文', 'photo': ''})
         latest_post = Post.objects.latest('created_at')
         self.assertEqual(latest_post.text, '本文')
+
