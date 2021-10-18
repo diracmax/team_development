@@ -35,8 +35,20 @@
               内容: {{ post.text }}
             </p>
             <p class="post-info2">
-              募集条件: {{ post.recruitment_conditions }}<br>
-              募集人数: {{ post.capacity }}人
+              {% if not post.recruitment_conditions %}
+                募集条件: -<br>
+              {% else %}
+                募集条件: {{ post.recruitment_conditions }}<br>
+              {% endif %}
+              {% if post.capacity is None %}
+                募集人数: -
+              {% else %}
+                募集人数: {{ post.capacity }}人
+              {% endif %}
+              {% if not post.is_recruited %}
+                <br>
+                この投稿は現在募集されていません。
+              {% endif %}
             </p>
             <div class="post-info-detail">
               投稿詳細は<span>こちら</span>
@@ -50,6 +62,5 @@
   </article>
   {% endfor %}
 </div>
-
 
 {% include 'search_button2.html' %}

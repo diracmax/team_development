@@ -42,7 +42,11 @@
     </div>
     <div class="detail-post-text">
       <h2>募集条件</h2>
-      <p>{{object.recruitment_conditions}}</p>
+      {% if not object.recruitment_conditions %}
+        <p>募集条件は現在設定されていません</p>
+      {% else %}
+        <p>{{object.recruitment_conditions}}</p>
+      {% endif %}
     </div>
   </div>
   <div class="detail-post-sidebar">
@@ -65,7 +69,11 @@
       </div>
       {% endif %}
     <p class="detail-sidebar-title">募集人数</p>
-    <p>{{ object.capacity }}人</p>
+    {% if object.capacity is None %}
+      <p>現在設定されていません</p>
+    {% else %}
+      <p>{{ object.capacity }}人</p>
+    {% endif %}
 
     <p class="detail-sidebar-title">応募者</p>
     <p>{% if object.get_applicant %}{{object.get_applicant | length}}人{% else %}まだいません{% endif %}</p>
