@@ -21,8 +21,28 @@
 
 .detail-author-manage {
   padding-bottom: 2rem;
+  a {
+    border-radius: 25px;
+    background-image: linear-gradient(260deg, #1da1f2, #0e71c8);
+    color: white !important;
+    transition: all 0.2s ease;
+    line-height: 1.5rem;
+    &:hover {
+      box-shadow: 0px 0px 15px #0e71c8;
+      text-decoration: none;
+    }
+  }
   button {
-    background: red;
+    border-radius: 25px;
+    background-image: linear-gradient(260deg, #d5135a, #f05924);
+
+    color: white !important;
+    transition: all 0.2s ease;
+    line-height: 1.5rem;
+    &:hover {
+      box-shadow: 0px 0px 15px #d5135a;
+      text-decoration: none;
+    }
   }
 }
 
@@ -31,20 +51,53 @@
   overflow: scroll;
 }
 
+.detail-post-title {
+  font-family: "游ゴシック";
+  font-weight: bold;
+  position: relative;
+  padding: 1rem 0.5rem;
+  &:after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    content: "";
+    border-radius: 3px;
+    background-image: -webkit-gradient(
+      linear,
+      right top,
+      left top,
+      from(#2af598),
+      to(#009efd)
+    );
+    background-image: -webkit-linear-gradient(right, #2af598 0%, #009efd 100%);
+    background-image: linear-gradient(to left, #2af598 0%, #009efd 100%);
+  }
+}
+
 .detail-post-photo {
 }
 
 .detail-author-info {
-  display: flex;
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 140px;
   padding: 15px 0;
-  justify-content: space-between;
 }
 
 .detail-author-left {
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
   display: flex;
 }
 
 .detail-author-right {
+  position: absolute;
+  align-self: center;
+  grid-row: 1 / 2;
+  grid-column: 2 / 3;
   display: flex;
 }
 
@@ -69,6 +122,10 @@
 
 .detail-author-name-p a {
   color: #000;
+  &:hover {
+    color: gray;
+    text-decoration: none;
+  }
 }
 
 .detail-post-content {
@@ -89,6 +146,20 @@
   button {
     width: 100%;
     border-radius: 100vh;
+  }
+  a {
+    color: #000;
+    font-size: 0.85rem;
+    text-align: right;
+    &:hover {
+      color: #000;
+    }
+  }
+  p {
+    padding-top: 5px;
+  }
+  hr {
+    margin: 15px 0;
   }
 }
 
@@ -112,19 +183,11 @@
     border: none;
     outline: none;
     transition: all 0.2s ease;
+    &:hover {
+      box-shadow: 0px 7px 30px #72afd3;
+      text-decoration: none;
+    }
   }
-  .detail-button:hover {
-    transition: all 0.2s;
-  }
-  .detail-button:hover {
-    font-size: 25px;
-  }
-}
-
-.detail-application {
-}
-
-.detail-application:hover {
 }
 
 .detail-post-sidebar p {
@@ -132,8 +195,15 @@
 }
 
 .detail-sidebar-title {
-  font-size: 20px;
+  font-size: 1.5rem;
   font-weight: bold;
+}
+
+.detail-sidebar-list a {
+  &:hover {
+    color: gray;
+    text-decoration: none;
+  }
 }
 
 .detail-post-title {
@@ -142,40 +212,19 @@
 }
 
 .detail-post-text {
-  margin: 30px 0;
-}
-
-.detail-list {
-  display: flex;
-  justify-content: space-around;
-}
-
-.detail-applicant-photo {
-  text-align: center;
-}
-
-.detail-applicant-list {
-  text-align: center;
-  width: 30%;
-}
-
-.detail-member-list {
-  text-align: center;
-  width: 30%;
+  margin-top: 30px;
+  margin-bottom: 6rem;
+  h2 {
+    padding-bottom: 10px;
+    border-bottom: 3px solid #e7e7e7;
+    margin-bottom: 1.2rem;
+  }
 }
 
 .detail-profile-post-photo {
   width: 50%;
   height: 50%;
   padding-bottom: 10px;
-}
-
-.detail-applicant-info {
-  padding: 20px 0;
-}
-
-.detail-null {
-  padding: 30px 0;
 }
 
 .detail-comment-create {

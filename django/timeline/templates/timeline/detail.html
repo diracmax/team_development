@@ -4,17 +4,10 @@
 {% block contents %}
 
 <div class="detail-template">
-<span>カテゴリー: </span>
-{% for category in categorys %}
-  {% if not forloop.first %}
-  <span> > </span>
-  {% endif %}
-  <a href="{% url 'search:post' %}?category={{category}}" >{{category}}</a>
-{% endfor %}
 
 <div class="detail-author-manage">
   {% if post.author.id == user.id %}
-  <a href="{% url 'timeline:update' object.pk %}" class="btn btn-primary my-2">編集する</a>
+  <a href="{% url 'timeline:update' object.pk %}" class="btn my-2">編集する</a>
   <form method="post" action="{% url 'timeline:delete' post.id %}" class="d-inline">
     {% csrf_token %}
     <button class="btn btn-link text-white ml-3 btn-danger" type="submit" onclick='return confirm("この投稿を本当に削除しますか？");'>
@@ -23,6 +16,14 @@
   </form>
   {% endif %}
 </div>
+
+<span>カテゴリー: </span>
+{% for category in categorys %}
+  {% if not forloop.first %}
+  <span> > </span>
+  {% endif %}
+  <a href="{% url 'search:post' %}?category={{category}}" >{{category}}</a>
+{% endfor %}
 
 <h1 class="detail-post-title">{{ object.title }}</h1>
 <div class="detail-author-info">
@@ -55,6 +56,47 @@
         <p>{{object.restriction}}</p>
       {% endif %}
     </div>
+
+    <hr>
+
+    <div class="detail-comment-box">
+      <form method="post" action="{% url 'timeline:comment' object.id %}" class="d-inline">
+        {% csrf_token %}
+        <textarea class="detail-comment-create" name="text" rows="3" placeholder="コメント"></textarea>
+        <button class="btn btn-dark btn-block" type="submit">コメントを送信</button>
+      </form>
+    </div>
+    {% for comment in object.get_comment %}
+    <div class="detail-comment">
+      <p>{{comment.text}}</p>
+      <div class="detail-comment-underpart">
+        <p class="detail-comment-created_at">{{comment.created_at}}</p>
+        <div class="detail-comment-button">
+        {% if comment.author.id == user.id %}
+          <form method="post" action="{% url 'timeline:delete_comment' comment.id %}" class="d-inline">
+          {% csrf_token %}
+          <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("このコメントを本当に削除しますか？");'>
+            削除
+          </button>
+          </form>
+          <form method="post" action="{% url 'timeline:update_comment' comment.id %}" class="d-inline">
+            {% csrf_token %}
+            <button class="btn btn-link text-dark p-0 ml-3" type="submit">
+              編集
+            </button>
+          </form>
+        {% endif %}
+          <form method="get" action="{% url 'timeline:comment_reply_list' comment.id %}" class="d-inline">
+            {% csrf_token %}
+            <button class="btn btn-link text-dark p-0 ml-3" type="submit">
+              {% if comment.parent_comment.all %}{{comment.parent_comment.all | length}}件の返信{% else %}返信する{% endif %}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <hr>
+  {% endfor %}
   </div>
   <div class="detail-post-sidebar">
       {% if post.author.id != user.id %}
@@ -71,7 +113,6 @@
           <span class="detail-button">応募</span>
         </button>
         {% endif %}
-        <span class="badge badge-info" id="apply-count-{{ post.id }}">{% if post.get_applicant %}{{ post.get_apply_number }}{% endif %}</span>
         {% endif %}
       </div>
       {% endif %}
@@ -82,17 +123,21 @@
       <p>{{ object.capacity }}人</p>
     {% endif %}
 
+    <hr>
+
     <p class="detail-sidebar-title">応募者</p>
     <p>{% if object.get_applicant %}{{object.get_applicant | length}}人{% else %}まだいません{% endif %}</p>
-    <a href="{% url 'timeline:account' post.pk 'entry' %}" >応募者一覧</a>
+    <div class="detail-sidebar-list"><a href="{% url 'timeline:account' post.pk 'entry' %}" >応募者一覧</a></div>
+
+    <hr>
 
     <p class="detail-sidebar-title">メンバー</p>
     <p>{% if object.get_member %}{{object.get_member | length}}人{% else %}まだいません{% endif %}</p>
-    <a href="{% url 'timeline:account' post.pk 'join' %}" >メンバー一覧</a>
+    <div class="detail-sidebar-list"><a href="{% url 'timeline:account' post.pk 'join' %}" >メンバー一覧</a></div>
   </div>
 </div>
 
-
+{% comment %}
 {% if post.author.id == user.id %}
 <div class="detail-list">
   <div class="detail-applicant-list">
@@ -134,48 +179,7 @@
 </div>
 
 {% endif %}
-
-
-<div class="detail-comment-box">
-  <form method="post" action="{% url 'timeline:comment' object.id %}" class="d-inline">
-    {% csrf_token %}
-    <textarea class="detail-comment-create" name="text" rows="3" placeholder="コメント"></textarea>
-    <button class="btn btn-dark btn-block" type="submit">コメントを送信</button>
-  </form>
-</div>
-
-{% for comment in object.get_comment %}
-  <div class="detail-comment">
-    <p>{{comment.text}}</p>
-    <div class="detail-comment-underpart">
-      <p class="detail-comment-created_at">{{comment.created_at}}</p>
-      <div class="detail-comment-button">
-      {% if comment.author.id == user.id %}
-        <form method="post" action="{% url 'timeline:delete_comment' comment.id %}" class="d-inline">
-        {% csrf_token %}
-        <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("このコメントを本当に削除しますか？");'>
-          削除
-        </button>
-        </form>
-        <form method="post" action="{% url 'timeline:update_comment' comment.id %}" class="d-inline">
-          {% csrf_token %}
-          <button class="btn btn-link text-dark p-0 ml-3" type="submit">
-            編集
-          </button>
-        </form>
-      {% endif %}
-        <form method="get" action="{% url 'timeline:comment_reply_list' comment.id %}" class="d-inline">
-          {% csrf_token %}
-          <button class="btn btn-link text-dark p-0 ml-3" type="submit">
-            {% if comment.parent_comment.all %}{{comment.parent_comment.all | length}}件の返信{% else %}返信する{% endif %}
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-  <hr>
-{% endfor %}
-
+{% endcomment %}
 </div>
 
 <script src="{% static 'js/confirm.js' %}"></script>
