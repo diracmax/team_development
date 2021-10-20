@@ -20,7 +20,7 @@ class PostAdmin(admin.ModelAdmin):
 
 
 class ApplyAdmin(admin.ModelAdmin):
-    fields = ['is_member']
+    fields = ['post', 'user', 'is_member']
     list_display = ('id', 'is_member', 'post', 'user')
 
 

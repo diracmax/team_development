@@ -12,7 +12,7 @@ class Category(models.Model):
     parent = models.ForeignKey("self", verbose_name='親カテゴリー', on_delete=models.CASCADE, blank=True, null=True, limit_choices_to={"depth__lt": 3})
     depth = models.IntegerField(default=0, verbose_name='世代', help_text=('先祖の数を手動で入力してください'),)
     default_img = models.ImageField(
-        verbose_name='デフォルト画像', upload_to='images/', default="images/default.jpeg")
+        verbose_name='デフォルト画像', upload_to='images/default', default="images/default/default.jpeg")
     post_photo = ImageSpecField(source='default_img', processors=[ResizeToFit(
         1080, 1080)], format='JPEG', options={'quality': 60})
 
