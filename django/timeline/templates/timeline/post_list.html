@@ -5,7 +5,7 @@
   <div class="card-body">
     <div class="row">
       <div class="col-1">
-        <a href="{% url 'accounts:detail' post.author.id %}"><img src="{% if post.author.thumbnail %}{{ post.author.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
+        <a href="{% url 'accounts:detail' post.author.id %}"><img src="{% if post.author.photo_small %}{{ post.author.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
       </div>
       <div class="col-10 ml-3">
         <a href="{% url 'accounts:detail' post.author.id %}" class="text-secondary">{{ post.author }}</a>

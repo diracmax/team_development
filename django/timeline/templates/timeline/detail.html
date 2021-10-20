@@ -28,7 +28,7 @@
 <div class="detail-author-info">
   <div class="detail-author-left">
     <div class="detail-author-img">
-      <img class="detail-author-photo" src="{% if object.author.thumbnail %}{{ object.author.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}">
+      <img class="detail-author-photo" src="{% if object.author.photo_small %}{{ object.author.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}">
     </div>
     <div class="detail-author-name">
       <p class="detail-author-name-p"><a href="{% url 'accounts:detail' post.author.id %}">{{object.author}}</a></p>
@@ -100,7 +100,7 @@
     {% for user in object.get_applicant %}
     <div class="detail-applicant-info">
       <div class="detail-applicant-photo">
-        <a href="{% url 'accounts:detail' user.id %}"><img src="{% if user.thumbnail %}{{ user.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle detail-profile-post-photo"></a>
+        <a href="{% url 'accounts:detail' user.id %}"><img src="{% if user.photo_small %}{{ user.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle detail-profile-post-photo"></a>
       </div>
           <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
             {% csrf_token %}
@@ -118,7 +118,7 @@
     {% for user in object.get_member %}
     <div class="detail-applicant-info">
       <div class="detail-applicant-photo">
-        <a href="{% url 'accounts:detail' user.id %}"><img src="{% if user.thumbnail %}{{ user.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle detail-profile-post-photo"></a>
+        <a href="{% url 'accounts:detail' user.id %}"><img src="{% if user.photo_small %}{{ user.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle detail-profile-post-photo"></a>
       </div>
           <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
             {% csrf_token %}

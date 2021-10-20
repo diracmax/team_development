@@ -7,7 +7,7 @@
   <div class="card-body">
     <div class="row">
     <div class="col-2">
-      <img src="{% if user.thumbnail %}{{ user.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo">
+      <img src="{% if user.photo_small %}{{ user.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo">
     </div>
     <div class="col-10">
       <form method="post" action="{% url 'timeline:create' %}" enctype="multipart/form-data">

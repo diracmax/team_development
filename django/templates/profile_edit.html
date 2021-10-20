@@ -13,8 +13,8 @@
 		<div class="input-group">
 			<label>
 				<div class="flex-icon">
-					<a href="{% if customuser.thumbnail %}{{ customuser.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}">
-					<img src="{% if customuser.thumbnail %}{{ customuser.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-photo">
+					<a href="{% if customuser.photo_small %}{{ customuser.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}">
+					<img src="{% if customuser.photo_small %}{{ customuser.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-photo">
 					</a>
 					<h2>プロフィール画像</h2>
 				</div>

@@ -21,10 +21,12 @@ class CustomUser(AbstractUser):
     )
     description = models.TextField(verbose_name='プロフィール', null=True, blank=True, max_length=400)
     photo = ResizedImageField(verbose_name='写真', size=[200, 200], crop=['middle', 'center'], blank=True, null=True, upload_to='images/')
-    thumbnail = ImageSpecField(source='photo',
-                               processors=[ResizeToFill(256, 256)],
-                               format='JPEG',
-                               options={'quality': 60})
+    photo_middle = ImageSpecField(source='photo',
+                                  processors=[ResizeToFill(150, 150)],
+                                  format='JPEG',)
+    photo_small = ImageSpecField(source='photo',
+                                 processors=[ResizeToFill(50, 50)],
+                                 format='JPEG',)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     school = models.CharField(verbose_name='学校', blank=True, null=True, max_length=128)
     age = models.PositiveIntegerField(verbose_name='年齢', blank=True, null=True, validators=[MaxValueValidator(200)])
