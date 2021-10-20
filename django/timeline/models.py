@@ -6,15 +6,38 @@ from django.utils import timezone
 from dm.models import ThreadModel
 import datetime
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django_resized import ResizedImageField
+from django.core.exceptions import ValidationError
+
+MAX_RATIO = 2.0
+MIN_RATIO = 0.5
+def validate_image(image):
+    ratio = image.height / image.width
+    if ratio > MAX_RATIO:
+        raise ValidationError("画像が縦に長すぎます。")
+    if ratio < MIN_RATIO:
+        raise ValidationError("画像が横に長すぎます。")
 
 class Category(models.Model):
     display = models.CharField(max_length=10, verbose_name='カテゴリー')
     parent = models.ForeignKey("self", verbose_name='親カテゴリー', on_delete=models.CASCADE, blank=True, null=True, limit_choices_to={"depth__lt": 3})
     depth = models.IntegerField(default=0, verbose_name='世代', help_text=('先祖の数を手動で入力してください'),)
-    default_img = models.ImageField(
-        verbose_name='デフォルト画像', upload_to='images/default', default="images/default/default.jpeg")
+    # ディレクトリを images -> images/default に変更しました
+    default_img = ResizedImageField(verbose_name='デフォルト画像', size=[1080, 1080], blank=True, null=True, upload_to='images/default', default="images/default/default.jpeg", validators=[validate_image])
     post_photo = ImageSpecField(source='default_img', processors=[ResizeToFit(
         1080, 1080)], format='JPEG', options={'quality': 60})
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image', False)
+        if image:
+            ratio = image._height / image._width
+            if ratio > MAX_RATIO:
+                raise ValidationError("画像が縦に長すぎます。")
+            if ratio < MIN_RATIO:
+                raise ValidationError("画像が横に長すぎます。")
+            return image
+        else:
+            raise ValidationError("No image found")
 
     def __str__(self):
         # 親カテゴリ名をさかのぼって表示
@@ -37,22 +60,39 @@ class Post(models.Model):
     author = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
     category = models.ForeignKey('Category', on_delete=models.PROTECT)
     # category = models.ForeignKey('Category',default=get_deleted_category() on_delete=models.SET(get_deleted_category()), blank=True, null=True)
-    title = models.CharField(verbose_name='タイトル', max_length=128)
-    text = models.TextField(verbose_name='本文')
-    photo = models.ImageField(
-        verbose_name='写真', upload_to='images/', null=True, blank=True)
+
+    title = models.CharField(verbose_name='タイトル', max_length=15)
+    text = models.TextField(verbose_name='本文' ,max_length=200)
+
+    # ディレクトリを images -> images/post に変更しました
+    photo = ResizedImageField(verbose_name='写真', size=[1080, 1080], blank=True, null=True, upload_to='images/post/', validators=[validate_image])
     post_photo = ImageSpecField(source='photo', processors=[ResizeToFit(
         1080, 1080)], format='JPEG', options={'quality': 60})
     restriction = models.TextField(
-        verbose_name='応募条件', blank=True, null=True)
+        verbose_name='応募条件', blank=True, null=True ,max_length=50)
     # deadline = models.DateField(
     #     verbose_name='応募期限', blank=True, null=True)
+
+    # ディレクトリを images -> images/post に変更しました
     capacity = models.PositiveIntegerField(
-        verbose_name='定員', blank=True, null=True)
+        verbose_name='定員', blank=True, null=True, validators=[MaxValueValidator(0), MaxValueValidator(100)])
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
+
     # state_control_type = models.CharField(max_length=10, verbose_name='募集ステータス', default="auto", choices=[("auto","自動的に更新"),("open","強制的にオープン"),("close","強制的にクローズ")])
     is_recruited = models.BooleanField(verbose_name='募集中', default=True)
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image', False)
+        if image:
+            ratio = image._height / image._width
+            if ratio > MAX_RATIO:
+                raise ValidationError("画像が縦に長すぎます。")
+            if ratio < MIN_RATIO:
+                raise ValidationError("画像が横に長すぎます。")
+            return image
+        else:
+            raise ValidationError("No image found")
 
     def get_member(self):
         members = Apply.objects.filter(post=self)
@@ -110,7 +150,7 @@ class Apply(models.Model):
 class Comment(models.Model):
     author = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
-    text = models.TextField(verbose_name='コメント')
+    text = models.TextField(verbose_name='コメント', max_length=100)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -136,6 +176,6 @@ class CommentReply(models.Model):
     author = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
     parent = models.ForeignKey(
         'Comment', verbose_name='親コメント', on_delete=models.CASCADE, related_name='parent_comment')
-    text = models.TextField(verbose_name='コメント')
+    text = models.TextField(verbose_name='コメント', max_length=100)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)

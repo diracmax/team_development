@@ -20,7 +20,8 @@ class CustomUser(AbstractUser):
         },
     )
     description = models.TextField(verbose_name='プロフィール', null=True, blank=True, max_length=400)
-    photo = ResizedImageField(verbose_name='写真', size=[200, 200], crop=['middle', 'center'], blank=True, null=True, upload_to='images/')
+    # ディレクトリを images -> images/account に変更しました
+    photo = ResizedImageField(verbose_name='写真', size=[200, 200], crop=['middle', 'center'], blank=True, null=True, upload_to='images/account')
     photo_middle = ImageSpecField(source='photo',
                                   processors=[ResizeToFill(150, 150)],
                                   format='JPEG',)
