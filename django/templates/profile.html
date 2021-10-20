@@ -46,7 +46,7 @@
           <div class="profile-card-inf__item">
             <a href="{% url 'accounts:posts' customuser.id 'recruit' %}">
               <div class="profile-card-inf__title">
-                  <span>{{ customuser.get_follower | length }}</span>
+                  <span>{{ posts | length }}</span>
               </div>
               <div class="profile-card-inf__txt">Posts</div>
             </a>
