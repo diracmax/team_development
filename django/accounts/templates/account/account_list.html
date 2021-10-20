@@ -5,7 +5,7 @@
 <div style="width:90%; height:auto;margin:auto">
 {% for account in object_list %}
   <div style="display:inline-block; width:20%; margin:2%; background-color: #fff8e8; text-align: center;" class="card-body">
-    <a href="{% url 'accounts:detail' account.id %}"><img style="height:60px;width:60px;" src="{% if account.thumbnail %}{{ account.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
+    <a href="{% url 'accounts:detail' account.id %}"><img style="height:60px;width:60px;" src="{% if account.photo_small %}{{ account.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
     <br>
     <div class="account-info">
       <a href="{% url 'accounts:detail' account.id %}" class="text-secondary">{{ account }}</a>

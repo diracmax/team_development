@@ -29,7 +29,7 @@
 <div class="detail-author-info">
   <div class="detail-author-left">
     <div class="detail-author-img">
-      <img class="detail-author-photo" src="{% if object.author.thumbnail %}{{ object.author.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}">
+      <img class="detail-author-photo" src="{% if object.author.photo_small %}{{ object.author.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}">
     </div>
     <div class="detail-author-name">
       <p class="detail-author-name-p"><a href="{% url 'accounts:detail' post.author.id %}">{{object.author}}</a></p>
@@ -137,7 +137,49 @@
   </div>
 </div>
 
+{% comment %}
+{% if post.author.id == user.id %}
+<div class="detail-list">
+  <div class="detail-applicant-list">
+    <h2>応募者</h2>
+    {% for user in object.get_applicant %}
+    <div class="detail-applicant-info">
+      <div class="detail-applicant-photo">
+        <a href="{% url 'accounts:detail' user.id %}"><img src="{% if user.photo_small %}{{ user.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle detail-profile-post-photo"></a>
+      </div>
+          <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
+            {% csrf_token %}
+            <button class="btn btn-link text-dark p-0" type="submit" onclick='return confirm("このユーザーをメンバーにしますか？");'>
+              {{user}}
+            </button>
+          </form>
+    </div>
+    {% empty %}
+      <p class="detail-null">まだいません。</p>
+    {% endfor %}
+  </div>
+  <div class="detail-member-list">
+    <h2>メンバー</h2>
+    {% for user in object.get_member %}
+    <div class="detail-applicant-info">
+      <div class="detail-applicant-photo">
+        <a href="{% url 'accounts:detail' user.id %}"><img src="{% if user.photo_small %}{{ user.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle detail-profile-post-photo"></a>
+      </div>
+          <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
+            {% csrf_token %}
+            <button class="btn btn-link text-dark p-0" type="submit" onclick='return confirm("このユーザーをメンバーから外しますか？");'>
+              {{user}}
+            </button>
+          </form>
+    </div>
+    {% empty %}
+        <p class="detail-null">まだいません。</p>
+    {% endfor %}
+  </div>
+</div>
 
+{% endif %}
+{% endcomment %}
 </div>
 
 <script src="{% static 'js/confirm.js' %}"></script>

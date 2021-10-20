@@ -14,6 +14,11 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'index2.html'
     paginate_by = 24
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["categorys"] = Category.objects.filter(depth=0).order_by("-pk")
+        return context
+
     def get_queryset(self):
         posts = Post.objects.order_by('-created_at')
         return posts

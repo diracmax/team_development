@@ -10,7 +10,7 @@
       <div class="card-body {% if notification.user_has_seen %}special-card{% endif %}">
         <div class="row">
           <div class="col-1">
-            <a href="{% url 'accounts:detail' notification.from_user.id %}"><img src="{% if notification.from_user.thumbnail %}{{ notification.from_user.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
+            <a href="{% url 'accounts:detail' notification.from_user.id %}"><img src="{% if notification.from_user.photo_small %}{{ notification.from_user.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
           </div>
 
 	{% if notification.post %}
