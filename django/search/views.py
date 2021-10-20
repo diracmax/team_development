@@ -21,7 +21,7 @@ class PostList(LoginRequiredMixin, generic.ListView):
         if q["word"] and q["category"]:
             object_list = Post.objects.filter(
                     Q(title__icontains=q["word"]) | Q(text__icontains=q["word"]),
-                    Q(category__dispaly=q["category"])
+                    Q(category__display=q["category"])
                     )
             return object_list
         if q["word"]:
@@ -44,24 +44,24 @@ class AccountList(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         q = dict()
         q["word"] = self.request.GET.get('word')
-        q_apply = self.request.GET.get('apply')
-        if q_apply:
-            q_apply = q_apply.split("-", 1)
-            q["post_id"] = q_apply[0]
-            q["is_member"] = True if q_apply[1]=="member" else False
+        # q_apply = self.request.GET.get('apply')
+        # if q_apply:
+        #     q_apply = q_apply.split("-", 1)
+        #     q["post_id"] = q_apply[0]
+        #     q["is_member"] = True if q_apply[1]=="member" else False
 
-        if q["word"] and q["apply"]:
-            object_list = CustomUser.objects.filter(
-                Q(username__icontains=q["word"]),
-                Q(apply__post_id=q["post_id"]),
-                Q(apply__is_member=q["is_member"])
-                )
+        # if q["word"] and q["apply"]:
+        #     object_list = CustomUser.objects.filter(
+        #         Q(username__icontains=q["word"]),
+        #         Q(apply__post_id=q["post_id"]),
+        #         Q(apply__is_member=q["is_member"])
+        #         )
 
-        if q["apply"]:
-            object_list = CustomUser.objects.filter(
-                Q(apply__post_id=q["post_id"]),
-                Q(apply__is_member=q["is_member"])
-                )
+        # if q["apply"]:
+        #     object_list = CustomUser.objects.filter(
+        #         Q(apply__post_id=q["post_id"]),
+        #         Q(apply__is_member=q["is_member"])
+        #         )
 
         if q["word"]:
             object_list = CustomUser.objects.filter(
