@@ -28,7 +28,8 @@ class CustomUser(AbstractUser):
                                  processors=[ResizeToFill(50, 50)],
                                  format='JPEG',)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
-    school = models.CharField(verbose_name='学校', blank=True, null=True, max_length=128)
+    school = models.CharField(verbose_name='学校', blank=True, null=True, max_length=50)
+    # ↓自動更新されない。生年月日にして出力で制御したほうがいいのでは
     age = models.PositiveIntegerField(verbose_name='年齢', blank=True, null=True, validators=[MaxValueValidator(200)])
     github_id = models.CharField(blank=True, null=True, max_length=39, validators=[GithubIdValidator(), check_github_id_prefix])
 
