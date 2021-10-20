@@ -83,6 +83,9 @@ class ProfileDetail(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["QUERY_DICT"] = QUERY_DICT
+        author = CustomUser.objects.get(id=self.kwargs['pk'])
+        posts = Post.objects.filter(author=author)
+        context["posts"] = posts
         return context
 
 
@@ -155,7 +158,7 @@ class PostList(LoginRequiredMixin, generic.ListView):
                 posts = Post.objects.filter(
                     apply__user_id=id, apply__is_member=True)
             return posts.order_by(method)
-        
+
         if query in ["follow", "follower"]:
             # 並べ替えの取得
             if self.request.GET.get("sort"):
@@ -167,18 +170,18 @@ class PostList(LoginRequiredMixin, generic.ListView):
             # バグ: desc 反映されていない, method反映されていない id順で取って来てる感
             if query == "follower":
                 accounts = CustomUser.objects.raw(
-                    "SELECT * FROM accounts_customuser "\
-                    "JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id "\
+                    "SELECT * FROM accounts_customuser "
+                    "JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id "
                     "WHERE following_id = %s ORDER BY %s DESC",
                     [str(id), method]
-                    )
+                )
             if query == "follow":
                 accounts = CustomUser.objects.raw(
-                    "SELECT * FROM accounts_customuser "\
-                    "JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id "\
+                    "SELECT * FROM accounts_customuser "
+                    "JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id "
                     "WHERE follower_id = %s ORDER BY %s DESC",
                     [str(id), method]
-                    )
+                )
             # debug
             print(accounts)
             return accounts
