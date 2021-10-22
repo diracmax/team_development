@@ -92,7 +92,7 @@ class Post(models.Model):
                 raise ValidationError("画像が横に長すぎます。")
             return image
         else:
-            raise ValidationError("No image found")
+            raise ValidationError("画像が見つかりません。")
 
     def get_member(self):
         members = Apply.objects.filter(post=self)
