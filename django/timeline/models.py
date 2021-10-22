@@ -58,7 +58,7 @@ class Category(models.Model):
         
 class Post(models.Model):
     author = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
-    category = models.ForeignKey('Category', on_delete=models.PROTECT)
+    category = models.ForeignKey('Category', on_delete=models.SET(1), default=1)
     # category = models.ForeignKey('Category',default=get_deleted_category() on_delete=models.SET(get_deleted_category()), blank=True, null=True)
 
     title = models.CharField(verbose_name='タイトル', max_length=15)
@@ -75,7 +75,7 @@ class Post(models.Model):
 
     # ディレクトリを images -> images/post に変更しました
     capacity = models.PositiveIntegerField(
-        verbose_name='定員', blank=True, null=True, validators=[MaxValueValidator(0), MaxValueValidator(100)])
+        verbose_name='定員', blank=True, null=True, validators=[MaxValueValidator(100)])
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
