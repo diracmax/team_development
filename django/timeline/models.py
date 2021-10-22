@@ -62,7 +62,7 @@ def get_default_category():
 
 class Post(models.Model):
     author = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
-    category = models.ForeignKey('Category', on_delete=models.SET_DEFAULT, default=get_default_category())
+    category = models.ForeignKey('Category', on_delete=models.SET_DEFAULT, default=get_default_category)
 
     title = models.CharField(verbose_name='タイトル', max_length=15)
     text = models.TextField(verbose_name='本文' ,max_length=200)
