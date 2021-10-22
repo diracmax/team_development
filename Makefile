@@ -37,6 +37,7 @@ test:
 migrate:
 	docker-compose -f django/docker-compose.yml exec app python manage.py makemigrations
 	docker-compose -f django/docker-compose.yml exec app python manage.py migrate
+	make setup_category
 
 superuser:
 	docker-compose -f django/docker-compose.yml exec app python manage.py createsuperuser
