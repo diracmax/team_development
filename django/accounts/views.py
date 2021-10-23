@@ -68,8 +68,7 @@ SORT_DICT = {
 class ProfileEdit(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     model = CustomUser
     form_class = ProfileForm
-    template_name = 'account/edit.html'
-    template_name = 'profile_edit.html'
+    template_name = 'account/profile_edit.html'
     success_message = 'プロフィールを更新しました。'
 
     def get_object(self):
@@ -82,8 +81,7 @@ class ProfileEdit(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
 
 class ProfileDetail(LoginRequiredMixin, generic.DetailView):
     model = CustomUser
-    template_name = 'account/detail.html'
-    template_name = 'profile.html'
+    template_name = 'account/profile.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

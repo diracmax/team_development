@@ -12,7 +12,6 @@ from django.http import HttpResponse, Http404
 
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'timeline/index.html'
-    template_name = 'index2.html'
     paginate_by = 24
 
     def get_context_data(self, **kwargs):
@@ -28,7 +27,6 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 class CreateView(LoginRequiredMixin, generic.CreateView):
     form_class = PostForm
     template_name = 'timeline/create_post.html'
-    template_name = 'create_post2.html'
     success_url = reverse_lazy('timeline:index')
 
     def get_context_data(self, **kwargs):
@@ -153,8 +151,7 @@ class UpdateView(LoginRequiredMixin, generic.UpdateView):
               'capacity', 'is_recruited', 'category',
             #   'deadline', 'state_control_type'
               )
-    template_name = 'timeline/update.html'
-    template_name = 'post_update2.html'
+    template_name = 'timeline/post_update.html'
     success_url = reverse_lazy('timeline:index')
 
 

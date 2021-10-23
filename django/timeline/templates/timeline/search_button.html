@@ -22,7 +22,7 @@
 
 <div class="search-overlay">
 	<h1 class="overlay-info">
-		<img src="{% static 'images/Seekiee_logo3.png' %}" alt="Logo">
+		<img src="{% static 'images/Seekiee_white.png' %}" alt="Logo">
 	</h1>
 	<form name="search" action="{% url 'search:post' %}" method="get">
 		<input name="word" value="{{ request.GET.word }}" id="search-box" class="form-control" placeholder="Search for ..." type="search">
@@ -35,7 +35,7 @@
 	</h1>
 	<div class="category-search">
 	{% for category in categorys %}
-		<a style="text-decoration:none;" class="category-btn" href="{% url 'search:post' %}?category={{category}}" >&nbsp;{{category.display}}&nbsp;</a>
+		<a class="category-btn" href="{% url 'search:post' %}?category={{category}}" >&nbsp;{{ category.display }}&nbsp;</a>
 	{% endfor %}
 	</div>
 </div>

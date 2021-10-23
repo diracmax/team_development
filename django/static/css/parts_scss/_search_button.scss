@@ -166,8 +166,8 @@
     margin-top: 2rem;
     margin-bottom: 1rem;
     img {
-      height: 5rem;
-      width: 15rem;
+      height: 8rem;
+      width: 25rem;
       object-fit: contain;
     }
   }
@@ -225,6 +225,8 @@
     border-radius: 0.3rem;
     color: white;
     opacity: 0.5;
+    text-decoration: none;
+
     &:hover {
       opacity: 1;
     }
