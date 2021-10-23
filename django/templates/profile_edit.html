@@ -29,6 +29,13 @@
 					<h2>ユーザーネーム</h2>
 					<p>※必須項目</p>
 				</div>
+				{% if form.errors.username %}
+				<div class="errors">
+				{% for error in form.errors.username %}
+					<p>{{error}}</p>
+				{% endfor %}
+				</div>
+				{% endif %}
 				{% render_field form.username %}
 			</label>
 			<label>
@@ -43,6 +50,13 @@
 					<img src="{% static 'images/GitHub-Mark-120px-plus.png' %}">
 					<h2>GitHub ID</h2>
 				</div>
+				{% if form.errors.github_id %}
+				<div class="errors">
+				{% for error in form.errors.github_id %}
+					<p>{{error}}</p>
+				{% endfor %}
+				</div>
+				{% endif %}
 				{% render_field form.github_id %}
 			</label>
 			<label>
@@ -50,6 +64,13 @@
 					<img src="{% static 'images/人物の無料素材.png' %}">
 					<h2>年齢</h2>
 				</div>
+				{% if form.errors.age %}
+				<div class="errors">
+				{% for error in form.errors.age %}
+					<p>{{error}}</p>
+				{% endfor %}
+				</div>
+				{% endif %}
 				{% render_field form.age %}
 			</label>
 			<label>

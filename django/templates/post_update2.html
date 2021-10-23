@@ -61,6 +61,13 @@
 					<img src="{% static 'images/チームアイコン3.png' %}">
 					<h2>募集人数</h2>
 				</div>
+				{% if form.errors.capacity %}
+				<div class="errors">
+				{% for error in form.errors.capacity %}
+					<p>{{error}}</p>
+				{% endfor %}
+				</div>
+				{% endif %}
 				{% render_field form.capacity placeholder="募集人数" %}
 			</label>
 			<label>
@@ -69,6 +76,13 @@
 					<h2>投稿写真</h2>
 				</div>
 				<div class="photo-update">
+				{% if form.errors.photo %}
+				<div class="errors">
+				{% for error in form.errors.photo %}
+					<p>{{error}}</p>
+				{% endfor %}
+				</div>
+				{% endif %}
 					{% render_field form.photo %}
 				</div>
 			</label>
