@@ -150,8 +150,8 @@ class PostDetail(LoginRequiredMixin, generic.DetailView):
 class UpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Post
     fields = ('title', 'text', 'photo', 'restriction',
-              'capacity', 'is_recruited',
-              #   'deadline', 'state_control_type'
+              'capacity', 'is_recruited', 'category',
+            #   'deadline', 'state_control_type'
               )
     template_name = 'timeline/update.html'
     template_name = 'post_update2.html'

@@ -35,7 +35,7 @@ $color-white: #FFF;
 	  text-align: center;
 	}
 
-	button, input{
+	button, input, select{
 	  border: 0;
 	  outline: 0;
 	  font-size: $ruler;
@@ -76,7 +76,7 @@ $color-white: #FFF;
 	  margin-bottom: $ruler;
 	}
 
-	input {
+	input, select {
 	  box-shadow:  inset 2px 2px 5px $color-shadow, inset -5px -5px 10px $color-white;
 	  width: 70%;
 	  transition: all 0.2s ease-in-out;

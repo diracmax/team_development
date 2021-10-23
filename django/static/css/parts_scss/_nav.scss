@@ -12,6 +12,7 @@ $header-transition: 0.4s ease;
   width: 100%;
   z-index: 10;
   background-color: #545454;
+  border-bottom: white solid 1px;
 
   &.has-mobile-button {
     .MobileNav-trigger {

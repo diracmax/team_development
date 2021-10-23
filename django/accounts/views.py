@@ -94,6 +94,7 @@ class ProfileDetail(LoginRequiredMixin, generic.DetailView):
         return context
 
 
+
 class FollowView(LoginRequiredMixin, generic.View):
     model = Follow
 
