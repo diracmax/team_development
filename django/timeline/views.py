@@ -42,8 +42,8 @@ class CreateView(LoginRequiredMixin, generic.CreateView):
         return super(CreateView, self).form_valid(form)
 
     def form_invalid(self, form):
-        messages.warning(self.request, '投稿が失敗しました。')
-        return redirect('timeline:index')
+        messages.warning(self.request, '投稿に失敗しました。')
+        return super().form_invalid(form)
 
 
 class DeleteView(LoginRequiredMixin, generic.DeleteView):

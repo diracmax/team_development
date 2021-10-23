@@ -9,6 +9,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django_resized import ResizedImageField
 from django.core.exceptions import ValidationError
 
+def create_default_category(sender, **kwargs):
+    Category.objects.get_or_create(display="その他", depth=0)
+
 MAX_RATIO = 2.0
 MIN_RATIO = 0.5
 def validate_image(image):
@@ -20,7 +23,7 @@ def validate_image(image):
 
 class Category(models.Model):
     display = models.CharField(max_length=10, verbose_name='カテゴリー')
-    parent = models.ForeignKey("self", verbose_name='親カテゴリー', on_delete=models.CASCADE, blank=True, null=True, limit_choices_to={"depth__lt": 3})
+    parent = models.ForeignKey("self", verbose_name='親カテゴリー', related_name='children', on_delete=models.CASCADE, blank=True, null=True, limit_choices_to={"depth__lt": 3})
     depth = models.IntegerField(default=0, verbose_name='世代', help_text=('先祖の数を手動で入力してください'),)
     # ディレクトリを images -> images/default に変更しました
     default_img = ResizedImageField(verbose_name='デフォルト画像', size=[1080, 1080], blank=True, null=True, upload_to='images/default', default="images/default/default.jpeg", validators=[validate_image])
@@ -52,14 +55,14 @@ class Category(models.Model):
         # 同じカテゴリ名は親が違う場合には許す
         unique_together = ("display", "parent")
 
-# def get_deleted_category():
-#     # 親カテゴリーを返し、無かったらその他を返すようにしたい
-#     return Category.objects.get_or_create(display="その他")[0]
-        
+def get_default_category():
+    # 親カテゴリーを返し、無かったらその他を返すようにしたい
+    record = Category.objects.get_or_create(display="その他", depth=0)[0]
+    return record.pk
+
 class Post(models.Model):
     author = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
-    category = models.ForeignKey('Category', on_delete=models.PROTECT)
-    # category = models.ForeignKey('Category',default=get_deleted_category() on_delete=models.SET(get_deleted_category()), blank=True, null=True)
+    category = models.ForeignKey('Category', on_delete=models.SET_DEFAULT, default=get_default_category)
 
     title = models.CharField(verbose_name='タイトル', max_length=15)
     text = models.TextField(verbose_name='本文' ,max_length=200)
@@ -75,7 +78,7 @@ class Post(models.Model):
 
     # ディレクトリを images -> images/post に変更しました
     capacity = models.PositiveIntegerField(
-        verbose_name='定員', blank=True, null=True, validators=[MaxValueValidator(0), MaxValueValidator(100)])
+        verbose_name='定員', blank=True, null=True, validators=[MaxValueValidator(100)])
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -92,7 +95,7 @@ class Post(models.Model):
                 raise ValidationError("画像が横に長すぎます。")
             return image
         else:
-            raise ValidationError("No image found")
+            raise ValidationError("画像が見つかりません。")
 
     def get_member(self):
         members = Apply.objects.filter(post=self)
