@@ -170,6 +170,10 @@ $boxShadow: 0px -1px 2px $boxShadowColor, 1px 1px 2px $boxShadowColor;
         grid-row: 1 / 2;
         grid-column: 1 / 2;
         align-self: center;
+
+        a {
+          color: white;
+        }
       }
 
       .post-info2 {

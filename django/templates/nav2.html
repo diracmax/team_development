@@ -1,19 +1,19 @@
 {% load static %}
 {% load custom_tags %}
 
-
+{% if user.is_authenticated %}
 <div class="MobileNav" data-mobile-nav>
 	<div class="MobileNav-overlay" data-mobile-nav-overlay></div>
 	<div class="MobileNav-inner">
 	  <div class="MobileNav-trigger" data-mobile-nav-trigger>
 		<div class="MobileNav-trigger-inner"></div>
 	  </div>
-	  <li class="MobileNav-item" data-mobile-nav-item="1">
-		<div class="MobileNav-item-title">
-			<a href="{% url 'timeline:create' %}">Post</a>
-		</div>
-	  </li>
 	  <ul class="MobileNav-nav" data-mobile-nav-list>
+		<li class="MobileNav-item" data-mobile-nav-item="1">
+			<div class="MobileNav-item-title">
+			  <a href="{% url 'timeline:create' %}">Post</a>
+			</div>
+		</li>
 		<li class="MobileNav-item" data-mobile-nav-item="2">
 		  <div class="MobileNav-item-title">
 			<a href="{% url 'accounts:detail' user.id %}">Profile</a>
@@ -37,9 +37,9 @@
 		</li>
 	  </ul>
 	</div>
-  </div>
+</div>
 
-  <header class="Header" data-header>
+<header class="Header" data-header>
 	<div class="Header-inner" data-header-nav>
 	  <div class="logo">
 		<a href="{% url 'timeline:index' %}"><img src="{% static 'images/Seekiee_logo3.png' %}" alt="Logo"></a>
@@ -66,4 +66,7 @@
 		<div class="MobileNav-trigger-inner"></div>
 	  </button>
 	</div>
-  </header>
+</header>
+{% else %}
+
+{% endif %}

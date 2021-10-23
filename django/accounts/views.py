@@ -83,7 +83,11 @@ class ProfileDetail(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["QUERY_DICT"] = QUERY_DICT
+        author = CustomUser.objects.get(id=self.kwargs['pk'])
+        posts = Post.objects.filter(author=author)
+        context["posts"] = posts
         return context
+
 
 
 class FollowView(LoginRequiredMixin, generic.View):
@@ -155,7 +159,7 @@ class PostList(LoginRequiredMixin, generic.ListView):
                 posts = Post.objects.filter(
                     apply__user_id=id, apply__is_member=True)
             return posts.order_by(method)
-        
+
         if query in ["follow", "follower"]:
             # 並べ替えの取得
             if self.request.GET.get("sort"):

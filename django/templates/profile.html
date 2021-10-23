@@ -46,7 +46,7 @@
           <div class="profile-card-inf__item">
             <a href="{% url 'accounts:posts' customuser.id 'recruit' %}">
               <div class="profile-card-inf__title">
-                  <span>{{ customuser.get_follower | length }}</span>
+                  <span>{{ posts | length }}</span>
               </div>
               <div class="profile-card-inf__txt">Posts</div>
             </a>
@@ -55,39 +55,52 @@
 
         <div class="profile-card-social">
 
+          <span class="social-btn">
           <a href="{% url 'accounts:posts' customuser.id 'recruit' %}">
             <button class="unit" type="button"><img src="{% static 'images/拡声器のアイコンその3青.png' %}"></button>
           </a>
+          <p class="social-btn-label">&nbsp;募集リスト</p>
+          </span>
 
+          <span class="social-btn">
           <a href="{% url 'accounts:posts' customuser.id 'like' %}">
             <button class="unit" type="button"><img src="{% static 'images/ハートのマーク赤.png' %}"></button>
           </a>
+          <p class="social-btn-label">いいねリスト</p>
+          </span>
 
+          <span class="social-btn">
           <a href="{% url 'accounts:posts' customuser.id 'entry' %}">
             <button class="unit" type="button"><img src="{% static 'images/記事アイコン3.png' %}"></button>
           </a>
+          <p class="social-btn-label">&nbsp;応募リスト</p>
+          </span>
 
+          <span class="social-btn">
           <a href="{% url 'accounts:posts' customuser.id 'join' %}">
             <button class="unit" type="button"><img src="{% static 'images/チームアイコン3.png' %}"></button>
           </a>
+          <p class="social-btn-label">参加中リスト</p>
+          </span>
 
           {% if customuser.github_id  %}
+          <span class="social-btn">
           <a href="https://github.com/{{ customuser.github_id }}">
             <button class="unit" type="button"><img src="{% static 'images/GitHub-Mark-120px-plus.png' %}"></button>
           </a>
+          <p class="social-btn-label" style="margin-left: 15px;">GitHub</p>
+          </span>
           {% endif %}
 
         </div>
 
         <div class="profile-card-ctr">
-            <form method="POST" action="{% url 'dm:create-thread' customuser.id %}">
+            <form method="POST" action="{% url 'dm:create-thread' customuser.id %}" style="display:inline;">
               {% csrf_token %}
               <button type="submit" class="profile-card__button button--blue" alt="DM">Message</button>
             </form>
           {% if customuser.id == user.id %}
-            <a href="{% url 'accounts:edit' %}">
-              <button class="profile-card__button button--orange">Edit Profile</button>
-            </a>
+              <button class="profile-card__button button--orange" onclick='location.href="{% url 'accounts:edit' %}"'>Edit Profile</button>
           {% else %}
             {% if user in customuser.get_follower %}
               <button class="user-follow profile-card__button button--orange" id="user-follow-{{ customuser.id }}" data-id="{{ customuser.id }}">フォロー解除</button>
@@ -103,7 +116,7 @@
   {% if customuser.id == user.id %}
     <form method="post" action="{% url 'accounts:quit' %}" class="d-inline">
       {% csrf_token %}
-      <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("本当に退会しますか？");'>
+      <button class="withdrawal-btn" type="submit" onclick='return confirm("本当に退会しますか？");'>
         退会
       </button>
     </form>
