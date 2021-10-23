@@ -9,6 +9,7 @@ from accounts.models import CustomUser
 from django.http.response import JsonResponse
 from django.http import HttpResponse, Http404
 
+
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'timeline/index.html'
     template_name = 'index2.html'
@@ -29,6 +30,7 @@ class CreateView(LoginRequiredMixin, generic.CreateView):
     template_name = 'timeline/create_post.html'
     template_name = 'create_post2.html'
     success_url = reverse_lazy('timeline:index')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["categorys"] = Category.objects.all()
@@ -129,25 +131,27 @@ class AcceptApplicationView(LoginRequiredMixin, generic.View):
 class PostDetail(LoginRequiredMixin, generic.DetailView):
     model = Post
     template_name = 'timeline/detail.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # ↓2回呼び出してるので処理がもったいない
         post = Post.objects.get(pk=self.kwargs.get('pk'))
-        # 
+        #
         category = post.category
         categorys = list()
         while category:
             categorys.append(category.display)
-            category=category.parent
+            category = category.parent
         categorys.reverse()
-        context["categorys"]=categorys
+        context["categorys"] = categorys
         return context
+
 
 class UpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Post
     fields = ('title', 'text', 'photo', 'restriction',
-              'capacity', 'is_recruited', 
-            #   'deadline', 'state_control_type'
+              'capacity', 'is_recruited',
+              #   'deadline', 'state_control_type'
               )
     template_name = 'timeline/update.html'
     template_name = 'post_update2.html'
@@ -249,10 +253,15 @@ class UpdateCommentView(LoginRequiredMixin, generic.UpdateView):
     fields = ('text',)
     template_name = 'timeline/update_comment.html'
 
+    def get_object(self):
+        pk = self.kwargs['pk']
+        comment = Comment.objects.get(pk=pk)
+        return comment
+
     def get_success_url(self):
         pk = self.kwargs['pk']
         comment = Comment.objects.get(pk=pk)
-        post = Post.objects.get(pk=comment.id)
+        post = Post.objects.get(pk=comment.post.id)
         return reverse('timeline:detail', kwargs={'pk': post.id})
 
 
@@ -260,6 +269,18 @@ class UpdateCommentReplyView(LoginRequiredMixin, generic.UpdateView):
     model = CommentReply
     fields = ('text',)
     template_name = 'timeline/update_comment.html'
+
+    def get_object(self):
+        pk = self.kwargs['pk']
+        comment_reply = CommentReply.objects.get(pk=pk)
+        return comment_reply
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']
+        comment_reply = CommentReply.objects.get(pk=pk)
+        context["comment_reply"] = comment_reply
+        return context
 
     def get_success_url(self):
         return reverse('timeline:comment_reply_list', kwargs={'pk': self.kwargs['pk']})
@@ -304,7 +325,7 @@ class NotificationView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         request_user = self.request.user
         notifications = Notification.objects.filter(
-        to_user=request_user).order_by('-date')
+            to_user=request_user).order_by('-date')
         # to_user=request_user).exclude(user_has_seen=True).order_by('-date')
         return notifications
 
@@ -313,17 +334,18 @@ class PostRelatedAccountList(LoginRequiredMixin, generic.ListView):
     template_name = 'timeline/related_accounts.html'
     paginate_by = 10
     FILTER_DICT = {
-        "like" : {"display": "いいね", "id": "like__post_id", "option": None, "sort": "-like__created_at"},
+        "like": {"display": "いいね", "id": "like__post_id", "option": None, "sort": "-like__created_at"},
         "entry": {"display": "応募者", "id": "apply__post_id", "option": {"apply__is_member": False}, "sort": "-apply__created_at"},
-        "join" : {"display": "メンバー", "id": "apply__post_id", "option": {"apply__is_member": True}, "sort": "-apply__updated_at"},
+        "join": {"display": "メンバー", "id": "apply__post_id", "option": {"apply__is_member": True}, "sort": "-apply__updated_at"},
     }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        FILTER = {key: value["display"] for key, value in self.FILTER_DICT.items()}
-        context["FILTER_DICT"]= FILTER
-        context["filter"]= self.kwargs.get('filter')
-        context["post"]= Post.objects.get(pk=self.kwargs.get('pk'))
+        FILTER = {key: value["display"]
+                  for key, value in self.FILTER_DICT.items()}
+        context["FILTER_DICT"] = FILTER
+        context["filter"] = self.kwargs.get('filter')
+        context["post"] = Post.objects.get(pk=self.kwargs.get('pk'))
         return context
 
     def get_queryset(self):
@@ -335,7 +357,6 @@ class PostRelatedAccountList(LoginRequiredMixin, generic.ListView):
             kwargs[dict_["id"]] = post_id
             return CustomUser.objects.filter(**kwargs).order_by(dict_["sort"])
         raise Http404("Question does not exist")
-
 
 
 index = IndexView.as_view()

@@ -59,6 +59,48 @@
 
     <hr>
 
+    {% if post.author.id == user.id %}
+    <div class="detail-list">
+      <div class="detail-applicant-list">
+        <h2>応募者</h2>
+        {% for user in object.get_applicant %}
+        <div class="detail-applicant-info">
+          <div class="detail-applicant-photo">
+            <a href="{% url 'accounts:detail' user.id %}"><img src="{% if user.photo_small %}{{ user.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle detail-profile-post-photo"></a>
+          </div>
+              <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
+                {% csrf_token %}
+                <button class="btn btn-link text-dark p-0" type="submit" onclick='return confirm("このユーザーをメンバーにしますか？");'>
+                  {{user}}
+                </button>
+              </form>
+        </div>
+        {% empty %}
+          <p class="detail-null">まだいません。</p>
+        {% endfor %}
+      </div>
+      <div class="detail-member-list">
+        <h2>メンバー</h2>
+        {% for user in object.get_member %}
+        <div class="detail-applicant-info">
+          <div class="detail-applicant-photo">
+            <a href="{% url 'accounts:detail' user.id %}"><img src="{% if user.photo_small %}{{ user.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle detail-profile-post-photo"></a>
+          </div>
+              <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
+                {% csrf_token %}
+                <button class="btn btn-link text-dark p-0" type="submit" onclick='return confirm("このユーザーをメンバーから外しますか？");'>
+                  {{user}}
+                </button>
+              </form>
+        </div>
+        {% empty %}
+            <p class="detail-null">まだいません。</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% endif %}
+
     <div class="detail-comment-box">
       <form method="post" action="{% url 'timeline:comment' object.id %}" class="d-inline">
         {% csrf_token %}
@@ -105,12 +147,12 @@
       <p>現在募集していません</p>
       {% else %}
         {% if user in post.get_applicant or user in post.get_member %}
-        <button class="detail-kick btn btn-link p-0 post-apply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
-          <span class="detail-button">取り下げ</span>
+        <button class="detail-kick btn btn-link p-0 post-disapply" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
+          取り下げ
         </button>
         {% else %}
-        <button class="detail-application btn btn-link p-3 post-disapply btn-primary btn-lg btn-outline-info" id="post-apply-{{ post.id }}" data-id="{{ post.id }}">
-          <span class="detail-button">応募</span>
+        <button class="detail-application btn btn-link p-3 post-apply btn-primary btn-lg btn-outline-info" id="post-apply-{{ post.id }}" data-id="{{ post.id }} ">
+          応募
         </button>
         {% endif %}
         {% endif %}
@@ -137,50 +179,8 @@
   </div>
 </div>
 
-{% comment %}
-{% if post.author.id == user.id %}
-<div class="detail-list">
-  <div class="detail-applicant-list">
-    <h2>応募者</h2>
-    {% for user in object.get_applicant %}
-    <div class="detail-applicant-info">
-      <div class="detail-applicant-photo">
-        <a href="{% url 'accounts:detail' user.id %}"><img src="{% if user.photo_small %}{{ user.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle detail-profile-post-photo"></a>
-      </div>
-          <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
-            {% csrf_token %}
-            <button class="btn btn-link text-dark p-0" type="submit" onclick='return confirm("このユーザーをメンバーにしますか？");'>
-              {{user}}
-            </button>
-          </form>
-    </div>
-    {% empty %}
-      <p class="detail-null">まだいません。</p>
-    {% endfor %}
-  </div>
-  <div class="detail-member-list">
-    <h2>メンバー</h2>
-    {% for user in object.get_member %}
-    <div class="detail-applicant-info">
-      <div class="detail-applicant-photo">
-        <a href="{% url 'accounts:detail' user.id %}"><img src="{% if user.photo_small %}{{ user.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle detail-profile-post-photo"></a>
-      </div>
-          <form method="post" action="{% url 'timeline:accept' object.id user.id %}" class="d-inline">
-            {% csrf_token %}
-            <button class="btn btn-link text-dark p-0" type="submit" onclick='return confirm("このユーザーをメンバーから外しますか？");'>
-              {{user}}
-            </button>
-          </form>
-    </div>
-    {% empty %}
-        <p class="detail-null">まだいません。</p>
-    {% endfor %}
-  </div>
-</div>
 
-{% endif %}
-{% endcomment %}
-</div>
 
-<script src="{% static 'js/confirm.js' %}"></script>
+
+</div>
 {% endblock %}

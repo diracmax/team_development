@@ -488,6 +488,10 @@
 .sort-select::after { content: ""; display: block; width: 10px; height: 10px; position: absolute; right: 5%; top: 35%; transform: rotate(45deg) translateY(-30%); border-bottom: #fff 5px solid; border-right: #fff 5px solid; }
 
 /* .user-follow{ color: white; font-weight: 600; background-color: blue; } .user-follow:hover{ text-decoration: none; background-color: skyblue; } .user-disfollow{ color: white; font-weight: 600; background-color: red; } */
+.link-list-username a { color: #000; }
+
+.link-list-username a:hover { color: gray; }
+
 .detail-template { text-align: left; width: 70%; margin: auto; margin-top: 9rem; }
 
 .detail-template p { margin: 0px; white-space: pre-wrap; }
@@ -536,6 +540,14 @@
 
 .detail-post-main-content { padding-right: 30px; padding-bottom: 30px; width: 70%; }
 
+.detail-list { display: flex; margin-top: 3rem; justify-content: space-around; }
+
+.detail-list .detail-applicant-list { width: 45%; text-align: center; }
+
+.detail-list .detail-member-list { width: 45%; text-align: center; }
+
+.detail-list .detail-applicant-info { margin: 1rem 0; }
+
 .detail-post-sidebar { padding-top: 30px; width: 30%; }
 
 .detail-post-sidebar button { width: 100%; border-radius: 100vh; }
@@ -566,7 +578,7 @@
 
 .detail-post-text h2 { padding-bottom: 10px; border-bottom: 3px solid #e7e7e7; margin-bottom: 1.2rem; }
 
-.detail-profile-post-photo { width: 50%; height: 50%; padding-bottom: 10px; }
+.detail-profile-post-photo { padding-bottom: 10px; width: 5rem; }
 
 .detail-comment-create { resize: none; width: 100%; }
 
@@ -597,5 +609,15 @@
 .comment-list-posturl { color: #797979; }
 
 .comment-list-posturl:hover { color: #797979; }
+
+.update-comment-form { text-align: center; margin-top: 150px; }
+
+.update-comment-form textarea { width: 60%; height: 10rem; resize: none; }
+
+.update-comment-form hr { width: 80%; }
+
+.update-comment-submit { border-radius: 25px; background-image: linear-gradient(260deg, #d5135a, #f05924); color: white !important; transition: all 0.2s ease; line-height: 1.5rem; height: 3rem; border: 0px none; }
+
+.update-comment-submit:hover { box-shadow: 0px 0px 15px #d5135a; text-decoration: none; }
 
 /*# sourceMappingURL=test.css.map */

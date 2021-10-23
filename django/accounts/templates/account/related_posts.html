@@ -6,7 +6,7 @@
 <div style="width:auto; height:100px; "></div>
 <div style="height:55px; background:ghostwhite; z-index:6;"class="ur-header">
   <div style="float:left; height:100%; width:33%;">
-    <div style="text-align: center;">
+    <div style="text-align: center;" class="link-list-username">
       <a href="{% url 'accounts:detail' view.kwargs.pk %}" class="btn btn-link p-0">
       <img style="width:50px; height:50px;"src="{% if account.photo_small %}{{ account.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo">{{account.username}}</a>
       <span> のリスト</span>

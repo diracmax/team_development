@@ -28,13 +28,13 @@
       <p class="detail-comment-created_at">{{comment.created_at}}</p>
       <div class="detail-comment-button">
       {% if comment.author.id == user.id %}
-        <form method="post" action="{% url 'timeline:delete_comment' comment.id %}" class="d-inline">
+        <form method="post" action="{% url 'timeline:delete_comment_reply' comment.id %}" class="d-inline">
         {% csrf_token %}
         <button class="btn btn-link text-dark p-0 ml-3" type="submit" onclick='return confirm("このコメントを本当に削除しますか？");'>
           削除
         </button>
         </form>
-        <form method="post" action="{% url 'timeline:update_comment' comment.id %}" class="d-inline">
+        <form method="post" action="{% url 'timeline:update_comment_reply' comment.id %}" class="d-inline">
           {% csrf_token %}
           <button class="btn btn-link text-dark p-0 ml-3" type="submit">
             編集
