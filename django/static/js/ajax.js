@@ -118,11 +118,15 @@ $(document).on("click", ".post-apply", function () {
 		csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
 	},
 	success: function (data) {
+		if (confirm("本当に応募してもよいですか？") === false){
+			return
+		}
 		$("#post-apply-" + id).removeClass("post-apply").addClass("post-disapply");
-		$("#post-apply-" + id).html("応募")
+		$("#post-apply-" + id).removeClass("detail-application").addClass("detail-kick");
+		$("#post-apply-" + id).html("取り下げ")
 		var apply_count = data["apply_count"]
 		$("#apply-count-" + id).html(apply_count);
-		alert(data["message"])
+		// alert(data["message"])
 	}
 	});
 });
@@ -136,11 +140,15 @@ $(document).on("click", ".post-disapply", function () {
 		csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
 	},
 	success: function (data) {
+		if (confirm("本当に取り下げてよいですか？") === false){
+			return
+		}
 		$("#post-apply-" + id).removeClass("post-disapply").addClass("post-apply");
-		$("#post-apply-" + id).html("取り下げ")
+		$("#post-apply-" + id).removeClass("detail-kick").addClass("detail-application");
+		$("#post-apply-" + id).html("応募")
 		var apply_count = data["apply_count"]
 		$("#apply-count-" + id).html(apply_count);
-		alert(data["message"])
+		// alert(data["message"])
 	}
 	});
 });

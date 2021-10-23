@@ -140,6 +140,23 @@
   width: 70%;
 }
 
+.detail-list {
+  display: flex;
+  margin-top: 3rem;
+  justify-content: space-around;
+  .detail-applicant-list {
+    width: 45%;
+    text-align: center;
+  }
+  .detail-member-list {
+    width: 45%;
+    text-align: center;
+  }
+  .detail-applicant-info {
+    margin: 1rem 0;
+  }
+}
+
 .detail-post-sidebar {
   padding-top: 30px;
   width: 30%;
@@ -222,9 +239,8 @@
 }
 
 .detail-profile-post-photo {
-  width: 50%;
-  height: 50%;
   padding-bottom: 10px;
+  width: 5rem;
 }
 
 .detail-comment-create {

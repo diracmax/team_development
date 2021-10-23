@@ -2,6 +2,8 @@ from .models import CustomUser, Follow
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.shortcuts import redirect
+from django.urls import reverse
+from django.contrib import messages
 from .forms import ProfileForm
 from django.contrib.messages.views import SuccessMessageMixin
 from timeline.models import Post, Apply
@@ -68,11 +70,14 @@ class ProfileEdit(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     form_class = ProfileForm
     template_name = 'account/edit.html'
     template_name = 'profile_edit.html'
-    success_url = '/accounts/edit/'
     success_message = 'プロフィールを更新しました。'
 
     def get_object(self):
         return self.request.user
+
+    def get_success_url(self) -> str:
+        messages.success(self.request, 'プロフィールを更新しました。')
+        return reverse('accounts:detail', kwargs={'pk': self.request.user.id})
 
 
 class ProfileDetail(LoginRequiredMixin, generic.DetailView):
