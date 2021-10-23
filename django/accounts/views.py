@@ -2,6 +2,8 @@ from .models import CustomUser, Follow
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.shortcuts import redirect
+from django.urls import reverse
+from django.contrib import messages
 from .forms import ProfileForm
 from django.contrib.messages.views import SuccessMessageMixin
 from timeline.models import Post, Apply
@@ -68,11 +70,14 @@ class ProfileEdit(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     form_class = ProfileForm
     template_name = 'account/edit.html'
     template_name = 'profile_edit.html'
-    success_url = '/accounts/edit/'
     success_message = 'プロフィールを更新しました。'
 
     def get_object(self):
         return self.request.user
+
+    def get_success_url(self) -> str:
+        messages.success(self.request, 'プロフィールを更新しました。')
+        return reverse('accounts:detail', kwargs={'pk': self.request.user.id})
 
 
 class ProfileDetail(LoginRequiredMixin, generic.DetailView):
@@ -171,18 +176,18 @@ class PostList(LoginRequiredMixin, generic.ListView):
             # バグ: desc 反映されていない, method反映されていない id順で取って来てる感
             if query == "follower":
                 accounts = CustomUser.objects.raw(
-                    "SELECT * FROM accounts_customuser "\
-                    "JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id "\
+                    "SELECT * FROM accounts_customuser "
+                    "JOIN accounts_follow ON accounts_customuser.id = accounts_follow.follower_id "
                     "WHERE following_id = %s ORDER BY %s DESC",
                     [str(id), method]
-                    )
+                )
             if query == "follow":
                 accounts = CustomUser.objects.raw(
-                    "SELECT * FROM accounts_customuser "\
-                    "JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id "\
+                    "SELECT * FROM accounts_customuser "
+                    "JOIN accounts_follow ON accounts_customuser.id = accounts_follow.following_id "
                     "WHERE follower_id = %s ORDER BY %s DESC",
                     [str(id), method]
-                    )
+                )
             # debug
             print(accounts)
             return accounts

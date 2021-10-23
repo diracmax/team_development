@@ -24,16 +24,18 @@
 	<h1 class="overlay-info">
 		<img src="{% static 'images/Seekiee_logo3.png' %}" alt="Logo">
 	</h1>
-	<input id="search-box" class="form-control" placeholder="Search for ..." type="search">
-    <a class="btn btn-default" id="clear-btn"><span class="glyphicon glyphicon-remove"></span></a>
-	<a class="btn btn-default" id="search-btn"><span class="glyphicon glyphicon-search"></span><img src="{% static 'images/虫眼鏡アイコン11.png' %}" alt="search">&nbsp;&nbsp;Search</a>
+	<form name="search" action="{% url 'search:post' %}" method="get">
+		<input name="word" value="{{ request.GET.word }}" id="search-box" class="form-control" placeholder="Search for ..." type="search">
+		<a class="btn btn-default" id="clear-btn"><span class="glyphicon glyphicon-remove"></span></a>
+		<br>
+		<a href="javascript:search.submit()" class="btn btn-default" id="search-btn"><span class="glyphicon glyphicon-search"></span><img src="{% static 'images/虫眼鏡アイコン11.png' %}" alt="search">&nbsp;&nbsp;Search</a>
+	</form>
 	<h1 class="overlay-info">
 		Category
 	</h1>
 	<div class="category-search">
-		<button class="category-btn">ハッカソン</button>
-		<button class="category-btn">チーム開発</button>
-		<button class="category-btn">勉強会</button>
-		<button class="category-btn">その他</button>
+	{% for category in categorys %}
+		<a style="text-decoration:none;" class="category-btn" href="{% url 'search:post' %}?category={{category}}" >&nbsp;{{category.display}}&nbsp;</a>
+	{% endfor %}
 	</div>
 </div>

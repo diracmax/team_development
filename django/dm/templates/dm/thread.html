@@ -6,10 +6,10 @@
       <div class="col-md-12 mt-5 p-3 shadow-sm mb-2">
         <h5>
           {% if thread.receiver == user %}
-          <a href="{% url 'accounts:detail' thread.user.id %}" class="stretched-link"><img src="{% if thread.user.thumbnail %}{{ thread.user.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
+          <a href="{% url 'accounts:detail' thread.user.id %}" class="stretched-link"><img src="{% if thread.user.photo_small %}{{ thread.user.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
           {{ thread.user }}
           {% else %}
-          <a href="{% url 'accounts:detail' thread.receiver.id %}" class="stretched-link"><img src="{% if thread.receiver.thumbnail %}{{ thread.receiver.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
+          <a href="{% url 'accounts:detail' thread.receiver.id %}" class="stretched-link"><img src="{% if thread.receiver.photo_small %}{{ thread.receiver.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
           {{ thread.receiver }}
           {% endif %}
         </h5>

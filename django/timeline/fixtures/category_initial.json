@@ -1,0 +1,12 @@
+[
+  {
+    "model": "timeline.category", 
+    "pk": 1, 
+    "fields": {
+      "display": "その他", 
+      "parent": null, 
+      "depth": 0, 
+      "default_img": "images/default/free.png"
+    }
+  } 
+]

@@ -9,7 +9,7 @@
   <div class="wrapper">
     <div class="profile-card">
       <div class="profile-card__img">
-        <img src="{% if customuser.thumbnail %}{{ customuser.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" alt="profile-photo" class="rounded-circle post-photo">
+        <img src="{% if customuser.photo_middle %}{{ customuser.photo_middle.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" alt="profile-photo" class="rounded-circle post-photo">
       </div>
 
       <div class="profile-card__cnt">

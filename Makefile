@@ -40,3 +40,12 @@ migrate:
 
 superuser:
 	docker-compose -f django/docker-compose.yml exec app python manage.py createsuperuser
+
+backup_all:
+	docker-compose -f django/docker-compose.yml exec app python manage.py dumpdata --indent=2 --exclude=admin --exclude=auth --exclude=contenttypes --exclude=sessions > backup_all.json
+
+backup_category:
+	docker-compose -f django/docker-compose.yml exec app python manage.py dumpdata --indent=2 timeline.category > django\timeline\fixtures\category_backup.json
+
+setup_category:
+	docker-compose -f django/docker-compose.yml exec app python manage.py loaddata category_initial.json

@@ -17,7 +17,7 @@
       <div class="card-body">
         <div class="row">
           <div class="col-1">
-            <a href="{% url 'accounts:detail' thread.user.id %}"><img src="{% if thread.user.thumbnail %}{{ thread.user.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
+            <a href="{% url 'accounts:detail' thread.user.id %}"><img src="{% if thread.user.photo_small %}{{ thread.user.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
           </div>
           <div class="col-10 ml-3">
             <a href="{% url 'accounts:detail' thread.user.id %}" class="text-secondary">{{ thread.user }}</a>
@@ -33,7 +33,7 @@
       <div class="card-body">
         <div class="row">
           <div class="col-1">
-            <a href="{% url 'accounts:detail' thread.receiver.id %}"><img src="{% if thread.receiver.thumbnail %}{{ thread.receiver.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
+            <a href="{% url 'accounts:detail' thread.receiver.id %}"><img src="{% if thread.receiver.photo_small %}{{ thread.receiver.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
           </div>
           <div class="col-10 ml-3">
             <a href="{% url 'accounts:detail' thread.receiver.id %}" class="text-secondary">{{ thread.receiver }}</a>

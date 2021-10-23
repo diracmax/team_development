@@ -7,7 +7,7 @@
 
     <div class="post-head">
       <a href="{% url 'accounts:detail' post.author.id %}">
-      <img src="{% if post.author.thumbnail %}{{ post.author.thumbnail.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo post-thumbnail">
+      <img src="{% if post.author.photo_small %}{{ post.author.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo post-thumbnail">
       </a>
       <div class="post-author">
         <p><a class="text-secondary" href="{% url 'accounts:detail' post.author.id %}">{{ post.author }}</a>
@@ -62,5 +62,3 @@
   </article>
   {% endfor %}
 </div>
-
-{% include 'search_button2.html' %}
