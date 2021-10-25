@@ -2,10 +2,10 @@
 {% load static %}
 {% block title %}投稿検索 | seekiee{% endblock %}
 {% block contents %}
-<form action="" method="get">
+<!-- <form action="" method="get">
   <input name="word" value="{{ request.GET.word }}" type="text">
   <button type="submit">投稿検索</button>
-</form>
+</form> -->
 {% include "timeline/post_list.html" %}
 {% include "timeline/pagination.html" %}
 {% include 'timeline/search_button.html' %}

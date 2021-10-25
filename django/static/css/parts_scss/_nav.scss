@@ -2,17 +2,15 @@ $header-transition: 0.4s ease;
 
 .Header {
   align-items: center;
-  background: white;
   display: flex;
   height: 100px;
   justify-content: center;
   position: fixed;
   text-align: center;
   top: 0;
-  width: 100%;
-  z-index: 10;
+  width: 100vw;
+  z-index: 15;
   background-color: #545454;
-  border-bottom: white solid 1px;
 
   &.has-mobile-button {
     .MobileNav-trigger {
@@ -37,24 +35,21 @@ $header-transition: 0.4s ease;
     img {
       height: 100%;
       object-fit: contain;
-      width: 100%;
     }
   }
 
   &-nav {
     display: flex;
     flex-wrap: wrap;
-    height: 0;
     justify-content: space-between;
-    max-height: 105px;
-    max-width: 940px;
+    // max-height: 105px;
+    // max-width: 940px;
     overflow: hidden;
     width: 100%;
 
     &-item {
       align-items: center;
       align-self: center;
-      color: white;
       display: flex;
       flex-shrink: 0;
       font-family: Lato, sans-serif;
@@ -70,11 +65,11 @@ $header-transition: 0.4s ease;
       }
 
       a {
-        color: white;
+        color: rgba(255, 255, 255, 0.5);
         text-decoration: none;
 
         &:hover {
-          color: orange;
+          color: white;
           text-decoration: none;
         }
       }
@@ -90,12 +85,6 @@ $header-transition: 0.4s ease;
       }
     }
   }
-
-  @media screen and (min-width: 481px) {
-    &-nav {
-      height: auto;
-    }
-  }
 }
 
 .MobileNav {
@@ -105,7 +94,7 @@ $header-transition: 0.4s ease;
   position: fixed;
   top: 70px;
   width: 100%;
-  z-index: 9;
+  z-index: 15;
 
   &-inner {
     background: #545454;
@@ -137,7 +126,6 @@ $header-transition: 0.4s ease;
   }
 
   &-item {
-    color: red;
     display: none;
     font-family: Lato, sans-serif;
     font-size: 24px;
@@ -155,12 +143,12 @@ $header-transition: 0.4s ease;
       width: 100%;
 
       a {
-        color: white;
+        color: rgba(255, 255, 255, 0.5);
         flex-shrink: 0;
         text-decoration: none;
 
         &:hover {
-          color: orange;
+          color: white;
           text-decoration: none;
         }
       }

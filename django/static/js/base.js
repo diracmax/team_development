@@ -106,8 +106,6 @@ $(function() {
 	  $(".search-button").toggleClass("open");
 	  $(".search-text").toggleClass("open");
 	  $(".fullscreen-animation").toggleClass("open");
-
-
 	});
 
-  });
+});

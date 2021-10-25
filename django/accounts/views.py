@@ -13,10 +13,10 @@ from django.db import connection
 from timeline.models import Notification
 
 QUERY_DICT = {
+    "recruit": "募集",
     "like": "いいね",
     "entry": "応募",
     "join": "参加",
-    "recruit": "募集",
     "follow": "フォロー",
     "follower": "フォロワー",
 }
@@ -69,7 +69,6 @@ class ProfileEdit(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     model = CustomUser
     form_class = ProfileForm
     template_name = 'account/profile_edit.html'
-    success_message = 'プロフィールを更新しました。'
 
     def get_object(self):
         return self.request.user

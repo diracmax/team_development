@@ -14,18 +14,29 @@
 <body>
     {% include 'nav.html' %}
     <main role="main">
+        {% if user.is_authenticated %}
             {% if messages %}
+            <div style="height:30px;"></div>
             <div class="message-tag">
                 <ul class="messages">
                     {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                        {{ message }}
-                    </li>
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                     {% endfor %}
                 </ul>
             </div>
             {% endif %}
-            {% block contents %}{% endblock %}
+        {% else %}
+            {% if messages %}
+            <div class="message-tag logout-message">
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        {% endif %}
+        {% block contents %}{% endblock %}
     </main>
     {% if user.is_authenticated %}
         <p class="mt-5 mb-3 text-muted text-center ">&copy; 2021 seekiee</p>

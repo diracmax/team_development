@@ -134,7 +134,7 @@ class PostDetail(LoginRequiredMixin, generic.DetailView):
         context = super().get_context_data(**kwargs)
         # ↓2回呼び出してるので処理がもったいない
         post = Post.objects.get(pk=self.kwargs.get('pk'))
-        #
+
         category = post.category
         categorys = list()
         while category:
@@ -148,9 +148,7 @@ class PostDetail(LoginRequiredMixin, generic.DetailView):
 class UpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Post
     fields = ('title', 'text', 'photo', 'restriction',
-              'capacity', 'is_recruited', 'category',
-            #   'deadline', 'state_control_type'
-              )
+              'capacity', 'is_recruited', 'category',)
     template_name = 'timeline/post_update.html'
     success_url = reverse_lazy('timeline:index')
 
