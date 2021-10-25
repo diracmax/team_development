@@ -20,11 +20,15 @@
       <p>{{ account.username }}</p>
     </a>
 
-    {% if user in account.get_follower %}
-      <button class="user-follow profile-card__button button--orange" id="user-follow-{{ account.id }}" data-id="{{ account.id }}">フォロー解除</button>
+    {% if customuser.id == user.id %}
+      {% if user in account.get_follower %}
+        <button class="user-follow profile-card__button button--orange" id="user-follow-{{ account.id }}" data-id="{{ account.id }}">フォロー解除</button>
+      {% else %}
+        <button class="user-disfollow profile-card__button button--orange" id="user-follow-{{ account.id }}" data-id="{{ account.id }}">フォロー</button>
+      {% endif %}
     {% else %}
-      <button class="user-disfollow profile-card__button button--orange" id="user-follow-{{ account.id }}" data-id="{{ account.id }}">フォロー</button>
-    {% endif %}
+      <button class="profile-card__button button--orange" onclick='location.href=href="{% url 'accounts:detail' view.kwargs.pk %}"'>プロフィール</button>
+    {% endif%}
 
   </div>
   <div class="link-menu">
