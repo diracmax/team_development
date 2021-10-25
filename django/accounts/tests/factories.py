@@ -3,8 +3,9 @@ import pytz
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-
-from factory import LazyAttribute, Sequence
+import random
+import os
+from factory import LazyAttribute, Sequence, Faker
 from factory.django import DjangoModelFactory, ImageField
 from factory.fuzzy import FuzzyDateTime
 
@@ -25,3 +26,6 @@ class UserFactory(DjangoModelFactory):
     is_active = True
     date_joined = FuzzyDateTime(start_dt=timezone.datetime(2021, 1, 1, tzinfo=tzinfo))
 
+# class SampleUserFactory(UserFactory):
+#     username = Faker('profile', locale=FAKER_LOCALE)
+#     photo = LazyAttribute(lambda x: random.choice(os.listdir("media/setup/account")))

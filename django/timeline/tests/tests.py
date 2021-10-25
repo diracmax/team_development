@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
-from .models import Post, Category
+from timeline.models import Post, Category
 
 class TimelineTestCase(TestCase):
 

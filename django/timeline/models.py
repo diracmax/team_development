@@ -10,7 +10,18 @@ from django_resized import ResizedImageField
 from django.core.exceptions import ValidationError
 
 def create_default_category(sender, **kwargs):
-    Category.objects.get_or_create(display="その他", depth=0)
+    CATEGORIES = [
+        "その他", "ハッカソン", "チーム開発", "ミートアップ", "インターン", "作業・雑談"
+        ]
+    for category in CATEGORIES:
+        Category.objects.update_or_create(
+            display=category, 
+            parent=None, 
+            defaults={
+                "default_img": "setup/category/"+category+".jpg", "depth": 0
+                }
+            )
+
 
 MAX_RATIO = 2.0
 MIN_RATIO = 0.5

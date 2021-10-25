@@ -49,3 +49,12 @@ backup_category:
 
 setup_category:
 	docker-compose -f django/docker-compose.yml exec app python manage.py loaddata category_initial.json
+
+populate_user:
+	docker-compose -f django/docker-compose.yml exec app python populate.py user 5
+
+populate_post:
+	docker-compose -f django/docker-compose.yml exec app python populate.py post 20
+
+python:
+	docker-compose -f django/docker-compose.yml exec app python

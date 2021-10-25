@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.messages.views import SuccessMessageMixin
 from accounts.models import CustomUser
-from timeline.models import Post, Apply
+from timeline.models import Post, Apply, Category
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.db.models import Q
@@ -11,6 +11,11 @@ from django.db.models import Q
 class PostList(LoginRequiredMixin, generic.ListView):
     template_name = 'search/post.html'
     paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["categorys"] = Category.objects.filter(depth=0).order_by("-pk")
+        return context
 
     def get_queryset(self):
         q = dict()
