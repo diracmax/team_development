@@ -1,59 +1,74 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}{{title}} | seekiee{% endblock %}
+{% block title %}{{ title }} | seekiee{% endblock %}
 {% block contents %}
 {% with f_type=view.kwargs.query %}
-<div style="width:auto; height:100px; "></div>
-<div style="height:55px; background:ghostwhite; z-index:6;"class="ur-header">
-  <div style="float:left; height:100%; width:33%;">
-    <div style="text-align: center;" class="link-list-username">
-      <a href="{% url 'accounts:detail' view.kwargs.pk %}" class="btn btn-link p-0">
-      <img style="width:50px; height:50px;"src="{% if account.photo_small %}{{ account.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo">{{account.username}}</a>
-      <span> のリスト</span>
+
+
+<div class="post-list-cover"></div>
+
+<div class="related-posts">
+  <a href="{% url 'accounts:detail' view.kwargs.pk %}" class="account-list-img">
+    <div class="img-area">
+      <div class="inner-area">
+        <img src="{% if account.photo_middle %}{{ account.photo_middle.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}">
+      </div>
     </div>
-  </div>
-  <div style="float:left; height:100%; width:34%;padding: 0px 10px;" class="link-list">
-    <div style="hight:50%;" class="related-post">
-    {% for key, value in QUERY_DICT.items %}
-    {% if key != "follow" and key != "follower" %}
-      {% if key == f_type %}
-      <span class="link-list-current">{{value}}</span>
-      {% else %}
-      <a href="{% url 'accounts:posts' view.kwargs.pk key %}" class="link-list-children">{{value}}</a>
-      {% endif %}
+  </a>
+  <div class="account-info">
+    <a href="{% url 'accounts:detail' view.kwargs.pk %}" class="account-name">
+      <p>{{ account.username }}</p>
+    </a>
+
+    {% if user in account.get_follower %}
+      <button class="user-follow profile-card__button button--orange" id="user-follow-{{ account.id }}" data-id="{{ account.id }}">フォロー解除</button>
+    {% else %}
+      <button class="user-disfollow profile-card__button button--orange" id="user-follow-{{ account.id }}" data-id="{{ account.id }}">フォロー</button>
     {% endif %}
-    {% endfor %}
-    </div>
-    <div style="hight:50%;" class="related-user">
-    {% for key, value in QUERY_DICT.items %}
-    {% if key == "follow" or key == "follower" %}
-      {% if key == f_type %}
-      <span class="link-list-current">{{value}}</span>
-      {% else %}
-      <a href="{% url 'accounts:posts' view.kwargs.pk key %}" class="link-list-children">{{value}}</a>
-      {% endif %}
-    {% endif %}
-    {% endfor %}
-    </div>
+
   </div>
-  <div style="float:right;text-align: center; hight:100%; width:33%;" class="sort-list">
-    <form style="margin: 10px;"action="" method="get">
-      <select class="sort-select"name="sort" onchange="submit(this.form)">
-      {% for key, value in SORT_DICT.items %}
-      {% if f_type in value.allowed %}
-        <option value="{{key}}">{{value.display}}</option>
-      {% endif %}
+  <div class="link-menu">
+    <ul class="tabs">
+      {% for key, value in QUERY_DICT.items %}
+        {% if key != "follow" and key != "follower" %}
+          {% if key == f_type %}
+            <li><a href="#" class="active">{{ value }}</a></li>
+          {% else %}
+            <li><a href="{% url 'accounts:posts' view.kwargs.pk key %}">{{ value }}</a></li>
+          {% endif %}
+        {% endif %}
       {% endfor %}
-      </select>
-    </form>
+      {% for key, value in QUERY_DICT.items %}
+        {% if key == "follow" or key == "follower" %}
+          {% if key == f_type %}
+            <li><a href="#" class="active">{{ value }}</a></li>
+          {% else %}
+            <li><a href="{% url 'accounts:posts' view.kwargs.pk key %}">{{ value }}</a></li>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </ul>
   </div>
 </div>
 
+<div class="sort-list">
+  <form action="" method="get">
+    <select name="sort" onchange="submit(this.form)">
+    {% for key, value in SORT_DICT.items %}
+      {% if f_type in value.allowed %}
+        <option value="{{ key }}">{{ value.display }}</option>
+      {% endif %}
+    {% endfor %}
+    </select>
+  </form>
+</div>
 
 {% if view.kwargs.query == "follow" or view.kwargs.query == "follower" %}
   {% include "account/account_list.html" %}
 {% else %}
+  <div class="related-post-list">
     {% include "timeline/post_list.html" %}
+  </div>
 {% endif %}
 {% include "timeline/pagination.html" %}
 

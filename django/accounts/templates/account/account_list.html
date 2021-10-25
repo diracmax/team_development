@@ -1,29 +1,24 @@
 {% load static %}
 
-
-
-<div style="width:90%; height:auto;margin:auto">
-{% for account in object_list %}
-  <div style="display:inline-block; width:20%; margin:2%; background-color: #fff8e8; text-align: center;" class="card-body">
-    <a href="{% url 'accounts:detail' account.id %}"><img style="height:60px;width:60px;" src="{% if account.photo_small %}{{ account.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle profile-post-photo"></a>
-    <br>
-    <div class="account-info">
-      <a href="{% url 'accounts:detail' account.id %}" class="text-secondary">{{ account }}</a>
+<div class="account-list">
+  {% for account in object_list %}
+  <div class="wrapper">
+    <div class="img-area">
+      <div class="inner-area">
+        <a href="{% url 'accounts:detail' account.id %}"><img src="{% if account.photo_middle %}{{ account.photo_middle.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}"></a>
+      </div>
+    </div>
+    <a href="{% url 'accounts:detail' account.id %}" class="account-name"><p>{{ account }}</p></a>
+    <P class="account-description">{% if account.description %}{{ account.description }}{% else %}本文はありません。{% endif %}</P>
+    <div class="account-list-btn">
       {% if account != user %}
         {% if user in account.get_follower %}
-        <a class="follow-btn user-follow" id="user-follow-{{ account.id }}" data-id="{{ account.id }}">
-          <img src="{% static 'images/watch_white.png' %}">
-        </a>
+          <button class="user-follow" id="user-follow-{{ account.id }}" data-id="{{ account.id }}">フォロー解除</button>
         {% else %}
-        <a class="follow-btn user-disfollow" id="user-follow-{{ account.id }}" data-id="{{ account.id }}">
-          <img src="{% static 'images/watch_gray.png' %}">
-        </a>
+          <button class="user-disfollow" id="user-follow-{{ account.id }}" data-id="{{ account.id }}">フォロー</button>
         {% endif %}
-        {% comment %} <span class="badge badge-info" id="follow-count-{{ account.id }}">{% if account.get_follower %}{{ account.get_follower | length }}{% endif %}</span> {% endcomment %}
       {% endif %}
-      <br>
-      {% comment %} <small class="text-muted">フォロー: {{ account.created_at | date:"n月j日 H時i分" }}</small> {% endcomment %}
     </div>
   </div>
-{% endfor %}
+  {% endfor %}
 </div>

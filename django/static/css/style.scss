@@ -12,9 +12,19 @@
 @import "parts_scss/_detail.scss";
 @import "parts_scss/_login.scss";
 @import "parts_scss/_comment_update.scss";
+@import "parts_scss/_account_list.scss";
+@import "parts_scss/_related_posts.scss";
 
-.message-tag {
+.message-tag:not(.logout-message) {
 	position: absolute;
 	text-align: center;
 	width: 100%;
+	top: 100px;
+}
+
+.logout-message {
+	position: absolute;
+	text-align: center;
+	width: 100%;
+	top: 0px;
 }

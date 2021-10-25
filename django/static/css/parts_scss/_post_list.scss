@@ -3,6 +3,13 @@ $bg: rgba(255,255,255, 1);
 $boxShadowColor: rgba(58,58,58,0.1);
 $boxShadow: 0px -1px 2px $boxShadowColor, 1px 1px 2px $boxShadowColor;
 
+.index-cover {
+  position: absolute;
+  top: 0;
+	height: 9rem;
+	width: 100vw;
+	z-index: 6;
+}
 
 .dynamic-grid {
   position: relative;
@@ -10,7 +17,7 @@ $boxShadow: 0px -1px 2px $boxShadowColor, 1px 1px 2px $boxShadowColor;
   columns: 240px 3;
   column-gap: 0.7rem;
   &.my_container {
-    padding-top: 9rem;
+    margin-top: 9rem;
   }
 }
 
@@ -79,6 +86,7 @@ $boxShadow: 0px -1px 2px $boxShadowColor, 1px 1px 2px $boxShadowColor;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
+      font-weight: 400;
     }
 
     .post-like-button {
@@ -157,8 +165,6 @@ $boxShadow: 0px -1px 2px $boxShadowColor, 1px 1px 2px $boxShadowColor;
       transform: translate(-50%,-50%);
       color: white;/*テキストの色を変えたい場合はここを修正*/
       display: grid;
-      grid-template-rows: 1rf 1rf 1rf;
-      grid-template-columns: 1rf;
       row-gap: 0px;
       column-gap: 0px;
       overflow: hidden;
@@ -167,8 +173,6 @@ $boxShadow: 0px -1px 2px $boxShadowColor, 1px 1px 2px $boxShadowColor;
       align-content: center;
 
       .post-info1 {
-        grid-row: 1 / 2;
-        grid-column: 1 / 2;
         align-self: center;
 
         a {
@@ -177,14 +181,10 @@ $boxShadow: 0px -1px 2px $boxShadowColor, 1px 1px 2px $boxShadowColor;
       }
 
       .post-info2 {
-        grid-row: 2 / 3;
-        grid-column: 1 / 2;
         align-self: center;
       }
 
       .post-info-detail {
-        grid-row: 3 / 4;
-        grid-column: 1 / 2;
         align-self: center;
         z-index: 3;
 

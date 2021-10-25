@@ -1,5 +1,7 @@
 {% load static %}
 
+<div class="index-cover"></div>
+
 <div class="my_container dynamic-grid">
   {% for post in object_list %}
   <article class="grid-item content-box">
@@ -10,13 +12,14 @@
       <img src="{% if post.author.photo_small %}{{ post.author.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}" class="rounded-circle post-photo post-thumbnail">
       </a>
       <div class="post-author">
-        <p><a class="text-secondary" href="{% url 'accounts:detail' post.author.id %}">{{ post.author }}</a>
-        {% if post.author != user %}
-          {% if user in post.author.get_follower %}
-            <small>(フォロー中)</small>
+        <p><a class="text-secondary" href="{% url 'accounts:detail' post.author.id %}">
+          {{ post.author }}
+          {% if post.author != user %}
+            {% if user in post.author.get_follower %}
+              <small>(フォロー中)</small>
+            {% endif %}
           {% endif %}
-        {% endif %}
-        </p>
+        </a></p>
       </div>
       <small class="post-title">{{ post.title }}</small>
         {% include "timeline/like.html" %}
