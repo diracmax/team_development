@@ -29,7 +29,7 @@
 <div class="detail-author-info">
   <div class="detail-author-left">
     <div class="detail-author-img">
-      <img class="detail-author-photo" src="{% if object.author.photo_small %}{{ object.author.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}">
+      <a href="{% url 'accounts:detail' post.author.id %}"><img class="detail-author-photo" src="{% if object.author.photo_small %}{{ object.author.photo_small.url }}{% else %}{% static 'images/no_photo.png' %}{% endif %}"></a>
     </div>
     <div class="detail-author-name">
       <p class="detail-author-name-p"><a href="{% url 'accounts:detail' post.author.id %}">{{object.author}}</a></p>
