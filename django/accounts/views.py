@@ -136,6 +136,8 @@ class PostList(LoginRequiredMixin, generic.ListView):
         context["account"] = owner
         context["QUERY_DICT"] = QUERY_DICT
         context["SORT_DICT"] = SORT_DICT
+        selected = self.request.GET.get("sort")
+        context["selected_sort"] = selected if selected else query
         return context
 
     def get_queryset(self):

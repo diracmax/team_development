@@ -150,7 +150,9 @@ class UpdateView(LoginRequiredMixin, generic.UpdateView):
     fields = ('title', 'text', 'photo', 'restriction',
               'capacity', 'is_recruited', 'category',)
     template_name = 'timeline/post_update.html'
-    success_url = reverse_lazy('timeline:index')
+
+    def get_success_url(self) -> str:
+        return reverse('timeline:detail', kwargs={'pk': self.kwargs.get('pk')})
 
 
 class CommentView(LoginRequiredMixin, generic.CreateView):
