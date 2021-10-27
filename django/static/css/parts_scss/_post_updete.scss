@@ -76,7 +76,7 @@ $color-white: #FFF;
 	  margin-bottom: $ruler;
 	}
 
-	input, select {
+	input:not(#photo-clear_id), select {
 	  box-shadow:  inset 2px 2px 5px $color-shadow, inset -5px -5px 10px $color-white;
 	  width: 70%;
 	  transition: all 0.2s ease-in-out;
@@ -89,6 +89,9 @@ $color-white: #FFF;
 	.photo-update {
 		input {
 			margin-top: 8px;
+		}
+		label {
+			display: inline;
 		}
 	}
 

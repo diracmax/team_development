@@ -3,7 +3,7 @@
 {% block title %}{{post.title}}の{{filter}} | seekiee{% endblock %}
 {% block contents %}
 
-<div style="width:auto; height:100px; "></div>
+<!-- <div style="width:auto; height:100px; "></div>
 <div style="height:55px; background:ghostwhite; z-index:6;"class="ur-header">
   <div style="float:left; height:100%; width:49%;">
     <div style="text-align: center;">
@@ -21,7 +21,35 @@
     {% endfor %}
     </div>
   </div>
+</div> -->
+
+<div class="related-accounts">
+  <a href="{% url 'timeline:detail' post.pk %}" class="related-post-img">
+    <div class="img-area">
+      <div class="inner-area">
+        <img src="{% if post.post_photo %}{{ post.post_photo.url }}{% else %}{{ post.category.post_photo.url }}{% endif %}">
+      </div>
+    </div>
+  </a>
+  <div class="related-post-info">
+    <a href="{% url 'timeline:detail' post.pk %}" class="related-post-title">
+      <p>{{ post.title }}</p>
+    </a>
+    <button class="profile-card__button button--orange" onclick='location.href=href="{% url 'timeline:detail' post.pk %}"'>投稿詳細</button>
+  </div>
+  <div class="link-menu">
+    <ul class="tabs">
+      {% for key, value in FILTER_DICT.items %}
+        {% if key == filter %}
+          <li><a href="#" class="active">{{ value }}</a></li>
+        {% else %}
+          <li><a href="{% url 'timeline:account' post.pk key %}">{{ value }}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
 </div>
+
 {% include "account/account_list.html" %}
 {% include "timeline/pagination.html" %}
 

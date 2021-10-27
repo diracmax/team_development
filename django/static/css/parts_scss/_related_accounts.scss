@@ -1,20 +1,10 @@
-.post-list-cover {
-	position: absolute;
-	height: 17rem;
-	width: 100vw;
-	z-index: 6;
-	@media (max-width: 824px) {
-		height: 24.5rem;
-	}
-}
-
-.related-post-list {
+.related-account-list {
 	.my_container {
 		  margin-top: 5px;
 	}
 }
 
-.related-posts {
+.related-accounts {
 	margin: 130px auto 0px auto;
 	padding-bottom: 0px;
 	width: 90vw;
@@ -22,7 +12,7 @@
 	flex-wrap: wrap;
 	border-bottom: rgba(0, 0, 0, 0.1) solid 1px;
 
-	.account-info {
+	.related-post-info {
 		display: flex;
 		flex-direction: column;
 		margin: 0 15px;
@@ -30,7 +20,7 @@
 		width: 70%;
 	}
 
-	.account-list-img {
+	.related-post-img {
 		margin: 10px 10px 10px 10%;
 		z-index: 7;
 	}
@@ -38,7 +28,6 @@
 	.img-area {
 		width: 110px;
 		height: 110px;
-		border-radius: 50%;
 		margin-bottom: 20px;
 		background: #ecf0f3;
 		box-shadow: -3px -3px 7px #ffffff, 3px 3px 5px #ceced1;
@@ -49,19 +38,17 @@
 		.inner-area {
 			height: calc(100% - 10px);
 			width: calc(100% - 10px);
-			border-radius: 50%;
 			object-fit: cover;
 
 			img {
 				height: 100%;
 				width: 100%;
-				border-radius: 50%;
 				object-fit: cover;
 			}
 		}
 	}
 
-	.account-name {
+	.related-post-title {
 		z-index: 7;
 		font-size: 40px;
 		font-weight: 500;
@@ -143,62 +130,18 @@
 	@media (max-width: 824px) {
 		flex-direction: column;
 		align-content: center;
-		.account-list-img {
+		.related-post-img {
 			margin: auto;
 		}
-		.account-info {
+		.related-post-info {
 			align-self: center;
 		}
-		.account-name {
+		.related-post-title {
 			text-align: center;
 		}
 		.profile-card__button {
 			align-self: center;
 			margin-bottom: 20px;
-		}
-		.tabs li {
-			width: auto;
-			a {
-				padding: 15px 10px;
-			}
-		}
-	}
-}
-
-.sort {
-	text-align: right;
-
-	img {
-		height: 30px;
-		display: inline-block;
-	}
-	
-	.sort-list {
-		position: relative;
-		width: 200px;
-		margin: 20px 5% 0px auto;
-		z-index: 7;
-		display: inline-block;
-		
-		
-		form {
-			select{
-				cursor: pointer;
-				border: 0;
-				outline: 0;
-				font-size: 16px;
-				border-radius: 16px*20;
-				padding: 8px;
-				background-color: #ecf0f3;
-				text-shadow: 1px 1px 0 $color-white;
-				box-shadow:  inset 2px 2px 5px $color-shadow, inset -5px -5px 10px $color-white;
-				width: 100%;
-				transition: all 0.2s ease-in-out;
-	
-				&:focus {
-					box-shadow:  inset 1px 1px 2px $color-shadow, inset -1px -1px 2px $color-white;
-				}
-			}
 		}
 	}
 }

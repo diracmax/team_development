@@ -54,7 +54,20 @@ populate_user:
 	docker-compose -f django/docker-compose.yml exec app python populate.py user 5
 
 populate_post:
-	docker-compose -f django/docker-compose.yml exec app python populate.py post 20
+	docker-compose -f django/docker-compose.yml exec app python populate.py post 100
+
+populate_apply:
+	docker-compose -f django/docker-compose.yml exec app python populate.py apply 1000
+
+populate_like:
+	docker-compose -f django/docker-compose.yml exec app python populate.py like 1000
+
+populate:
+	docker-compose -f django/docker-compose.yml exec app python populate.py user 10
+	docker-compose -f django/docker-compose.yml exec app python populate.py post 100
+	docker-compose -f django/docker-compose.yml exec app python populate.py follow 50
+	docker-compose -f django/docker-compose.yml exec app python populate.py apply 1000
+	docker-compose -f django/docker-compose.yml exec app python populate.py like 1000
 
 python:
 	docker-compose -f django/docker-compose.yml exec app python

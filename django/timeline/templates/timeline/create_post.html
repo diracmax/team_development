@@ -17,6 +17,13 @@
 					<h2>カテゴリー</h2>
 					<p>※必須項目</p>
 				</div>
+				{% if form.errors.category %}
+				<div class="errors">
+				{% for error in form.errors.category %}
+					<p>{{error}}</p>
+				{% endfor %}
+				</div>
+				{% endif %}
 				{% render_field form.category %}
 			</label>
 
@@ -26,6 +33,13 @@
 					<h2>タイトル</h2>
 					<p>※必須項目</p>
 				</div>
+				{% if form.errors.title %}
+				<div class="errors">
+				{% for error in form.errors.title %}
+					<p>{{error}}</p>
+				{% endfor %}
+				</div>
+				{% endif %}
 				{% render_field form.title placeholder="タイトル：例)〇〇ハッカソンの仲間募集" %}
 			</label>
 			<label>
@@ -34,6 +48,13 @@
 					<h2>内容</h2>
 					<p>※必須項目</p>
 				</div>
+				{% if form.errors.text %}
+				<div class="errors">
+				{% for error in form.errors.text %}
+					<p>{{error}}</p>
+				{% endfor %}
+				</div>
+				{% endif %}
 				{% render_field form.text placeholder="内容：例)今度の〇〇ハッカソンに参加したい！" rows="3" %}
 			</label>
 			<label>
@@ -41,6 +62,13 @@
 					<img src="{% static 'images/拡声器のアイコンその3.png' %}">
 					<h2>応募条件</h2>
 				</div>
+				{% if form.errors.restruction %}
+				<div class="errors">
+				{% for error in form.errors.restriction %}
+					<p>{{error}}</p>
+				{% endfor %}
+				</div>
+				{% endif %}
 				{% render_field form.restriction placeholder="応募条件：例)〇〇に詳しい方募集！" rows="3" %}
 			</label>
 			<label>

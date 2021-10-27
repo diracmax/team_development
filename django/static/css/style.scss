@@ -14,6 +14,7 @@
 @import "parts_scss/_comment_update.scss";
 @import "parts_scss/_account_list.scss";
 @import "parts_scss/_related_posts.scss";
+@import "parts_scss/_related_accounts.scss";
 
 .message-tag:not(.logout-message) {
 	position: absolute;
@@ -27,4 +28,11 @@
 	text-align: center;
 	width: 100%;
 	top: 0px;
+}
+
+.copyright-white {
+	color: white;
+	position: absolute;
+	bottom: 1vh;
+	width: 100%;
 }
