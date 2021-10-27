@@ -4,30 +4,34 @@ $color-shadow: #BABECC;
 $color-white: #FFF;
 
 .background-img {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	z-index: -1;
 	img {
-		height: 105vh;
+		height: 100vh;
 		width: 100vw;
 		object-fit: cover;
 	}
 }
 
 .login-form {
-	padding-top: 5rem;
 	display: flex;
+	height: 100vh;
 
 	.seekiee-text {
 		color: white;
-		margin-left: 13%;
 		align-self: center;
+		width: 50vw;
+
+		h1 {
+			display: inline-block;
+			width: 440px;
+		}
 
 		button {
 			background-color: none;
 			border: none;
 
-			margin-left: 36%;
 			margin-top: 10px;
 			font-size: 1.25rem;
 			padding: 0.5rem 2rem;
@@ -37,7 +41,6 @@ $color-white: #FFF;
 			border: 1px solid transparent;
 			border-radius: 2rem;
 			font-weight: bold;
-			text-transform: uppercase;
 			transition: background-color 0.3s;
 
 			&:hover {
@@ -235,7 +238,14 @@ $color-white: #FFF;
 			}
 		}
 	}
+}
 
+@media (min-width: 1100px){
+	.seekiee-text {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
 }
 
 @media (max-width: 1100px) {

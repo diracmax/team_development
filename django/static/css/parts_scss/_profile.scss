@@ -92,6 +92,7 @@ $color-white: #FFF;
 	  font-size: 24px;
 	  margin-bottom: 15px;
 	  overflow-wrap: break-word;
+	  word-break: break-all;
 	}
 
 	&-bio {
@@ -100,6 +101,8 @@ $color-white: #FFF;
 	  color: #324e63;
 	  margin-bottom: 15px;
 	  overflow-wrap: break-word;
+	  word-break: break-all;
+	  white-space: pre;
 	}
 
 	&-personal {

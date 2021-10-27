@@ -1,0 +1,147 @@
+.related-account-list {
+	.my_container {
+		  margin-top: 5px;
+	}
+}
+
+.related-accounts {
+	margin: 130px auto 0px auto;
+	padding-bottom: 0px;
+	width: 90vw;
+	display: flex;
+	flex-wrap: wrap;
+	border-bottom: rgba(0, 0, 0, 0.1) solid 1px;
+
+	.related-post-info {
+		display: flex;
+		flex-direction: column;
+		margin: 0 15px;
+		padding: 0;
+		width: 70%;
+	}
+
+	.related-post-img {
+		margin: 10px 10px 10px 10%;
+		z-index: 7;
+	}
+
+	.img-area {
+		width: 110px;
+		height: 110px;
+		margin-bottom: 20px;
+		background: #ecf0f3;
+		box-shadow: -3px -3px 7px #ffffff, 3px 3px 5px #ceced1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		.inner-area {
+			height: calc(100% - 10px);
+			width: calc(100% - 10px);
+			object-fit: cover;
+
+			img {
+				height: 100%;
+				width: 100%;
+				object-fit: cover;
+			}
+		}
+	}
+
+	.related-post-title {
+		z-index: 7;
+		font-size: 40px;
+		font-weight: 500;
+		color: #31344b;
+		text-decoration: none;
+		text-align: start;
+		min-width: 200px;
+
+		p {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	}
+
+	.profile-card__button {
+		z-index: 7;
+		background: none;
+		border: none;
+		font-weight: 700;
+		font-size: 19px;
+		border-radius: 45px;
+		height: 45px;
+		width: 170px;
+		color: #fff;
+		cursor: pointer;
+		backface-visibility: hidden;
+		transition: all .3s;
+
+		&:focus {
+			outline: none!important;
+		  }
+
+		  &:hover {
+			transform: translateY(-5px);
+		  }
+
+		  &.button--orange {
+			background: linear-gradient(45deg, #d5135a, #f05924);
+			box-shadow: 0px 4px 15px rgba(223, 45, 70, 0.35);
+			&:hover {
+			  box-shadow: 0px 7px 15px rgba(223, 45, 70, 0.75);
+			}
+		  }
+	}
+
+	.link-menu {
+		z-index: 7;
+		margin: 0;
+		width:100%;
+		color:#555;
+		font-size:14px;
+		line-height:24px;
+	}
+
+	.tabs {
+		list-style: none;
+
+		li {
+			float:left;
+			width:90px;
+			border: rgba(0, 0, 0, 0.1) solid 1px;
+
+		}
+		a {
+			display:block;
+			text-align:center;
+			text-decoration:none;
+			color:#888;
+			padding:15px 5px;
+			background:#ecf0f3;
+
+			&:hover, &.active {
+				background:#fff;
+			}
+		}
+	}
+
+	@media (max-width: 824px) {
+		flex-direction: column;
+		align-content: center;
+		.related-post-img {
+			margin: auto;
+		}
+		.related-post-info {
+			align-self: center;
+		}
+		.related-post-title {
+			text-align: center;
+		}
+		.profile-card__button {
+			align-self: center;
+			margin-bottom: 20px;
+		}
+	}
+}
