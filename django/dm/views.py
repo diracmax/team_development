@@ -42,7 +42,7 @@ class CreateThread(generic.View):
 class ListThreads(generic.View):
     def get(self, request, *args, **kwargs):
         threads = ThreadModel.objects.filter(
-            Q(user=request.user) | Q(receiver=request.user))
+            Q(user=request.user) | Q(receiver=request.user)).order_by('-updated_at')
         context = {
             'threads': threads,
         }
