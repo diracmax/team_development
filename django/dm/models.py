@@ -10,6 +10,7 @@ class ThreadModel(models.Model):
         CustomUser, on_delete=models.CASCADE, related_name='+')
     has_unread = models.BooleanField(default=False)
     last_message = models.CharField(max_length=1000, default="")
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class MessageModel(models.Model):
