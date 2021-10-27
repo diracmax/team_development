@@ -54,17 +54,19 @@
     </ul>
   </div>
 </div>
-
-<div class="sort-list">
-  <form action="" method="get">
-    <select name="sort" onchange="submit(this.form)">
-    {% for key, value in SORT_DICT.items %}
-      {% if f_type in value.allowed %}
-        <option value="{{ key }}">{{ value.display }}</option>
-      {% endif %}
-    {% endfor %}
-    </select>
-  </form>
+<div class="sort">
+  <img src="{% if f_type == "follow" or f_type == "follower" %}{% static 'images/account_arrow.png' %}{%else%}{% static 'images/post_arrow.png' %}{%endif%}">
+  <div class="sort-list">
+    <form action="" method="get">
+      <select name="sort" onchange="submit(this.form)">
+      {% for key, value in SORT_DICT.items %}
+        {% if f_type in value.allowed %}
+            <option value="{{ key }}" {% if key == selected_sort%}selected{% endif %}>{{ value.display }}</option>
+        {% endif %}
+      {% endfor %}
+      </select>
+    </form>
+  </div>
 </div>
 
 {% if view.kwargs.query == "follow" or view.kwargs.query == "follower" %}

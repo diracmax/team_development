@@ -29,3 +29,18 @@ class PostFactory(DjangoModelFactory):
 class SamplePostFactory(PostFactory):
     author = LazyAttribute(lambda x: random.choice(CustomUser.objects.all()))
     category = LazyAttribute(lambda x: random.choice(Category.objects.all()))
+
+class SampleApplyFactory(DjangoModelFactory):
+    class Meta:
+        model = Apply
+
+    post = LazyAttribute(lambda x: random.choice(Post.objects.all()))
+    user = LazyAttribute(lambda x: random.choice(CustomUser.objects.all()))
+    is_member = Faker('pybool')
+
+class SampleLikeFactory(DjangoModelFactory):
+    class Meta:
+        model = Like
+
+    post = LazyAttribute(lambda x: random.choice(Post.objects.all()))
+    user = LazyAttribute(lambda x: random.choice(CustomUser.objects.all()))
