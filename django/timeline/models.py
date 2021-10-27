@@ -75,15 +75,15 @@ class Post(models.Model):
     author = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
     category = models.ForeignKey('Category', on_delete=models.SET_DEFAULT, default=get_default_category)
 
-    title = models.CharField(verbose_name='タイトル', max_length=15)
-    text = models.TextField(verbose_name='本文' ,max_length=200)
+    title = models.CharField(verbose_name='タイトル', max_length=50)
+    text = models.TextField(verbose_name='本文' ,max_length=3000)
 
     # ディレクトリを images -> images/post に変更しました
     photo = ResizedImageField(verbose_name='写真', size=[1080, 1080], blank=True, null=True, upload_to='images/post/', validators=[validate_image])
     post_photo = ImageSpecField(source='photo', processors=[ResizeToFit(
         1080, 1080)], format='JPEG', options={'quality': 60})
     restriction = models.TextField(
-        verbose_name='応募条件', blank=True, null=True ,max_length=50)
+        verbose_name='応募条件', blank=True, null=True ,max_length=3000)
     # deadline = models.DateField(
     #     verbose_name='応募期限', blank=True, null=True)
 
