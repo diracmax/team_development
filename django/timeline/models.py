@@ -11,7 +11,7 @@ from django.core.exceptions import ValidationError
 
 def create_default_category(sender, **kwargs):
     CATEGORIES = [
-        "その他", "ハッカソン", "チーム開発", "ミートアップ", "インターン", "作業・雑談", "勉強会", "モバイル", "Web", "インフラ", "システム", "QA", "データサイエンス", "UIUX", "ゲーム", "セキュリティ"
+        "その他", "ハッカソン", "チーム開発", "ミートアップ", "インターン", "作業・雑談", "勉強会"
         ]
     for category in CATEGORIES:
         Category.objects.update_or_create(
