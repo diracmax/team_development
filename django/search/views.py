@@ -23,6 +23,7 @@ class PostList(LoginRequiredMixin, generic.ListView):
         q = dict()
         q["word"] = self.request.GET.get('word')
         q["category"] = self.request.GET.get('category')
+        query = ""
         if q["word"]:
             q_list = ''
             for c in q["word"]:
@@ -38,18 +39,18 @@ class PostList(LoginRequiredMixin, generic.ListView):
             object_list = Post.objects.filter(
                     query,
                     Q(category__display=q["category"])
-                    )
+                    ).order_by('-created_at')
             return object_list
         if q["word"]:
             object_list = Post.objects.filter(
                     query
-                    )
+                    ).order_by('-created_at')
             return object_list
         if q["category"]:
             # 子カテゴリも含めて表示したい
             object_list = Post.objects.filter(
                     Q(category__display=q["category"])
-                    )
+                    ).order_by('-created_at')
             return object_list
         return Post.objects.all()
 
