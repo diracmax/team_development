@@ -5,6 +5,8 @@ from timeline.models import Post, Apply, Category
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.db.models import Q
+from functools import reduce
+from operator import and_
 
 
 
@@ -21,17 +23,26 @@ class PostList(LoginRequiredMixin, generic.ListView):
         q = dict()
         q["word"] = self.request.GET.get('word')
         q["category"] = self.request.GET.get('category')
-        # print("word=" + q["word"])
-        # print("category=" + q["category"])
+        if q["word"]:
+            q_list = ''
+            for c in q["word"]:
+                if c in {' ', '　'}:
+                    pass
+                else:
+                    q_list += c
+            query = reduce(
+                    and_, [Q(title__icontains=q) | Q(text__icontains=q) for q in q_list]
+                )
+
         if q["word"] and q["category"]:
             object_list = Post.objects.filter(
-                    Q(title__icontains=q["word"]) | Q(text__icontains=q["word"]),
+                    query,
                     Q(category__display=q["category"])
                     )
             return object_list
         if q["word"]:
             object_list = Post.objects.filter(
-                    Q(title__icontains=q["word"]) | Q(text__icontains=q["word"])
+                    query
                     )
             return object_list
         if q["category"]:
