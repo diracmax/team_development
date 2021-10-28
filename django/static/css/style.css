@@ -274,9 +274,9 @@
 
 .post-update label { width: 100%; margin-bottom: 16px; }
 
-.post-update input:not(#photo-clear_id), .post-update select { box-shadow: inset 2px 2px 5px #BABECC, inset -5px -5px 10px #FFF; width: 70%; transition: all 0.2s ease-in-out; }
+.post-update input:not(#photo-clear_id, #id_is_recruited), .post-update select { box-shadow: inset 2px 2px 5px #BABECC, inset -5px -5px 10px #FFF; width: 70%; transition: all 0.2s ease-in-out; }
 
-.post-update input:not(#photo-clear_id):focus, .post-update select:focus { box-shadow: inset 1px 1px 2px #BABECC, inset -1px -1px 2px #FFF; }
+.post-update input:not(#photo-clear_id, #id_is_recruited):focus, .post-update select:focus { box-shadow: inset 1px 1px 2px #BABECC, inset -1px -1px 2px #FFF; }
 
 .post-update .photo-update input { margin-top: 8px; }
 
